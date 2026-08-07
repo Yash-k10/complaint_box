@@ -54,7 +54,6 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
   };
 
   return (
-  return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-emerald-950/50 backdrop-blur-xs overflow-y-auto">
       <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-lg w-full max-h-[92vh] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in duration-200">
         {/* Header (Fixed Top) */}
