@@ -6,6 +6,30 @@ import LandingPage from './pages/LandingPage';
 import CitizenPortal from './pages/CitizenPortal';
 import OfficerDashboard from './pages/OfficerDashboard';
 import AnalyticsPage from './pages/AnalyticsPage';
+import DigitalTwinPage from './pages/DigitalTwinPage';
 import LoginPage from './pages/LoginPage';
-function App() { return (<BrowserRouter><Navbar /><Routes><Route path='/' element={<LandingPage />} /><Route path='/citizen' element={<CitizenPortal />} /><Route path='/officer' element={<OfficerDashboard />} /><Route path='/analytics' element={<AnalyticsPage />} /><Route path='/login' element={<LoginPage />} /></Routes><Footer /></BrowserRouter>); }
+import TrackComplaint from './pages/TrackComplaint';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen flex flex-col justify-between">
+        <div>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/citizen" element={<CitizenPortal />} />
+            <Route path="/officer" element={<OfficerDashboard />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/digital-twin" element={<DigitalTwinPage />} />
+            <Route path="/track" element={<TrackComplaint />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+    </BrowserRouter>
+  );
+}
+
 export default App;
