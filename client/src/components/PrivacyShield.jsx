@@ -1,0 +1,2 @@
+import React from 'react';
+export default function PrivacyShield() { return (<div className='bg-slate-800 p-4 rounded-xl border border-emerald-500/30 flex items-center justify-between'><div className='flex items-center gap-3'><span className='text-2xl'>🛡️</span><div><h4 className='font-semibold text-emerald-400 text-sm'>Privacy Shield Active</h4><p className='text-xs text-slate-400'>Aadhaar/Phone PII masking active</p></div></div><span className='text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full'>100% Compliant</span></div>); }
