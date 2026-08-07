@@ -21,16 +21,15 @@ export default function LandingPage() {
       {/* Main Hero Container Section */}
       <section className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="bg-slate-800 p-6 md:p-12 rounded-3xl border border-slate-700 shadow-2xl relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          {/* Floating Badge (18 AI Demos) */}
-          <div className="hidden lg:flex absolute top-6 right-8 bg-lime-accent text-slate-900 w-28 h-28 rounded-full font-black flex-col items-center justify-center shadow-2xl z-20 border-4 border-slate-900 transform hover:scale-105 transition">
-            <span className="text-2xl leading-none">18</span>
-            <span className="text-[10px] uppercase tracking-wider font-extrabold">AI DEMOS</span>
-          </div>
-
           <div className="space-y-6 z-10">
-            <span className="text-xs font-bold text-lime-accent uppercase tracking-widest block">
-              TRUSTED CIVIC OPERATIONS PLATFORM
-            </span>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-xs font-bold text-lime-accent uppercase tracking-widest block">
+                TRUSTED CIVIC OPERATIONS PLATFORM
+              </span>
+              <span className="bg-lime-accent text-slate-900 font-black px-3 py-1 rounded-full text-xs shadow">
+                18 AI DEMOS
+              </span>
+            </div>
 
             <h1 className="text-3xl md:text-5xl font-black text-white leading-tight">
               We spark life back into your city infrastructure
