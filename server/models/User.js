@@ -1,3 +1,79 @@
 const mongoose = require('mongoose');
-const s = new mongoose.Schema({ name: String, email: { type: String, unique: true }, password: String, role: { type: String, enum: ['citizen','officer','admin'], default: 'citizen' }, department: String, wardId: Number, createdAt: { type: Date, default: Date.now } });
-module.exports = mongoose.model('User', s);
+
+const userSchema = new mongoose.Schema({
+  citizenId: {
+    type: String,
+    required: true,
+    unique: true,
+    default: () => `CIT-2026-${Math.floor(1000 + Math.random() * 9000)}`
+  },
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  mobile: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  address: {
+    type: String,
+    default: ''
+  },
+  city: {
+    type: String,
+    default: 'Nagpur'
+  },
+  state: {
+    type: String,
+    default: 'Maharashtra'
+  },
+  pinCode: {
+    type: String,
+    default: '440010'
+  },
+  role: {
+    type: String,
+    enum: ['citizen', 'officer', 'admin'],
+    default: 'citizen'
+  },
+  department: {
+    type: String,
+    default: ''
+  },
+  wardId: {
+    type: Number,
+    default: 12
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  lastLoginAt: {
+    type: Date,
+    default: Date.now
+  },
+  failedAttempts: {
+    type: Number,
+    default: 0
+  },
+  isLocked: {
+    type: Boolean,
+    default: false
+  }
+});
+
+module.exports = mongoose.model('User', userSchema);
