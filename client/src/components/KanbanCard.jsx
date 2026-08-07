@@ -37,7 +37,7 @@ export default function KanbanCard({ complaint, onSelect, onStatusChange }) {
         <p className="text-[11px] text-emerald-800 leading-relaxed line-clamp-2">{complaint.description}</p>
       )}
 
-      {/* Resolution Photo Proof Badge */}
+      {/* Resolution Photo Proof Badge & 7-Day Window Indicator */}
       {complaint.resolutionProof && (
         <div className="relative rounded-lg overflow-hidden border border-emerald-200 bg-emerald-50/50 p-1.5 flex items-center gap-2">
           <img src={complaint.resolutionProof} alt="Work Proof" className="w-10 h-10 object-cover rounded-md border border-emerald-200" />
@@ -47,9 +47,22 @@ export default function KanbanCard({ complaint, onSelect, onStatusChange }) {
               <span>Admin Proof Attached</span>
             </span>
             <span className="text-amber-800 font-bold block">
-              Citizen Verification: {verificationsCount}/3
+              Citizen Audit: {verificationsCount}/3 Verified
             </span>
           </div>
+        </div>
+      )}
+
+      {/* 7-Day Verification Lock Banner */}
+      {complaint.status === 'Pending Verification' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-2 text-[10px] text-amber-950 font-semibold space-y-0.5">
+          <span className="font-bold text-amber-900 block flex items-center gap-1">
+            <CheckCircle2 className="w-3 h-3 text-amber-600" />
+            <span>⏳ 7-Day Verification Window Active</span>
+          </span>
+          <span className="text-amber-800 text-[9.5px] block leading-tight">
+            Locked in Pending Verification for 7 days until 3 citizens audit & verify photo proof.
+          </span>
         </div>
       )}
 

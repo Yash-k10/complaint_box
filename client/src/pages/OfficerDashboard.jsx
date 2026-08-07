@@ -53,15 +53,56 @@ const FALLBACK_MOCK = [
 ];
 
 export default function OfficerDashboard() {
-  const [complaints, setComplaints] = useState(FALLBACK_MOCK);
-  const [selected, setSelected] = useState(FALLBACK_MOCK[0]);
+  const [complaints, setComplaints] = useState(() => {
+    const saved = localStorage.getItem('civic_officer_complaints');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+    return FALLBACK_MOCK;
+  });
+
+  const [selected, setSelected] = useState(() => complaints[0] || FALLBACK_MOCK[0]);
   const [resolvingComplaint, setResolvingComplaint] = useState(null);
+
+  const saveComplaintsLocally = (newComplaints) => {
+    setComplaints(newComplaints);
+    try {
+      localStorage.setItem('civic_officer_complaints', JSON.stringify(newComplaints));
+    } catch (e) {}
+  };
 
   const loadComplaints = async () => {
     try {
       const res = await axios.get('/api/complaints');
       if (res.data && res.data.data && res.data.data.length > 0) {
-        setComplaints(res.data.data);
+        const serverData = res.data.data;
+        // Merge server data with local status overrides for 'Pending Verification'
+        setComplaints((prevLocal) => {
+          const localMap = new Map(prevLocal.map((c) => [c.complaintId, c]));
+          const merged = serverData.map((serverComp) => {
+            const localComp = localMap.get(serverComp.complaintId);
+            if (localComp && localComp.status === 'Pending Verification' && serverComp.status !== 'Verified & Resolved') {
+              return { ...serverComp, ...localComp, status: 'Pending Verification' };
+            }
+            return serverComp;
+          });
+
+          // Ensure local-only tickets are preserved
+          prevLocal.forEach((lComp) => {
+            if (!merged.find((m) => m.complaintId === lComp.complaintId)) {
+              merged.unshift(lComp);
+            }
+          });
+
+          try {
+            localStorage.setItem('civic_officer_complaints', JSON.stringify(merged));
+          } catch (e) {}
+
+          return merged;
+        });
       }
     } catch (err) {
       console.warn('API connection fallback, using local mock store:', err);
@@ -80,36 +121,41 @@ export default function OfficerDashboard() {
     try {
       await axios.patch(`/api/complaints/${complaintId}/status`, { status: newStatus });
     } catch (err) {}
-    setComplaints((prev) =>
-      prev.map((c) => (c.complaintId === complaintId ? { ...c, status: newStatus } : c))
-    );
+
+    const updated = complaints.map((c) => (c.complaintId === complaintId ? { ...c, status: newStatus } : c));
+    saveComplaintsLocally(updated);
   };
 
   const handleResolutionSubmit = async (resolutionPayload) => {
+    const startedAt = new Date().toISOString();
+
     try {
       await axios.patch(`/api/complaints/${resolutionPayload.complaintId}/status`, {
         status: 'Pending Verification',
         resolutionProof: resolutionPayload.resolutionProof,
-        resolutionNotes: resolutionPayload.resolutionNotes
+        resolutionNotes: resolutionPayload.resolutionNotes,
+        pendingVerificationStartedAt: startedAt,
+        verificationWindowDays: 7
       });
     } catch (err) {}
 
-    setComplaints((prev) =>
-      prev.map((c) =>
-        c.complaintId === resolutionPayload.complaintId
-          ? {
-              ...c,
-              status: 'Pending Verification',
-              resolutionProof: resolutionPayload.resolutionProof,
-              resolutionNotes: resolutionPayload.resolutionNotes,
-              verifications: c.verifications || [],
-              verificationsCount: c.verificationsCount || 0,
-              requiredVerifications: 3
-            }
-          : c
-      )
+    const updated = complaints.map((c) =>
+      c.complaintId === resolutionPayload.complaintId
+        ? {
+            ...c,
+            status: 'Pending Verification',
+            resolutionProof: resolutionPayload.resolutionProof,
+            resolutionNotes: resolutionPayload.resolutionNotes,
+            verifications: c.verifications || [],
+            verificationsCount: c.verificationsCount || 0,
+            requiredVerifications: 3,
+            pendingVerificationStartedAt: c.pendingVerificationStartedAt || startedAt,
+            verificationWindowDays: 7
+          }
+        : c
     );
 
+    saveComplaintsLocally(updated);
     setResolvingComplaint(null);
   };
 

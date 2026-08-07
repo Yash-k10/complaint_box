@@ -22,6 +22,17 @@ export default function CitizenVerificationPanel({ complaint, onVerificationUpda
   const currentUserName = user?.name || 'Guest Citizen';
   const hasUserVerified = verifications.some((v) => v.citizenName === currentUserName);
 
+  const updateLocalStorageCache = (updatedItem) => {
+    try {
+      const saved = localStorage.getItem('civic_officer_complaints');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const updatedList = parsed.map((c) => (c.complaintId === updatedItem.complaintId ? updatedItem : c));
+        localStorage.setItem('civic_officer_complaints', JSON.stringify(updatedList));
+      }
+    } catch (e) {}
+  };
+
   const handleVerify = async () => {
     if (hasUserVerified) return;
     setLoading(true);
@@ -34,6 +45,7 @@ export default function CitizenVerificationPanel({ complaint, onVerificationUpda
 
       if (res.data && res.data.data) {
         setLocalComp(res.data.data);
+        updateLocalStorageCache(res.data.data);
         onVerificationUpdate?.(res.data.data);
       }
     } catch (err) {
@@ -54,6 +66,7 @@ export default function CitizenVerificationPanel({ complaint, onVerificationUpda
         status: newCount >= requiredCount ? 'Verified & Resolved' : 'Pending Verification'
       };
       setLocalComp(updatedObj);
+      updateLocalStorageCache(updatedObj);
       onVerificationUpdate?.(updatedObj);
     } finally {
       setLoading(false);

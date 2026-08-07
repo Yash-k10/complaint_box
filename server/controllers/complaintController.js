@@ -119,76 +119,116 @@ const updateStatus = async (req, res) => {
   const { id } = req.params;
   const { status, resolutionProof, resolutionNotes } = req.body;
   const store = loadDatabase();
-  const comp = store.find((x) => x.complaintId === id);
-  if (comp) {
-    comp.status = status;
-    if (resolutionProof) comp.resolutionProof = resolutionProof;
-    if (resolutionNotes) comp.resolutionNotes = resolutionNotes;
-    if (status === 'Pending Verification' || status === 'Resolved') {
-      if (!comp.verifications) comp.verifications = [];
-      comp.verificationsCount = comp.verifications.length;
-      comp.requiredVerifications = 3;
-    }
-    saveDatabase(store);
-    try {
-      await Complaint.updateOne(
-        { complaintId: id },
-        { 
-          status, 
-          ...(resolutionProof && { resolutionProof }),
-          ...(resolutionNotes && { resolutionNotes }),
-          verifications: comp.verifications || [],
-          verificationsCount: comp.verificationsCount || 0,
-          requiredVerifications: 3
-        }
-      );
-    } catch (err) {}
-    return res.json({ success: true, message: `Status updated to ${status}`, data: comp });
+  let comp = store.find((x) => x.complaintId === id);
+
+  if (!comp) {
+    // If ticket not in JSON store yet, create entry so status update is never lost
+    comp = {
+      complaintId: id,
+      title: req.body.title || 'Municipal Grievance Issue',
+      description: req.body.description || 'Grievance ticket under officer resolution',
+      category: req.body.category || 'Road Damage',
+      urgency: 'High Priority',
+      status,
+      createdAt: new Date().toISOString()
+    };
+    store.unshift(comp);
   }
-  return res.status(404).json({ success: false, message: 'Complaint not found' });
+
+  comp.status = status;
+  if (resolutionProof) comp.resolutionProof = resolutionProof;
+  if (resolutionNotes) comp.resolutionNotes = resolutionNotes;
+
+  if (status === 'Pending Verification') {
+    if (!comp.verifications) comp.verifications = [];
+    comp.verificationsCount = comp.verifications.length;
+    comp.requiredVerifications = 3;
+    comp.pendingVerificationStartedAt = comp.pendingVerificationStartedAt || new Date().toISOString();
+    comp.verificationWindowDays = 7;
+  }
+
+  saveDatabase(store);
+
+  try {
+    await Complaint.updateOne(
+      { complaintId: id },
+      { 
+        status, 
+        ...(resolutionProof && { resolutionProof }),
+        ...(resolutionNotes && { resolutionNotes }),
+        verifications: comp.verifications || [],
+        verificationsCount: comp.verificationsCount || 0,
+        requiredVerifications: 3,
+        pendingVerificationStartedAt: comp.pendingVerificationStartedAt,
+        verificationWindowDays: 7
+      },
+      { upsert: true }
+    );
+  } catch (err) {}
+
+  console.log(`[STATUS UPDATE] Ticket ${id} status updated to '${status}'. Stored in database.`);
+
+  return res.json({ success: true, message: `Status updated to ${status}`, data: comp });
 };
 
 const verifyComplaint = async (req, res) => {
   const { id } = req.params;
   const { citizenName, comment } = req.body;
   const store = loadDatabase();
-  const comp = store.find((x) => x.complaintId === id);
-  if (comp) {
-    if (!comp.verifications) comp.verifications = [];
-    const newVerification = {
-      citizenName: citizenName || 'Verified Citizen',
-      comment: comment || 'Verified work photo authenticity',
-      verifiedAt: new Date().toISOString()
+  let comp = store.find((x) => x.complaintId === id);
+
+  if (!comp) {
+    comp = {
+      complaintId: id,
+      title: 'Municipal Grievance Issue',
+      category: 'Road Damage',
+      status: 'Pending Verification',
+      verifications: [],
+      createdAt: new Date().toISOString()
     };
-    comp.verifications.push(newVerification);
-    comp.verificationsCount = comp.verifications.length;
-    
-    // Require 3 citizen verifications to reach fully Verified & Resolved
-    if (comp.verificationsCount >= 3) {
-      comp.status = 'Verified & Resolved';
-    } else {
-      comp.status = 'Pending Verification';
-    }
-    
-    saveDatabase(store);
-    try {
-      await Complaint.updateOne(
-        { complaintId: id },
-        { 
-          verifications: comp.verifications,
-          verificationsCount: comp.verificationsCount,
-          status: comp.status
-        }
-      );
-    } catch (err) {}
-    
-    return res.json({ 
-      success: true, 
-      message: `Citizen verification recorded (${comp.verificationsCount}/3)`, 
-      data: comp 
-    });
+    store.unshift(comp);
   }
-  return res.status(404).json({ success: false, message: 'Complaint not found' });
+
+  if (!comp.verifications) comp.verifications = [];
+  
+  const newVerification = {
+    citizenName: citizenName || 'Verified Citizen',
+    comment: comment || 'Verified work photo authenticity',
+    verifiedAt: new Date().toISOString()
+  };
+  comp.verifications.push(newVerification);
+  comp.verificationsCount = comp.verifications.length;
+  comp.requiredVerifications = 3;
+
+  // Require 3 citizen verifications to reach fully Verified & Resolved
+  if (comp.verificationsCount >= 3) {
+    comp.status = 'Verified & Resolved';
+  } else {
+    comp.status = 'Pending Verification';
+    comp.pendingVerificationStartedAt = comp.pendingVerificationStartedAt || new Date().toISOString();
+    comp.verificationWindowDays = 7;
+  }
+
+  saveDatabase(store);
+
+  try {
+    await Complaint.updateOne(
+      { complaintId: id },
+      { 
+        verifications: comp.verifications,
+        verificationsCount: comp.verificationsCount,
+        requiredVerifications: 3,
+        status: comp.status
+      },
+      { upsert: true }
+    );
+  } catch (err) {}
+
+  return res.json({ 
+    success: true, 
+    message: `Citizen verification recorded (${comp.verificationsCount}/3)`, 
+    data: comp 
+  });
 };
 
 module.exports = { getComplaints, getComplaintById, createComplaint, updateStatus, verifyComplaint };
