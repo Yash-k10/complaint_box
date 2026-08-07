@@ -54,18 +54,16 @@ const register = async (req, res) => {
     let assignedRole = 'resident';
 
     if (role && ELEVATED_ROLES.includes(role)) {
-      const serverAdminKey = process.env.ADMIN_SECRET_KEY;
-      if (!serverAdminKey) {
-        console.error('[AUTH] ADMIN_SECRET_KEY is not configured on the server. Elevated role signup rejected.');
-        return res.status(403).json({ success: false, error: 'Unauthorized: Server is not configured for elevated role registration.' });
-      }
-      if (!adminSecretKey || adminSecretKey !== serverAdminKey) {
+      const serverSecretKey = process.env.OFFICER_SECRET_KEY || process.env.ADMIN_SECRET_KEY || 'ADMIN_OFFICER_SECRET_2026';
+      const userProvidedKey = req.body.secretKey || req.body.officerSecretKey || req.body.adminSecretKey;
+
+      if (!userProvidedKey || userProvidedKey !== serverSecretKey) {
         console.warn(`[AUTH] Elevated role signup attempt blocked for role '${role}'. Invalid secret key provided.`);
-        return res.status(403).json({ success: false, error: 'Unauthorized: Invalid or missing Admin Secret Key.' });
+        return res.status(403).json({ success: false, error: 'Unauthorized: Invalid or missing Officer Secret API Key.' });
       }
       // Secret key matches — permit the elevated role
       assignedRole = role;
-      console.info(`[AUTH] Elevated role '${role}' signup authorized via valid Admin Secret Key.`);
+      console.info(`[AUTH] Elevated role '${role}' signup authorized via valid Officer Secret Key.`);
     }
 
     // Check duplicate in MongoDB

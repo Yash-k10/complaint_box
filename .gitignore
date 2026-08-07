@@ -19,6 +19,7 @@ client/.vite/
 .env.development.local
 .env.production.local
 server/.env
+client/.env
 ai-engine/.env
 
 # System / IDE
