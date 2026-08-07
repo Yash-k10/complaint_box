@@ -1,0 +1,2 @@
+import React from 'react';
+export default function DigitalTwinMap() { return (<div className='bg-slate-800 p-6 rounded-2xl border border-slate-700 h-80 flex flex-col items-center justify-center relative overflow-hidden'><div className='absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] opacity-20' /><span className='text-5xl mb-3 z-10'>🏙️</span><h3 className='text-xl font-bold text-cyan-400 z-10'>AI Civic Digital Twin</h3><p className='text-xs text-slate-400 max-w-md mt-2 z-10'>Real-time infrastructure visualization.</p></div>); }
