@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 export default function LandingPage() {
   return (
     <div className="pb-16 space-y-12">
-      {/* Top Notification Banner Sub-bar */}
-      <div className="bg-slate-900 border-b border-slate-800 text-xs py-2.5 px-4 md:px-8 flex flex-wrap justify-between items-center gap-2 text-slate-400">
+      {/* Top Notification Sub-bar */}
+      <div className="bg-slate-900 border-b border-slate-800 text-xs py-3 px-6 md:px-10 flex flex-wrap justify-between items-center gap-3 text-slate-400">
         <div className="flex items-center gap-2 flex-wrap">
-          <span>📍 Nagpur Municipal Corporation</span>
+          <span className="text-lime-accent font-bold">📍 Nagpur Municipal Corporation</span>
           <span>•</span>
           <span>⏰ 24/7 Live AI Triage Active</span>
         </div>
@@ -18,13 +18,13 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Main Hero Container Section */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="bg-slate-800 p-6 md:p-10 rounded-3xl border border-slate-700 shadow-2xl relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          {/* Left Hero Column */}
+      {/* Hero Section Container */}
+      <section className="max-w-7xl mx-auto px-6 md:px-10 mb-12">
+        <div className="bg-slate-800 p-8 md:p-12 rounded-3xl border border-slate-700 shadow-2xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left Hero Details */}
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-xs font-bold text-lime-accent uppercase tracking-widest block">
+              <span className="text-xs font-bold text-lime-accent uppercase tracking-widest">
                 TRUSTED CIVIC OPERATIONS PLATFORM
               </span>
               <span className="bg-lime-accent text-slate-900 font-black px-3 py-1 rounded-full text-xs shadow">
@@ -43,7 +43,7 @@ export default function LandingPage() {
             <div className="flex flex-wrap gap-4 pt-2">
               <Link
                 to="/citizen"
-                className="bg-lime-accent hover:opacity-90 text-slate-900 font-extrabold px-6 md:px-8 py-3.5 rounded-xl text-sm transition shadow-lg inline-flex items-center gap-2"
+                className="bg-lime-accent hover:opacity-90 text-slate-900 font-extrabold px-8 py-3.5 rounded-xl text-sm transition shadow-lg inline-flex items-center gap-2"
               >
                 🚨 Report a Civic Issue
               </Link>
@@ -56,12 +56,12 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right Hero Visual Box */}
-          <div className="bg-slate-900/90 p-8 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center space-y-4 shadow-xl">
+          {/* Right Hero Visual Card */}
+          <div className="bg-slate-900/90 p-8 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center space-y-4 shadow-xl my-2">
             <div className="w-16 h-16 rounded-2xl bg-lime-accent/10 border border-lime-accent/40 flex items-center justify-center text-3xl shadow-inner">
               🏙️
             </div>
-            <div className="space-y-1.5 max-w-xs">
+            <div className="space-y-2 max-w-xs">
               <h3 className="text-lg font-extrabold text-white">AI Civic Digital Twin</h3>
               <p className="text-xs text-slate-400 leading-relaxed">
                 Real-time infrastructure failure prediction & dynamic ward heatmaps.
@@ -69,7 +69,7 @@ export default function LandingPage() {
             </div>
             <Link
               to="/digital-twin"
-              className="inline-block bg-slate-800 hover:bg-slate-700 text-lime-accent text-xs font-extrabold px-5 py-2.5 rounded-xl border border-slate-700 transition shadow"
+              className="inline-block bg-slate-800 hover:bg-slate-700 text-lime-accent text-xs font-extrabold px-5 py-2.5 rounded-xl border border-slate-700 transition shadow mt-2"
             >
               Explore Ward 5 Digital Twin →
             </Link>
@@ -77,11 +77,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Numbered Category Grid Section (01, 02, 03, 04) - Crisp 4-Column Layout */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8">
+      {/* Numbered Category Grid Section (01, 02, 03, 04) */}
+      <section className="max-w-7xl mx-auto px-6 md:px-10 my-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {/* Card 01 */}
-          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between h-full">
+          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between min-h-[240px]">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-500 font-bold block text-right">01</span>
               <div className="text-3xl">🛣️</div>
@@ -93,7 +93,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 02 */}
-          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between h-full">
+          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between min-h-[240px]">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-500 font-bold block text-right">02</span>
               <div className="text-3xl">🚰</div>
@@ -105,7 +105,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 03 */}
-          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between h-full">
+          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between min-h-[240px]">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-500 font-bold block text-right">03</span>
               <div className="text-3xl">⚡</div>
@@ -117,7 +117,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 04 (Highlight Lime Card) */}
-          <div className="bg-lime-accent text-slate-900 p-6 rounded-2xl space-y-4 shadow-2xl flex flex-col justify-between h-full">
+          <div className="bg-lime-accent text-slate-900 p-6 rounded-2xl space-y-4 shadow-2xl flex flex-col justify-between min-h-[240px]">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-800 font-bold block text-right">04</span>
               <div className="text-3xl">🎧</div>
@@ -137,8 +137,8 @@ export default function LandingPage() {
       </section>
 
       {/* "Why Choose Us" Checkmark Grid Section */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="space-y-6">
+      <section className="max-w-7xl mx-auto px-6 md:px-10 mt-12 mb-16">
+        <div className="space-y-8">
           <div className="text-center space-y-2">
             <span className="text-xs font-mono text-lime-accent font-bold uppercase">TOP REASONS</span>
             <h2 className="text-2xl md:text-3xl font-extrabold text-white">Why Choose CivicFlow AI-X</h2>
