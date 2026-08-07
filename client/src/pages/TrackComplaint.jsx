@@ -1,0 +1,3 @@
+import React, { useState } from 'react';
+import TrackingTimeline from '../components/TrackingTimeline';
+export default function TrackComplaint() { const [found, setFound] = useState(false); return (<div className='max-w-2xl mx-auto px-4 py-12 text-center space-y-6'><h2 className='text-3xl font-bold text-white'>Track Complaint</h2><div className='flex gap-2'><input className='flex-1 bg-slate-800 border border-slate-700 px-4 py-3 rounded-xl text-white' placeholder='Enter Complaint ID' /><button onClick={()=>setFound(true)} className='bg-cyan-500 text-slate-900 font-bold px-6 py-3 rounded-xl'>Track</button></div>{found && <div className='bg-slate-800 p-6 rounded-2xl border border-slate-700 text-left'><TrackingTimeline currentStep={2} /></div>}</div>); }
