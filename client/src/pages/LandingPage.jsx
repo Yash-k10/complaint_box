@@ -48,7 +48,7 @@ export default function LandingPage() {
         </div>
 
         <h1 className="text-4xl md:text-5xl font-black text-sky-900 tracking-tight leading-tight">
-          AI-Powered Civic Redressal & Redressal Planner
+          AI-Powered Civic Redressal & Resolution Planner
         </h1>
 
         <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">
