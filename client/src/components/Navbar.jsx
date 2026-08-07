@@ -64,54 +64,54 @@ export default function Navbar() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden text-white bg-slate-800 p-2 rounded-lg border border-slate-700 font-bold text-lg"
+          className="md:hidden text-white bg-slate-800 p-2 rounded-lg border border-slate-700 font-bold text-sm"
         >
-          {mobileMenuOpen ? '✕' : '☰'}
+          {mobileMenuOpen ? '✕ Close' : '☰ Menu'}
         </button>
       </nav>
 
       {/* Mobile Drawer Menu (Toggled on Mobile) */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-slate-900 border-b border-slate-800 p-4 space-y-3 text-sm font-bold animate-fadeIn">
+        <div className="md:hidden bg-slate-900 border-b border-slate-800 p-5 space-y-3 font-bold text-sm">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800"
+            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800/80"
           >
-            🏠 Overview
+            🏠 Overview & Hero
           </Link>
           <Link
             to="/citizen"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800"
+            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800/80"
           >
             🏡 Resident Intake & Voice
           </Link>
           <Link
             to="/officer"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800"
+            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800/80"
           >
             👮 Officer Operations Board
           </Link>
           <Link
             to="/digital-twin"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800"
+            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800/80"
           >
             🏙️ AI Ward Digital Twin
           </Link>
           <Link
             to="/analytics"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800"
+            className="block text-slate-200 hover:text-lime-accent py-2 border-b border-slate-800/80"
           >
             📊 Analytics & Heatmap
           </Link>
           <Link
             to="/login"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-center bg-lime-accent text-slate-900 py-2.5 rounded-lg font-extrabold mt-2"
+            className="block text-center bg-lime-accent text-slate-900 py-3 rounded-xl font-extrabold shadow-lg"
           >
             🔑 Single Sign-On
           </Link>
