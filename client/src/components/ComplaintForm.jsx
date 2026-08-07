@@ -26,31 +26,34 @@ export default function ComplaintForm({ initialText = '', onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
-      <h2 className="text-xl font-bold text-cyan-400 flex items-center gap-2">📝 Complaint Details</h2>
-      <div>
-        <label className="block text-xs font-semibold text-slate-300 mb-1">Complaint Title</label>
+    <form onSubmit={handleSubmit} className="space-y-6 bg-slate-800/80 p-8 rounded-3xl border border-slate-700/60 shadow-2xl">
+      <h2 className="text-xl font-black text-lime-accent flex items-center gap-2">📝 Complaint Details</h2>
+
+      <div className="space-y-2">
+        <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">Complaint Title</label>
         <input
-          className="w-full bg-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-cyan-500 transition"
+          className="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-lime-accent/50 transition text-sm"
           placeholder="e.g. Deep pothole causing traffic issues near ABC School"
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
         />
       </div>
-      <div>
-        <label className="block text-xs font-semibold text-slate-300 mb-1">Detailed Description (Auto-populated from Voice Input)</label>
+
+      <div className="space-y-2">
+        <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">Detailed Description (Auto-populated from Voice Input)</label>
         <textarea
-          className="w-full bg-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-400 h-28 outline-none focus:ring-2 focus:ring-cyan-500 transition"
+          className="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 text-white placeholder-slate-500 h-32 outline-none focus:ring-2 focus:ring-lime-accent/50 transition text-sm"
           placeholder="Describe the problem, severity, and location details..."
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
         />
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">Category</label>
           <select
-            className="w-full bg-slate-700 rounded-lg px-4 py-3 text-white outline-none"
+            className="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 text-white outline-none text-sm"
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
           >
@@ -61,10 +64,10 @@ export default function ComplaintForm({ initialText = '', onSubmit }) {
             <option>Parks</option>
           </select>
         </div>
-        <div>
-          <label className="block text-xs font-semibold text-slate-300 mb-1">Ward Selection</label>
+        <div className="space-y-2">
+          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">Ward Selection</label>
           <select
-            className="w-full bg-slate-700 rounded-lg px-4 py-3 text-white outline-none"
+            className="w-full bg-slate-900 border border-slate-700 rounded-2xl px-5 py-4 text-white outline-none text-sm"
             value={form.wardId}
             onChange={(e) => setForm({ ...form, wardId: Number(e.target.value) })}
           >
@@ -75,9 +78,10 @@ export default function ComplaintForm({ initialText = '', onSubmit }) {
           </select>
         </div>
       </div>
+
       <button
         type="submit"
-        className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 text-white font-bold py-3.5 rounded-xl shadow-lg transition"
+        className="w-full bg-lime-accent hover:opacity-90 text-slate-900 font-black py-4 rounded-2xl shadow-xl transition text-sm"
       >
         🚀 Submit Complaint
       </button>

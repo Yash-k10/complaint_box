@@ -48,9 +48,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-12 space-y-6">
+    <div className="max-w-xl mx-auto px-6 md:px-10 py-16 space-y-8">
       {/* Header */}
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-3">
         <span className="bg-lime-accent/15 text-lime-accent border border-lime-accent/30 text-xs px-3.5 py-1 rounded-full font-semibold">
           UrbanFeedback AI-X Single Sign-On Portal
         </span>
