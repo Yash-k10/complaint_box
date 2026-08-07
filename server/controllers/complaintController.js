@@ -180,13 +180,22 @@ const handleSMSWebhook = async (req, res) => {
       await Complaint.create(newSMSComplaint);
     } catch (err) {}
 
-    console.log(`[SMS WEBHOOK SUCCESS] Ticket ${newId} created via SMS text intake from ${senderPhone}`);
+    const autoReplyText = `Ticket ${newId} registered! Category: ${category}. Live Track status at: http://localhost:3002/track`;
+
+    // If incoming request is from Twilio Webhook (form-urlencoded or Twilio header)
+    if (req.headers['x-twilio-signature'] || req.headers['content-type']?.includes('form-urlencoded')) {
+      res.type('text/xml');
+      return res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Message>📩 [awaaz.ai] ${autoReplyText}</Message>
+</Response>`);
+    }
 
     return res.status(201).json({
       success: true,
       message: 'SMS Complaint intake successful',
       data: newSMSComplaint,
-      autoReply: `📩 Auto-SMS Sent to ${senderPhone}: "Ticket ${newId} registered! Category: ${category}. Live Track at: http://localhost:3002/track"`
+      autoReply: `📩 Auto-SMS Sent to ${senderPhone}: "${autoReplyText}"`
     });
   } catch (err) {
     console.error('Error handling SMS webhook:', err);
