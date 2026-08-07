@@ -180,14 +180,32 @@ body.light-theme nav {
 .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
 
 /* Colors & Styling */
-.bg-slate-900 { background-color: #0f172a; }
-.bg-slate-900\/90 { background-color: rgba(15, 23, 42, 0.9); }
-.bg-slate-800 { background-color: #1e293b; }
-.bg-slate-800\/60 { background-color: rgba(30, 41, 59, 0.6); }
-.bg-slate-800\/80 { background-color: rgba(30, 41, 59, 0.8); }
-.bg-slate-700 { background-color: #334155; }
-.bg-slate-600 { background-color: #475569; }
-.bg-white { background-color: #ffffff; }
+.bg-slate-900 { background-color: #0f172a !important; }
+.bg-slate-900\/80 { background-color: rgba(15, 23, 42, 0.8) !important; }
+.bg-slate-900\/90 { background-color: rgba(15, 23, 42, 0.9) !important; }
+.bg-slate-800 { background-color: #1e293b !important; }
+.bg-slate-800\/60 { background-color: rgba(30, 41, 59, 0.6) !important; }
+.bg-slate-800\/80 { background-color: rgba(30, 41, 59, 0.8) !important; }
+.bg-slate-700 { background-color: #334155 !important; }
+.bg-slate-600 { background-color: #475569 !important; }
+.bg-slate-500 { background-color: #64748b !important; }
+.bg-slate-300 { background-color: #cbd5e1 !important; }
+.bg-slate-200 { background-color: #e2e8f0 !important; }
+.bg-slate-100 { background-color: #f1f5f9 !important; }
+.bg-slate-50 { background-color: #f8fafc !important; }
+.bg-white { background-color: #ffffff !important; }
+.bg-red-500 { background-color: #ef4444 !important; }
+.bg-red-100 { background-color: #fee2e2 !important; }
+.bg-cyan-500 { background-color: #06b6d4 !important; }
+.bg-cyan-100 { background-color: #cffafe !important; }
+.bg-emerald-500 { background-color: #10b981 !important; }
+.bg-emerald-100 { background-color: #d1fae5 !important; }
+.bg-pink-600 { background-color: #db2777 !important; }
+.bg-pink-500 { background-color: #ec4899 !important; }
+.bg-pink-100 { background-color: #fce7f3 !important; }
+.bg-lime-500 { background-color: #84cc16 !important; }
+.bg-amber-100 { background-color: #fef3c7 !important; }
+.bg-blue-100 { background-color: #dbeafe !important; }
 
 .text-white { color: #ffffff !important; }
 .text-slate-900 { color: #0f172a !important; }
