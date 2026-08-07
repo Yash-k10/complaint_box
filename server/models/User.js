@@ -54,10 +54,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  wardId: {
-    type: Number,
-    default: 12
-  },
   createdAt: {
     type: Date,
     default: Date.now

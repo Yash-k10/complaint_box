@@ -16,7 +16,6 @@ const memoryUsers = [
     city: 'Nagpur',
     state: 'Maharashtra',
     pinCode: '440010',
-    wardId: 12,
     createdAt: new Date(),
     lastLoginAt: new Date()
   },
@@ -32,7 +31,6 @@ const memoryUsers = [
     city: 'Nagpur',
     state: 'Maharashtra',
     pinCode: '440001',
-    wardId: 12,
     createdAt: new Date(),
     lastLoginAt: new Date()
   }
@@ -144,7 +142,6 @@ const register = async (req, res) => {
         city: city || 'Nagpur',
         state: state || 'Maharashtra',
         pinCode: pinCode || '440010',
-        wardId: 12,
         createdAt: new Date(),
         lastLoginAt: new Date()
       };
@@ -238,7 +235,6 @@ const login = async (req, res) => {
             city: user.city,
             state: user.state,
             pinCode: user.pinCode,
-            wardId: user.wardId || 12,
             lastLoginAt: user.lastLoginAt
           }
         });
@@ -280,7 +276,6 @@ const login = async (req, res) => {
         city: memUser.city,
         state: memUser.state,
         pinCode: memUser.pinCode,
-        wardId: memUser.wardId || 12,
         lastLoginAt: memUser.lastLoginAt
       }
     });

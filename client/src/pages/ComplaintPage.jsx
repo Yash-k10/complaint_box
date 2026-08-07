@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import TrackingTimeline from '../components/TrackingTimeline';
 import XAIPanel from '../components/XAIPanel';
 import BlockchainAudit from '../components/BlockchainAudit';
+import CitizenVerificationPanel from '../components/CitizenVerificationPanel';
 import { ArrowLeft, ShieldCheck, ThumbsUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 const SAMPLE_DETAIL = {
@@ -11,9 +12,8 @@ const SAMPLE_DETAIL = {
   description: 'Deep pothole on main school road. Multiple vehicles damaged over the weekend. Immediate resurfacing required.',
   category: 'Road Damage',
   urgency: 'High Priority',
-  status: 'In Progress',
-  wardId: 12,
-  wardName: 'Laxmi Nagar, Ward 12, Nagpur',
+  status: 'Pending Verification',
+  location: 'Laxmi Nagar, Nagpur',
   department: 'Roads & Infrastructure Department',
   assignedOfficer: 'Er. Rajesh Sharma',
   upvotes: 24,
@@ -21,12 +21,20 @@ const SAMPLE_DETAIL = {
   createdAt: '2026-08-07 10:14 AM',
   estimatedCompletion: '2026-08-08 04:00 PM',
   blockchainHash: '054d3ce7fe530088f41e6d31bfb79da20f8cf3eec68366e03bc1887584d47ac3',
+  resolutionProof: 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?w=600&auto=format&fit=crop&q=80',
+  resolutionNotes: 'Hot-mix asphalt patch laid & leveled, site cleared and tested.',
+  verifications: [
+    { citizenName: 'Vikram Deshmukh', comment: 'Drove past ABC school this morning, pothole is filled!', verifiedAt: new Date().toISOString() },
+    { citizenName: 'Sneha Kulkarni', comment: 'Surface is smooth and safe for school buses now.', verifiedAt: new Date().toISOString() }
+  ],
+  verificationsCount: 2,
+  requiredVerifications: 3,
   xaiData: {
     confidence: 96,
     reasoning: [
       'Matched road hazard keywords: "pothole", "accident", "school zone"',
-      'Mapped to Ward 12 Laxmi Nagar Jurisdiction',
-      'Historical precedence: 4 similar pothole repairs completed in Ward 12'
+      'Mapped to Laxmi Nagar Zone Jurisdiction',
+      'Historical precedence: 4 similar pothole repairs completed in Laxmi Nagar'
     ],
     rulesApplied: ['School & Hospital Safety Zone Priority Rule (SLA 24h)'],
     similarCases: ['CMP-2025-8891', 'CMP-2025-9102']
@@ -35,7 +43,7 @@ const SAMPLE_DETAIL = {
 
 export default function ComplaintPage() {
   const { id } = useParams();
-  const [complaint] = useState({ ...SAMPLE_DETAIL, complaintId: id || SAMPLE_DETAIL.complaintId });
+  const [complaint, setComplaint] = useState({ ...SAMPLE_DETAIL, complaintId: id || SAMPLE_DETAIL.complaintId });
   const [upvotes, setUpvotes] = useState(complaint.upvotes);
   const [hasUpvoted, setHasUpvoted] = useState(false);
 
@@ -102,7 +110,7 @@ export default function ComplaintPage() {
 
           <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 space-y-1">
             <span className="text-emerald-700 font-medium block">Reported Location</span>
-            <span className="font-bold text-emerald-950 truncate block">{complaint.wardName}</span>
+            <span className="font-bold text-emerald-950 truncate block">{complaint.location}</span>
           </div>
 
           <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 space-y-1">
@@ -125,9 +133,15 @@ export default function ComplaintPage() {
         {/* 5-Step Visual Tracking Timeline */}
         <div className="pt-2">
           <span className="text-xs font-bold text-emerald-950 block mb-2">5-Step Live Tracking Status:</span>
-          <TrackingTimeline currentStep={3} />
+          <TrackingTimeline currentStep={complaint.status === 'Verified & Resolved' ? 4 : 3} />
         </div>
       </div>
+
+      {/* Citizen Authenticity Verification Panel */}
+      <CitizenVerificationPanel
+        complaint={complaint}
+        onVerificationUpdate={(updated) => setComplaint(updated)}
+      />
 
       {/* Grid: XAI Panel + Blockchain Audit */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">

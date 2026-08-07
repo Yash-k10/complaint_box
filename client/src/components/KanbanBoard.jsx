@@ -2,12 +2,13 @@ import React from 'react';
 import KanbanCard from './KanbanCard';
 import { Users, Award, ShieldCheck } from 'lucide-react';
 
-const COLS = ['New', 'Assigned', 'In Progress', 'Resolved'];
+const COLS = ['New', 'Assigned', 'In Progress', 'Pending Verification', 'Resolved'];
 
 const COL_STYLES = {
   'New': 'border-emerald-200 bg-emerald-50/30',
   'Assigned': 'border-amber-200 bg-amber-50/20',
   'In Progress': 'border-emerald-300 bg-emerald-50/50',
+  'Pending Verification': 'border-amber-300 bg-amber-50/40',
   'Resolved': 'border-teal-200 bg-teal-50/30'
 };
 
@@ -40,7 +41,7 @@ export default function KanbanBoard({ complaints = [], onSelect, onStatusChange 
             </div>
             <div>
               <span className="text-emerald-700 font-semibold block text-[11px]">Citizen Trust Index Score</span>
-              <span className="text-emerald-950 font-bold">Ward 12 Roads Dept • 92 / 100 Rating</span>
+              <span className="text-emerald-950 font-bold">Nagpur Central Roads Dept • 92 / 100 Rating</span>
             </div>
           </div>
           <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full font-bold text-[10px]">
@@ -50,7 +51,7 @@ export default function KanbanBoard({ complaints = [], onSelect, onStatusChange 
       </div>
 
       {/* Kanban Column Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         {COLS.map((col) => {
           const colComplaints = complaints.filter((c) => c.status === col);
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function WhatsAppBotModal() {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: '👋 Welcome to CivicFlow AI WhatsApp Assistant! Type your issue or send a photo.' }
+    { sender: 'bot', text: '👋 Welcome to awaaz.ai WhatsApp Assistant! Type your issue or send a photo.' }
   ]);
   const [input, setInput] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +70,7 @@ export default function WhatsAppBotModal() {
           <form onSubmit={sendMessage} className="flex gap-2">
             <input
               className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white text-xs outline-none focus:ring-2 focus:ring-emerald-500"
-              placeholder="Type complaint e.g. Water leak near Ward 5..."
+              placeholder="Type complaint e.g. Water leak near Dharampeth..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />

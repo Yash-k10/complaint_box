@@ -27,16 +27,14 @@ export default function Navbar() {
       {/* Top Header Navbar */}
       <nav className="bg-white/95 backdrop-blur-md border-b border-emerald-100 sticky top-0 z-50 px-4 lg:px-8 py-3 flex justify-between items-center shadow-xs transition-colors">
         {/* Brand Logo */}
-        <Link to="/" className="text-lg lg:text-xl font-extrabold tracking-tight text-emerald-950 flex items-center gap-2.5 shrink-0">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black shadow-md shadow-emerald-600/20">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
+        <Link to="/" className="text-lg lg:text-xl font-extrabold tracking-tight text-emerald-950 flex items-center gap-3 shrink-0">
+          <img src="/logo.png" alt="awaaz.ai logo" className="h-10 w-auto object-contain" />
           <div className="flex flex-col leading-none">
-            <span className="font-extrabold text-emerald-950 text-base">
-              Urban<span className="text-emerald-600">Feedback</span>
+            <span className="font-black text-emerald-950 text-xl tracking-tight">
+              awaaz<span className="text-emerald-600 font-extrabold">.ai</span>
             </span>
-            <span className="text-[10px] font-bold tracking-wider uppercase text-emerald-700">
-              Community Redressal AI
+            <span className="text-[10px] font-bold tracking-wide text-emerald-700 mt-0.5">
+              Every Voice Heard. Every Issue Resolved.
             </span>
           </div>
         </Link>
@@ -54,6 +52,7 @@ export default function Navbar() {
             <Home className="w-4 h-4 text-emerald-600" />
             <span>Overview</span>
           </Link>
+          {(!user || user.role === 'citizen') && (
           <Link
             to="/citizen"
             className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
@@ -65,6 +64,8 @@ export default function Navbar() {
             <FileEdit className="w-4 h-4 text-emerald-600" />
             <span>Resident Intake</span>
           </Link>
+          )}
+          {user && (user.role === 'officer' || user.role === 'admin') && (
           <Link
             to="/officer"
             className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
@@ -76,6 +77,7 @@ export default function Navbar() {
             <LayoutDashboard className="w-4 h-4 text-emerald-600" />
             <span>Officer Dashboard</span>
           </Link>
+          )}
           <Link
             to="/digital-twin"
             className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
@@ -152,6 +154,7 @@ export default function Navbar() {
             <Home className="w-4 h-4 text-emerald-600" />
             <span>Overview</span>
           </Link>
+          {(!user || user.role === 'citizen') && (
           <Link
             to="/citizen"
             onClick={() => setMobileMenuOpen(false)}
@@ -160,6 +163,8 @@ export default function Navbar() {
             <FileEdit className="w-4 h-4 text-emerald-600" />
             <span>Resident Intake</span>
           </Link>
+          )}
+          {user && (user.role === 'officer' || user.role === 'admin') && (
           <Link
             to="/officer"
             onClick={() => setMobileMenuOpen(false)}
@@ -168,6 +173,7 @@ export default function Navbar() {
             <LayoutDashboard className="w-4 h-4 text-emerald-600" />
             <span>Officer Dashboard</span>
           </Link>
+          )}
           <Link
             to="/digital-twin"
             onClick={() => setMobileMenuOpen(false)}

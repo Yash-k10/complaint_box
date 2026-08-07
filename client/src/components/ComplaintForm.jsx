@@ -7,7 +7,7 @@ export default function ComplaintForm({ initialDescription = '', initialLocation
     description: initialDescription,
     category: 'Road Damage',
     customCategory: '',
-    location: initialLocation || 'Laxmi Nagar, Ward 12, Nagpur',
+    location: initialLocation || 'Laxmi Nagar, Nagpur',
     language: 'en'
   });
 
@@ -130,7 +130,7 @@ export default function ComplaintForm({ initialDescription = '', initialLocation
           )}
         </div>
 
-        {/* Manual Address OR Live GPS Location Entry (Replaces Ward Dropdown) */}
+        {/* Manual Address OR Live GPS Location Entry */}
         <div className="space-y-1.5">
           <div className="flex justify-between items-center">
             <label className="block text-xs font-semibold text-emerald-900 flex items-center gap-1">

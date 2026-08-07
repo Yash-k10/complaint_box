@@ -4,6 +4,7 @@ import KanbanBoard from '../components/KanbanBoard';
 import SLATimer from '../components/SLATimer';
 import ResolutionCopilot from '../components/ResolutionCopilot';
 import XAIPanel from '../components/XAIPanel';
+import ResolutionProofModal from '../components/ResolutionProofModal';
 import { ShieldCheck, LayoutDashboard, Clock, AlertCircle } from 'lucide-react';
 
 const FALLBACK_MOCK = [
@@ -14,11 +15,10 @@ const FALLBACK_MOCK = [
     category: 'Road Damage',
     urgency: 'High Priority',
     status: 'In Progress',
-    wardId: 12,
     confidenceScore: 96,
     xaiData: {
       confidence: 96,
-      reasoning: ['Matched road hazard keywords in Ward 12', 'School Zone Safety Priority Rule Applied'],
+      reasoning: ['Matched road hazard keywords in Laxmi Nagar', 'School Zone Safety Priority Rule Applied'],
       rulesApplied: ['Emergency School Zone Priority Rule']
     }
   },
@@ -29,11 +29,10 @@ const FALLBACK_MOCK = [
     category: 'Water Supply',
     urgency: 'Critical Priority',
     status: 'Assigned',
-    wardId: 5,
     confidenceScore: 94,
     xaiData: {
       confidence: 94,
-      reasoning: ['Matched water leakage keywords in Ward 5'],
+      reasoning: ['Matched water leakage keywords in Dharampeth'],
       rulesApplied: ['Water Supply Mainline Escalation Rule']
     }
   },
@@ -44,7 +43,6 @@ const FALLBACK_MOCK = [
     category: 'Sanitation',
     urgency: 'Medium Priority',
     status: 'New',
-    wardId: 5,
     confidenceScore: 91,
     xaiData: {
       confidence: 91,
@@ -57,6 +55,7 @@ const FALLBACK_MOCK = [
 export default function OfficerDashboard() {
   const [complaints, setComplaints] = useState(FALLBACK_MOCK);
   const [selected, setSelected] = useState(FALLBACK_MOCK[0]);
+  const [resolvingComplaint, setResolvingComplaint] = useState(null);
 
   const loadComplaints = async () => {
     try {
@@ -70,12 +69,48 @@ export default function OfficerDashboard() {
   };
 
   const handleStatusChange = async (complaintId, newStatus) => {
+    if (newStatus === 'Resolved') {
+      const target = complaints.find((c) => c.complaintId === complaintId);
+      if (target) {
+        setResolvingComplaint(target);
+        return;
+      }
+    }
+
     try {
       await axios.patch(`/api/complaints/${complaintId}/status`, { status: newStatus });
     } catch (err) {}
     setComplaints((prev) =>
       prev.map((c) => (c.complaintId === complaintId ? { ...c, status: newStatus } : c))
     );
+  };
+
+  const handleResolutionSubmit = async (resolutionPayload) => {
+    try {
+      await axios.patch(`/api/complaints/${resolutionPayload.complaintId}/status`, {
+        status: 'Pending Verification',
+        resolutionProof: resolutionPayload.resolutionProof,
+        resolutionNotes: resolutionPayload.resolutionNotes
+      });
+    } catch (err) {}
+
+    setComplaints((prev) =>
+      prev.map((c) =>
+        c.complaintId === resolutionPayload.complaintId
+          ? {
+              ...c,
+              status: 'Pending Verification',
+              resolutionProof: resolutionPayload.resolutionProof,
+              resolutionNotes: resolutionPayload.resolutionNotes,
+              verifications: c.verifications || [],
+              verificationsCount: c.verificationsCount || 0,
+              requiredVerifications: 3
+            }
+          : c
+      )
+    );
+
+    setResolvingComplaint(null);
   };
 
   useEffect(() => {
@@ -93,7 +128,7 @@ export default function OfficerDashboard() {
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>OFFICER TRIAGE DASHBOARD</span>
             <span className="text-emerald-300">•</span>
-            <span>WARD 12 JURISDICTION</span>
+            <span>NAGPUR MUNICIPAL ZONE</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold text-emerald-950 flex items-center gap-2.5">
             <LayoutDashboard className="w-7 h-7 text-emerald-600" />
@@ -109,57 +144,93 @@ export default function OfficerDashboard() {
         </div>
       </div>
 
-      {/* Main Grid: Kanban Triage Board + Detail Inspector Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Left Column: Interactive Kanban Triage Board (2 Cols) */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex justify-between items-center px-1">
-            <h2 className="text-lg font-bold text-emerald-950 flex items-center gap-2">
+      {/* Section 1: Grievance Triage Kanban Board (Full Width Top Flow) */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 px-1 pb-2 border-b border-emerald-100">
+          <div>
+            <h2 className="text-lg font-extrabold text-emerald-950 flex items-center gap-2">
               <Clock className="w-5 h-5 text-emerald-600" />
-              <span>Grievance Triage Kanban Board</span>
+              <span>Grievance Triage Kanban Flow</span>
             </h2>
-            <span className="text-xs text-emerald-800 font-medium">Click card to inspect AI Copilot specs</span>
+            <p className="text-xs text-emerald-800">5-Stage Municipal Lifecycle • Drag or click cards to inspect AI Copilot specs</p>
           </div>
-
-          <KanbanBoard
-            complaints={complaints}
-            onSelect={(c) => setSelected(c)}
-            onStatusChange={handleStatusChange}
-          />
+          <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            5 Active Telemetry Columns
+          </span>
         </div>
 
-        {/* Right Column: Selected Ticket Inspector Panel (XAI + Resolution Copilot) */}
-        <div className="space-y-6">
-          {selected ? (
-            <>
-              {/* Selected Ticket Summary Badge */}
-              <div className="bg-white p-5 rounded-2xl border border-emerald-100 space-y-2 shadow-xs">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
-                    {selected.complaintId}
-                  </span>
-                  <span className="text-xs font-bold text-emerald-950 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-100">
-                    {selected.category}
-                  </span>
-                </div>
-                <h3 className="font-extrabold text-emerald-950 text-sm">{selected.title}</h3>
-                <p className="text-xs text-emerald-800">{selected.description}</p>
-              </div>
+        <KanbanBoard
+          complaints={complaints}
+          onSelect={(c) => setSelected(c)}
+          onStatusChange={handleStatusChange}
+        />
+      </div>
 
-              {/* Explainable AI Rationale Panel */}
-              <XAIPanel xaiData={selected.xaiData} />
-
-              {/* AI Resolution Copilot Engine */}
-              <ResolutionCopilot />
-            </>
-          ) : (
-            <div className="bg-white p-8 rounded-2xl border border-emerald-100 text-center space-y-2">
-              <AlertCircle className="w-8 h-8 text-emerald-400 mx-auto" />
-              <p className="text-xs text-emerald-800">Select any grievance card on the left to inspect AI Copilot recommendations.</p>
-            </div>
+      {/* Section 2: Selected Ticket Inspection & AI Copilot Grid (3 Columns Below Flow) */}
+      <div className="space-y-4 pt-4 border-t border-emerald-100">
+        <div className="flex items-center justify-between">
+          <h3 className="text-base font-extrabold text-emerald-950 uppercase tracking-wider">
+            Ticket AI Diagnostics & Copilot Inspector
+          </h3>
+          {selected && (
+            <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
+              Inspecting: {selected.complaintId}
+            </span>
           )}
         </div>
+
+        {selected ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+            {/* Column 1: Ticket Overview */}
+            <div className="bg-white p-6 rounded-2xl border border-emerald-100 space-y-4 shadow-xs">
+              <div className="flex justify-between items-center pb-2 border-b border-emerald-100">
+                <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
+                  {selected.complaintId}
+                </span>
+                <span className="text-xs font-bold text-emerald-950 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-100">
+                  {selected.category}
+                </span>
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-extrabold text-emerald-950 text-base">{selected.title}</h4>
+                <p className="text-xs text-emerald-800 leading-relaxed">{selected.description}</p>
+              </div>
+
+              {selected.resolutionProof && (
+                <div className="pt-2 border-t border-emerald-100 space-y-1.5">
+                  <span className="text-xs font-bold text-emerald-950 block">Officer Resolution Photo Proof:</span>
+                  <img src={selected.resolutionProof} alt="Proof" className="w-full h-36 object-cover rounded-xl border border-emerald-200 shadow-xs" />
+                  {selected.resolutionNotes && (
+                    <p className="text-[11px] text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-100 italic">
+                      "{selected.resolutionNotes}"
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Column 2: Explainable AI Rationale Panel */}
+            <XAIPanel xaiData={selected.xaiData} />
+
+            {/* Column 3: AI Resolution Copilot Engine */}
+            <ResolutionCopilot />
+          </div>
+        ) : (
+          <div className="bg-white p-8 rounded-2xl border border-emerald-100 text-center space-y-2">
+            <AlertCircle className="w-8 h-8 text-emerald-400 mx-auto" />
+            <p className="text-xs text-emerald-800">Select any grievance card above to inspect AI Copilot recommendations.</p>
+          </div>
+        )}
       </div>
+
+      {/* Resolution Photo Proof Modal */}
+      {resolvingComplaint && (
+        <ResolutionProofModal
+          complaint={resolvingComplaint}
+          onClose={() => setResolvingComplaint(null)}
+          onSubmitResolution={handleResolutionSubmit}
+        />
+      )}
     </div>
   );
 }

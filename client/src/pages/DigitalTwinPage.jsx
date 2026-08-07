@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Building2, Activity, ShieldCheck } from 'lucide-react';
 import DigitalTwinMap from '../components/DigitalTwinMap';
+import CitizenVerificationPanel from '../components/CitizenVerificationPanel';
 
-const WARDS_TWIN = [
-  { id: 12, name: 'Ward 12 - Laxmi Nagar', healthScore: 91, riskLevel: 'Low Risk', activeComplaints: 14, riskColor: 'border-emerald-200 text-emerald-800 bg-emerald-50' },
-  { id: 5, name: 'Ward 5 - Dharampeth', healthScore: 62, riskLevel: 'High Risk (Sewer Overflow)', activeComplaints: 42, riskColor: 'border-red-200 text-red-800 bg-red-50' },
-  { id: 7, name: 'Ward 7 - Sadar', healthScore: 74, riskLevel: 'Medium Risk (Streetlights)', activeComplaints: 28, riskColor: 'border-amber-200 text-amber-800 bg-amber-50' },
-  { id: 1, name: 'Ward 1 - Sitabuldi', healthScore: 85, riskLevel: 'Low Risk', activeComplaints: 18, riskColor: 'border-teal-200 text-teal-800 bg-teal-50' }
+const CITY_ZONES = [
+  { id: 12, name: 'Laxmi Nagar Zone', healthScore: 91, riskLevel: 'Low Risk', activeComplaints: 14, riskColor: 'border-emerald-200 text-emerald-800 bg-emerald-50' },
+  { id: 5, name: 'Dharampeth Zone', healthScore: 62, riskLevel: 'High Risk (Sewer Overflow)', activeComplaints: 42, riskColor: 'border-red-200 text-red-800 bg-red-50' },
+  { id: 7, name: 'Sadar Zone', healthScore: 74, riskLevel: 'Medium Risk (Streetlights)', activeComplaints: 28, riskColor: 'border-amber-200 text-amber-800 bg-amber-50' },
+  { id: 1, name: 'Sitabuldi Zone', healthScore: 85, riskLevel: 'Low Risk', activeComplaints: 18, riskColor: 'border-teal-200 text-teal-800 bg-teal-50' }
 ];
 
 export default function DigitalTwinPage() {
-  const [selectedWard, setSelectedWard] = useState(WARDS_TWIN[1]); // Default Ward 5
+  const [selectedZone, setSelectedZone] = useState(CITY_ZONES[1]); // Default Dharampeth
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -28,54 +29,54 @@ export default function DigitalTwinPage() {
         </div>
 
         <div className="flex flex-wrap gap-1.5">
-          {WARDS_TWIN.map((w) => (
+          {CITY_ZONES.map((z) => (
             <button
-              key={w.id}
-              onClick={() => setSelectedWard(w)}
+              key={z.id}
+              onClick={() => setSelectedZone(z)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${
-                selectedWard.id === w.id
+                selectedZone.id === z.id
                   ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                   : 'bg-white text-emerald-800 border-emerald-200 hover:bg-emerald-50'
               }`}
             >
-              Ward {w.id}
+              {z.name}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Ward Status Overview */}
+      {/* Zone Status Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-emerald-100 space-y-1 shadow-xs">
-          <span className="text-xs text-emerald-700 font-semibold block">Selected Jurisdiction</span>
-          <h3 className="text-lg font-bold text-emerald-950">{selectedWard.name}</h3>
+          <span className="text-xs text-emerald-700 font-semibold block">Selected City Zone</span>
+          <h3 className="text-lg font-bold text-emerald-950">{selectedZone.name}</h3>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-emerald-100 space-y-1 shadow-xs">
-          <span className="text-xs text-emerald-700 font-semibold block">Ward Health Index</span>
-          <div className="text-2xl font-extrabold text-emerald-700">{selectedWard.healthScore}/100</div>
+          <span className="text-xs text-emerald-700 font-semibold block">Zone Health Index</span>
+          <div className="text-2xl font-extrabold text-emerald-700">{selectedZone.healthScore}/100</div>
         </div>
 
-        <div className={`p-5 rounded-2xl border ${selectedWard.riskColor} space-y-1 shadow-xs`}>
+        <div className={`p-5 rounded-2xl border ${selectedZone.riskColor} space-y-1 shadow-xs`}>
           <span className="text-xs text-emerald-700 font-semibold block">Predictive Risk Alert</span>
-          <div className="text-sm font-bold">{selectedWard.riskLevel}</div>
+          <div className="text-sm font-bold">{selectedZone.riskLevel}</div>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-emerald-100 space-y-1 shadow-xs">
           <span className="text-xs text-emerald-700 font-semibold block">Active Grievances</span>
-          <div className="text-2xl font-extrabold text-amber-600">{selectedWard.activeComplaints} Tickets</div>
+          <div className="text-2xl font-extrabold text-amber-600">{selectedZone.activeComplaints} Tickets</div>
         </div>
       </div>
 
       {/* Interactive Google Map Telemetry Layer */}
-      <DigitalTwinMap selectedWardId={selectedWard.id} />
+      <DigitalTwinMap selectedZoneId={selectedZone.id} />
 
       {/* Dynamic Digital Twin Telemetry Grid */}
       <div className="bg-white p-6 md:p-8 rounded-2xl border border-emerald-100 space-y-6 shadow-xs">
         <div className="flex justify-between items-center pb-3 border-b border-emerald-100">
           <h3 className="text-base font-bold text-emerald-950 flex items-center gap-2">
             <Activity className="w-5 h-5 text-emerald-600" />
-            <span>Infrastructure Grid Telemetry (Ward {selectedWard.id})</span>
+            <span>Infrastructure Grid Telemetry ({selectedZone.name})</span>
           </h3>
           <span className="text-xs bg-emerald-50 text-emerald-800 px-3 py-1 rounded-full font-semibold border border-emerald-200">
             IoT Live Sync Active ✓
@@ -117,6 +118,25 @@ export default function DigitalTwinPage() {
           </div>
         </div>
       </div>
+
+      {/* Admin Photo Proof & Citizen Verification Telemetry Section */}
+      <CitizenVerificationPanel
+        complaint={{
+          complaintId: 'CMP-2026-004',
+          title: 'Streetlight Junction Box Repair & Rewiring',
+          category: 'Electrical',
+          zoneId: selectedZone.id,
+          status: 'Pending Verification',
+          resolutionProof: 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?w=600&auto=format&fit=crop&q=80',
+          resolutionNotes: 'Replaced burnt junction box transformer & tested high-voltage circuit.',
+          verifications: [
+            { citizenName: 'Aarav Patel', comment: 'Inspected location, streetlights functioning fine!', verifiedAt: new Date().toISOString() },
+            { citizenName: 'Priya Sharma', comment: 'Confirmed site work completed cleanly.', verifiedAt: new Date().toISOString() }
+          ],
+          verificationsCount: 2,
+          requiredVerifications: 3
+        }}
+      />
     </div>
   );
 }

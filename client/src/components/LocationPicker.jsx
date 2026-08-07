@@ -23,7 +23,7 @@ export default function LocationPicker({ onSelect }) {
 
   const [coords, setCoords] = useState(DEFAULT_CENTER);
   const [detecting, setDetecting] = useState(false);
-  const [address, setAddress] = useState('Laxmi Nagar, Ward 12, Nagpur');
+  const [address, setAddress] = useState('Laxmi Nagar, Nagpur');
 
   const handleMapClick = useCallback((e) => {
     if (e.latLng) {
@@ -31,7 +31,7 @@ export default function LocationPicker({ onSelect }) {
       const newLng = e.latLng.lng();
       const newCoords = { lat: newLat, lng: newLng };
       setCoords(newCoords);
-      const addrStr = `Pinned: ${newLat.toFixed(4)}° N, ${newLng.toFixed(4)}° E (Ward 12)`;
+      const addrStr = `Pinned: ${newLat.toFixed(4)}° N, ${newLng.toFixed(4)}° E (Laxmi Nagar)`;
       setAddress(addrStr);
       onSelect?.(addrStr);
     }
@@ -63,7 +63,7 @@ export default function LocationPicker({ onSelect }) {
         },
         () => {
           setCoords(DEFAULT_CENTER);
-          const addrStr = 'Ward 12 Center, Laxmi Nagar';
+          const addrStr = 'Laxmi Nagar Center, Nagpur';
           setAddress(addrStr);
           onSelect?.(addrStr);
           setDetecting(false);
@@ -71,7 +71,7 @@ export default function LocationPicker({ onSelect }) {
       );
     } else {
       setCoords(DEFAULT_CENTER);
-      onSelect?.('Ward 12 Center, Laxmi Nagar');
+      onSelect?.('Laxmi Nagar Center, Nagpur');
       setDetecting(false);
     }
   };

@@ -15,13 +15,13 @@ export default function HeatMap() {
               <span>AI CIVIC DIGITAL TWIN</span>
             </div>
             <h4 className="font-extrabold text-emerald-950 text-lg">
-              Live Ward Infrastructure Health Representation
+              Live City Infrastructure Health Representation
             </h4>
           </div>
         </div>
 
         <span className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-full font-bold shrink-0">
-          Ward 5 Health: 67/100
+          Dharampeth Zone Health: 67/100
         </span>
       </div>
 

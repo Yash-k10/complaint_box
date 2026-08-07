@@ -15,7 +15,7 @@ import {
 export default function CitizenPortal() {
   const [submitted, setSubmitted] = useState(null);
   const [voiceText, setVoiceText] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('Laxmi Nagar, Ward 12, Nagpur');
+  const [selectedLocation, setSelectedLocation] = useState('Laxmi Nagar, Nagpur');
   const [loading, setLoading] = useState(false);
 
   const handleComplaintSubmit = async (formData) => {

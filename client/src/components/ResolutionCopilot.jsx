@@ -6,7 +6,7 @@ export default function ResolutionCopilot() {
   const [agentRunning, setAgentRunning] = useState(false);
 
   const AGENT_STEPS = [
-    "Searching Municipal Contractor Directory (Ward 12)...",
+    "Searching Municipal Contractor Directory (Nagpur Central)...",
     "Generating Automated Work Order #WO-2026-889...",
     "Sending Dispatch Notification to Apex Infra Ltd...",
     "Booking Field Inspection Slot (Today 4:00 PM)...",

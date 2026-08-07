@@ -77,7 +77,6 @@ const createComplaint = async (req, res) => {
       category: req.body.category || 'Road Damage',
       urgency: req.body.urgency || 'High',
       status: 'New',
-      wardId: Number(req.body.wardId) || 12,
       department: req.body.department || 'DEPT_ROAD',
       confidenceScore: Math.floor(Math.random() * 6) + 91, // 91-96%
       slaHoursTotal: 48,
@@ -87,7 +86,7 @@ const createComplaint = async (req, res) => {
       blockchainHash: auditRecord.hash,
       xaiExplanation: {
         confidence: 95,
-        reasoning: [`Category keywords matched in ${req.body.category || 'Road Damage'}`, `Mapped to Ward ${req.body.wardId || 12} Jurisdiction`],
+        reasoning: [`Category keywords matched in ${req.body.category || 'Road Damage'}`, `Mapped to Civic Jurisdiction`],
         rulesApplied: ['School & Hospital Proximity Priority Rule'],
         similarCases: ['CMP-2025-8891', 'CMP-2025-9102']
       },
@@ -118,18 +117,78 @@ const createComplaint = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
+  const { status, resolutionProof, resolutionNotes } = req.body;
   const store = loadDatabase();
   const comp = store.find((x) => x.complaintId === id);
   if (comp) {
     comp.status = status;
+    if (resolutionProof) comp.resolutionProof = resolutionProof;
+    if (resolutionNotes) comp.resolutionNotes = resolutionNotes;
+    if (status === 'Pending Verification' || status === 'Resolved') {
+      if (!comp.verifications) comp.verifications = [];
+      comp.verificationsCount = comp.verifications.length;
+      comp.requiredVerifications = 3;
+    }
     saveDatabase(store);
     try {
-      await Complaint.updateOne({ complaintId: id }, { status });
+      await Complaint.updateOne(
+        { complaintId: id },
+        { 
+          status, 
+          ...(resolutionProof && { resolutionProof }),
+          ...(resolutionNotes && { resolutionNotes }),
+          verifications: comp.verifications || [],
+          verificationsCount: comp.verificationsCount || 0,
+          requiredVerifications: 3
+        }
+      );
     } catch (err) {}
     return res.json({ success: true, message: `Status updated to ${status}`, data: comp });
   }
   return res.status(404).json({ success: false, message: 'Complaint not found' });
 };
 
-module.exports = { getComplaints, getComplaintById, createComplaint, updateStatus };
+const verifyComplaint = async (req, res) => {
+  const { id } = req.params;
+  const { citizenName, comment } = req.body;
+  const store = loadDatabase();
+  const comp = store.find((x) => x.complaintId === id);
+  if (comp) {
+    if (!comp.verifications) comp.verifications = [];
+    const newVerification = {
+      citizenName: citizenName || 'Verified Citizen',
+      comment: comment || 'Verified work photo authenticity',
+      verifiedAt: new Date().toISOString()
+    };
+    comp.verifications.push(newVerification);
+    comp.verificationsCount = comp.verifications.length;
+    
+    // Require 3 citizen verifications to reach fully Verified & Resolved
+    if (comp.verificationsCount >= 3) {
+      comp.status = 'Verified & Resolved';
+    } else {
+      comp.status = 'Pending Verification';
+    }
+    
+    saveDatabase(store);
+    try {
+      await Complaint.updateOne(
+        { complaintId: id },
+        { 
+          verifications: comp.verifications,
+          verificationsCount: comp.verificationsCount,
+          status: comp.status
+        }
+      );
+    } catch (err) {}
+    
+    return res.json({ 
+      success: true, 
+      message: `Citizen verification recorded (${comp.verificationsCount}/3)`, 
+      data: comp 
+    });
+  }
+  return res.status(404).json({ success: false, message: 'Complaint not found' });
+};
+
+module.exports = { getComplaints, getComplaintById, createComplaint, updateStatus, verifyComplaint };

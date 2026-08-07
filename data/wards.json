@@ -1,1 +1,1 @@
-[{"wardId":1,"name":"Ward 1 - Sitabuldi","healthScore":85},{"wardId":5,"name":"Ward 5 - Dharampeth","healthScore":62},{"wardId":7,"name":"Ward 7 - Sadar","healthScore":74},{"wardId":12,"name":"Ward 12 - Laxmi Nagar","healthScore":91}]
+[{"zoneId":"sitabuldi","name":"Sitabuldi Zone","healthScore":85},{"zoneId":"dharampeth","name":"Dharampeth Zone","healthScore":62},{"zoneId":"sadar","name":"Sadar Zone","healthScore":74},{"zoneId":"laxmi-nagar","name":"Laxmi Nagar Zone","healthScore":91}]

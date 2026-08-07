@@ -29,7 +29,7 @@ export default function XAIPanel({ xaiData }) {
       <div className="space-y-2 text-xs">
         <span className="text-emerald-800 font-semibold uppercase tracking-wider block text-[11px]">AI Reasoning & Applied Rules:</span>
         <ul className="space-y-2 bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 text-emerald-950">
-          {(xaiData.reasoning || ['Matched road hazard keywords in Ward 12', 'School Zone Safety Priority Rule Applied']).map((r, i) => (
+          {(xaiData.reasoning || ['Matched road hazard keywords in Laxmi Nagar area', 'School Zone Safety Priority Rule Applied']).map((r, i) => (
             <li key={i} className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>{r}</span>

@@ -17,7 +17,7 @@ export default function AnalyticsPage() {
         </div>
         <h1 className="text-2xl md:text-3xl font-extrabold text-emerald-950 flex items-center gap-2.5">
           <BarChart3 className="w-7 h-7 text-emerald-600" />
-          <span>Civic Operations & Ward Analytics</span>
+          <span>Civic Operations & City Zone Analytics</span>
         </h1>
         <p className="text-emerald-800 text-xs md:text-sm max-w-2xl leading-relaxed">
           Real-time intelligence on resolution efficiency, department workloads, recurring failure hotspots, and predictive maintenance alerts.
@@ -27,11 +27,11 @@ export default function AnalyticsPage() {
       {/* Section 1: Predictive Alert Banner */}
       <PredictiveAlert />
 
-      {/* Section 2: Ward Heatmap Grid */}
+      {/* Section 2: City Infrastructure Heatmap Grid */}
       <div className="space-y-3">
         <h3 className="text-sm font-bold text-emerald-950 uppercase tracking-wider flex items-center gap-2">
           <MapPin className="w-4 h-4 text-emerald-600" />
-          <span>Ward Infrastructure Failure Hotspots</span>
+          <span>City Infrastructure Failure Hotspots</span>
         </h3>
         <HeatMap />
       </div>

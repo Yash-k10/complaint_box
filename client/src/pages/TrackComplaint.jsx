@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Search, ShieldCheck, ArrowRight, MapPin } from 'lucide-react';
 
 const DEMO_TICKETS = [
-  { id: 'CMP-2026-001', title: 'Severe road pothole near ABC School', status: 'In Progress', ward: 'Ward 12' },
-  { id: 'CMP-2026-002', title: 'Major water pipe leakage on Dharampeth Main Road', status: 'Assigned', ward: 'Ward 5' },
-  { id: 'CMP-2026-004', title: 'Broken streetlight junction box', status: 'Resolved', ward: 'Ward 7' }
+  { id: 'CMP-2026-001', title: 'Severe road pothole near ABC School', status: 'In Progress', location: 'Laxmi Nagar, Nagpur' },
+  { id: 'CMP-2026-002', title: 'Major water pipe leakage on Dharampeth Main Road', status: 'Assigned', location: 'Dharampeth, Nagpur' },
+  { id: 'CMP-2026-004', title: 'Broken streetlight junction box', status: 'Resolved', location: 'Sadar, Nagpur' }
 ];
 
 export default function TrackComplaint() {
@@ -75,7 +75,7 @@ export default function TrackComplaint() {
               <p className="text-xs font-bold text-emerald-950 line-clamp-2">{t.title}</p>
               <span className="text-[10px] text-emerald-700 flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-emerald-600" />
-                <span>{t.ward}</span>
+                <span>{t.location}</span>
               </span>
             </button>
           ))}

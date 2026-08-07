@@ -6,7 +6,6 @@
     "category": "Water Supply",
     "urgency": "High",
     "status": "New",
-    "wardId": 5,
     "department": "DEPT_ROAD",
     "confidenceScore": 95,
     "slaHoursTotal": 48,
@@ -18,7 +17,7 @@
       "confidence": 95,
       "reasoning": [
         "Category keywords matched in Water Supply",
-        "Mapped to Ward 5 Jurisdiction"
+        "Mapped to Dharampeth Zone Jurisdiction"
       ],
       "rulesApplied": [
         "School & Hospital Proximity Priority Rule"
@@ -36,7 +35,6 @@
     "category": "Road Damage",
     "urgency": "High",
     "status": "In Progress",
-    "wardId": 12,
     "confidenceScore": 96
   },
   {
@@ -45,7 +43,6 @@
     "category": "Water Supply",
     "urgency": "Critical",
     "status": "Assigned",
-    "wardId": 5,
     "confidenceScore": 94
   },
   {
@@ -54,7 +51,6 @@
     "category": "Sanitation",
     "urgency": "Medium",
     "status": "New",
-    "wardId": 5,
     "confidenceScore": 91
   }
 ]

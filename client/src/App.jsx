@@ -1,6 +1,6 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import React, { useContext } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
@@ -12,6 +12,32 @@ import LoginPage from './pages/LoginPage';
 import TrackComplaint from './pages/TrackComplaint';
 import ComplaintPage from './pages/ComplaintPage';
 
+function ProtectedRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+
+function LoginGuard({ children }) {
+  const { user } = useContext(AuthContext);
+  if (user) return <Navigate to="/" replace />;
+  return children;
+}
+
+function OfficerRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== 'officer' && user.role !== 'admin') return <Navigate to="/" replace />;
+  return children;
+}
+
+function CitizenRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role === 'officer' || user.role === 'admin') return <Navigate to="/" replace />;
+  return children;
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -20,14 +46,14 @@ function App() {
           <div>
             <Navbar />
             <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/citizen" element={<CitizenPortal />} />
-              <Route path="/officer" element={<OfficerDashboard />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
-              <Route path="/digital-twin" element={<DigitalTwinPage />} />
-              <Route path="/track" element={<TrackComplaint />} />
-              <Route path="/complaint/:id" element={<ComplaintPage />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login" element={<LoginGuard><LoginPage /></LoginGuard>} />
+              <Route path="/" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
+              <Route path="/citizen" element={<CitizenRoute><CitizenPortal /></CitizenRoute>} />
+              <Route path="/officer" element={<OfficerRoute><OfficerDashboard /></OfficerRoute>} />
+              <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
+              <Route path="/digital-twin" element={<ProtectedRoute><DigitalTwinPage /></ProtectedRoute>} />
+              <Route path="/track" element={<ProtectedRoute><TrackComplaint /></ProtectedRoute>} />
+              <Route path="/complaint/:id" element={<ProtectedRoute><ComplaintPage /></ProtectedRoute>} />
             </Routes>
           </div>
           <Footer />

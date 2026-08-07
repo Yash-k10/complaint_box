@@ -40,7 +40,7 @@ const ARCHITECTURAL_PILLARS = [
   },
   {
     icon: Building2,
-    title: 'AI Ward Digital Twin Simulation',
+    title: 'AI City Digital Twin Simulation',
     desc: 'Real-time municipal telemetry map predicting infrastructure failure hotspots before citizens complain.',
     badge: 'PILLAR 4'
   }
@@ -50,14 +50,14 @@ const RESOLUTION_WORKFLOW = [
   { step: '01', title: 'Resident Intake', desc: 'Voice or text entry in EN/HI/MR with auto GPS map pinpointing.' },
   { step: '02', title: 'XAI Multi-Class Triage', desc: 'Categorized into Road, Water, Sanitation, Electrical with 96% AI confidence.' },
   { step: '03', title: 'Community Weighting', desc: 'Auto upvoted and clustered by nearby affected citizens.' },
-  { step: '04', title: 'Agentic Work Order', desc: '60s autonomous dispatch to ward municipal contractors.' },
+  { step: '04', title: 'Agentic Work Order', desc: '60s autonomous dispatch to city municipal contractors.' },
   { step: '05', title: 'Officer Sign-Off', desc: 'Human-in-the-loop override & execution supervision.' },
   { step: '06', title: 'CLIP Photo Proof', desc: 'Computer vision pre-and-post repair structural verification.' },
   { step: '07', title: 'SHA-256 Audit Log', desc: 'Tamper-evident public ledger block recording.' }
 ];
 
 export default function LandingPage() {
-  const [activeWardFilter, setActiveWardFilter] = useState(12);
+  const [activeZoneFilter, setActiveZoneFilter] = useState(12);
 
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
   const [contactSubmitted, setContactSubmitted] = useState(false);
@@ -75,15 +75,15 @@ export default function LandingPage() {
       <section className="bg-white p-8 md:p-12 rounded-2xl border border-emerald-100 shadow-xs space-y-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3.5 py-1 rounded-full text-xs font-bold text-emerald-800">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>COMMUNITY REDRESSAL PLANNER v2.0</span>
+            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full text-xs font-bold text-emerald-800">
+              <img src="/logo.png" alt="awaaz.ai" className="w-5 h-5 object-contain" />
+              <span>awaaz.ai • Every Voice Heard. Every Issue Resolved.</span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-emerald-950 leading-tight">
-              AI-Powered Municipal Grievance Triage & Resolution
+            <h1 className="text-3xl md:text-5xl font-black text-emerald-950 leading-tight">
+              awaaz<span className="text-emerald-600 font-extrabold">.ai</span> — AI-Powered Civic Grievance Triage
             </h1>
             <p className="text-emerald-800 text-xs md:text-sm leading-relaxed">
-              Empowering citizens and city authorities with multi-language voice intake, Explainable AI triage, 60s agentic dispatch, Google Maps telemetry, and SHA-256 cryptographic audit logs.
+              <strong>Har Awaaz Suni Jayegi, Har Samasya Suljhayi Jayegi.</strong> Empowering citizens and city authorities with multi-language voice intake, Explainable AI triage, 60s agentic dispatch, Google Maps telemetry, and 3-citizen verification.
             </p>
 
             <div className="flex flex-wrap gap-3 pt-2">
@@ -154,13 +154,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Interactive Google Map Ward Telemetry Preview */}
+      {/* Interactive Google Map City Telemetry Preview */}
       <section className="space-y-4">
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-xl font-extrabold text-emerald-950 flex items-center gap-2">
               <MapPin className="w-5 h-5 text-emerald-600" />
-              <span>Live Google Maps Ward Telemetry Layer</span>
+              <span>Live Google Maps City Telemetry Layer</span>
             </h2>
             <p className="text-xs text-emerald-800">Pinpointing active grievances and municipal infrastructure risk scores</p>
           </div>
@@ -170,7 +170,7 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        <DigitalTwinMap selectedWardId={activeWardFilter} />
+        <DigitalTwinMap selectedZoneId={activeZoneFilter} />
       </section>
 
       {/* 7-Step Resolution Workflow */}

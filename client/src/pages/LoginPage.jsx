@@ -12,7 +12,6 @@ export default function LoginPage() {
     password: 'password123',
     name: '',
     mobile: '',
-    wardId: 12,
     address: ''
   });
 
@@ -32,7 +31,6 @@ export default function LoginPage() {
       name: isOfficer ? 'Er. Rajesh Sharma' : 'Pragati Citizen',
       email: form.identifier,
       role: isOfficer ? 'officer' : 'citizen',
-      wardId: isOfficer ? 12 : 12,
       department: isOfficer ? 'Roads & Infrastructure' : undefined
     });
   };
@@ -46,8 +44,7 @@ export default function LoginPage() {
       email: form.identifier || 'citizen@nagpur.gov.in',
       mobile: form.mobile,
       role: 'citizen',
-      wardId: Number(form.wardId) || 12,
-      address: form.address || 'Laxmi Nagar, Ward 12'
+      address: form.address || 'Laxmi Nagar, Nagpur'
     });
   };
 
@@ -60,18 +57,29 @@ export default function LoginPage() {
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
       <div className="max-w-xl w-full space-y-6">
         {/* Gateway Header */}
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-4 py-1.5 rounded-full text-xs font-bold text-emerald-800">
+        <div className="text-center space-y-3">
+          <div className="flex justify-center items-center gap-3">
+            <img src="/logo.png" alt="awaaz.ai logo" className="h-12 w-auto object-contain" />
+            <div className="text-left">
+              <h2 className="text-2xl font-black text-emerald-950 tracking-tight leading-none">
+                awaaz<span className="text-emerald-600 font-extrabold">.ai</span>
+              </h2>
+              <span className="text-[11px] font-bold text-emerald-700 block mt-0.5">
+                Every Voice Heard. Every Issue Resolved.
+              </span>
+            </div>
+          </div>
+          <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-4 py-1 rounded-full text-xs font-bold text-emerald-800">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>SINGLE SIGN-ON & PRIVACY GATEWAY</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-emerald-950">
+          <h1 className="text-2xl font-extrabold text-emerald-950">
             {user ? 'Authenticated Session Active' : authMode === 'login' ? 'Citizen & Officer Login' : 'Citizen Registration'}
           </h1>
           <p className="text-emerald-800 text-xs">
             {user
               ? 'Your device credentials are authenticated and saved locally'
-              : 'Sign in to submit, track, or manage municipal grievances'}
+              : 'Sign in to submit, track, or manage municipal grievances with awaaz.ai'}
           </p>
         </div>
 
@@ -85,7 +93,7 @@ export default function LoginPage() {
               <div>
                 <h3 className="font-extrabold text-emerald-950 text-lg">{user.name}</h3>
                 <p className="text-xs font-mono text-emerald-700">
-                  Role: <span className="uppercase font-bold text-emerald-800">{user.role}</span> | Ward {user.wardId || 12}
+                  Role: <span className="uppercase font-bold text-emerald-800">{user.role}</span> | Nagpur Civic Zone
                 </p>
               </div>
             </div>
@@ -199,14 +207,14 @@ export default function LoginPage() {
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
-                      onClick={() => handleQuickDemoUser({ name: 'Pragati Citizen', role: 'citizen', wardId: 12, email: 'citizen@nagpur.gov.in' })}
+                      onClick={() => handleQuickDemoUser({ name: 'Pragati Citizen', role: 'citizen', email: 'citizen@nagpur.gov.in' })}
                       className="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold py-2 px-3 rounded-xl border border-emerald-200"
                     >
                       👤 Resident Citizen
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleQuickDemoUser({ name: 'Er. Rajesh Sharma', role: 'officer', wardId: 12, email: 'officer.roads@nagpur.gov.in', department: 'Roads & Infrastructure' })}
+                      onClick={() => handleQuickDemoUser({ name: 'Er. Rajesh Sharma', role: 'officer', email: 'officer.roads@nagpur.gov.in', department: 'Roads & Infrastructure' })}
                       className="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold py-2 px-3 rounded-xl border border-emerald-200"
                     >
                       👮 Municipal Officer
@@ -228,36 +236,23 @@ export default function LoginPage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-emerald-900">Mobile Number (OTP Sync)</label>
-                    <input
-                      type="tel"
-                      className="w-full bg-emerald-50/50 border border-emerald-200 rounded-xl px-4 py-2.5 text-emerald-950 text-xs outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
-                      placeholder="10-digit mobile number"
-                      value={form.mobile}
-                      onChange={(e) => setForm({ ...form, mobile: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-emerald-900">Ward Number</label>
-                    <input
-                      type="number"
-                      className="w-full bg-emerald-50/50 border border-emerald-200 rounded-xl px-4 py-2.5 text-emerald-950 text-xs outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
-                      placeholder="12"
-                      value={form.wardId}
-                      onChange={(e) => setForm({ ...form, wardId: e.target.value })}
-                    />
-                  </div>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold text-emerald-900">Mobile Number (OTP Sync)</label>
+                  <input
+                    type="tel"
+                    className="w-full bg-emerald-50/50 border border-emerald-200 rounded-xl px-4 py-2.5 text-emerald-950 text-xs outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                    placeholder="10-digit mobile number"
+                    value={form.mobile}
+                    onChange={(e) => setForm({ ...form, mobile: e.target.value })}
+                  />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-emerald-900">Residential Address</label>
+                  <label className="block text-xs font-bold text-emerald-900">Residential Address / Location</label>
                   <input
                     type="text"
                     className="w-full bg-emerald-50/50 border border-emerald-200 rounded-xl px-4 py-2.5 text-emerald-950 text-xs outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
-                    placeholder="Street, Landmark, Ward area..."
+                    placeholder="Street, Landmark, Area..."
                     value={form.address}
                     onChange={(e) => setForm({ ...form, address: e.target.value })}
                   />

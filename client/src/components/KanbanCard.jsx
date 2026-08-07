@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import StatusBadge from './StatusBadge';
-import { ThumbsUp, MapPin, Sparkles } from 'lucide-react';
+import { ThumbsUp, MapPin, Sparkles, Camera, CheckCircle2, ShieldAlert } from 'lucide-react';
 
 export default function KanbanCard({ complaint, onSelect, onStatusChange }) {
   const [upvotes, setUpvotes] = useState(complaint.upvotes || Math.floor(Math.random() * 20) + 5);
@@ -13,6 +13,8 @@ export default function KanbanCard({ complaint, onSelect, onStatusChange }) {
       setHasUpvoted(true);
     }
   };
+
+  const verificationsCount = complaint.verificationsCount || (complaint.verifications ? complaint.verifications.length : 0);
 
   return (
     <div
@@ -35,11 +37,27 @@ export default function KanbanCard({ complaint, onSelect, onStatusChange }) {
         <p className="text-[11px] text-emerald-800 leading-relaxed line-clamp-2">{complaint.description}</p>
       )}
 
+      {/* Resolution Photo Proof Badge */}
+      {complaint.resolutionProof && (
+        <div className="relative rounded-lg overflow-hidden border border-emerald-200 bg-emerald-50/50 p-1.5 flex items-center gap-2">
+          <img src={complaint.resolutionProof} alt="Work Proof" className="w-10 h-10 object-cover rounded-md border border-emerald-200" />
+          <div className="text-[10px] space-y-0.5 flex-1">
+            <span className="font-bold text-emerald-950 flex items-center gap-1">
+              <Camera className="w-3 h-3 text-emerald-600" />
+              <span>Admin Proof Attached</span>
+            </span>
+            <span className="text-amber-800 font-bold block">
+              Citizen Verification: {verificationsCount}/3
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Meta Row */}
       <div className="flex items-center justify-between pt-2 border-t border-emerald-100 text-[11px]">
         <span className="text-emerald-800 font-medium flex items-center gap-1">
           <MapPin className="w-3 h-3 text-emerald-600" />
-          <span>Ward {complaint.wardId || 12}</span>
+          <span>{complaint.location?.address || 'Nagpur Central'}</span>
         </span>
         <span className="text-emerald-700 font-bold flex items-center gap-1">
           <Sparkles className="w-3 h-3 text-emerald-600" />
@@ -48,11 +66,11 @@ export default function KanbanCard({ complaint, onSelect, onStatusChange }) {
       </div>
 
       {/* Action Row */}
-      <div className="flex items-center justify-between pt-1 gap-2">
+      <div className="flex flex-wrap items-center justify-between pt-1 gap-1.5">
         <button
           type="button"
           onClick={handleUpvote}
-          className={`text-[11px] px-2.5 py-1 rounded-lg font-semibold transition flex items-center gap-1 ${
+          className={`text-[10px] px-2 py-1 rounded-lg font-bold transition flex items-center gap-1 shrink-0 ${
             hasUpvoted
               ? 'bg-emerald-600 text-white'
               : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
@@ -63,29 +81,30 @@ export default function KanbanCard({ complaint, onSelect, onStatusChange }) {
         </button>
 
         {onStatusChange && (
-          <div className="flex gap-1">
-            {complaint.status !== 'In Progress' && complaint.status !== 'Resolved' && (
+          <div className="flex flex-wrap gap-1 items-center">
+            {complaint.status !== 'In Progress' && complaint.status !== 'Pending Verification' && complaint.status !== 'Resolved' && complaint.status !== 'Verified & Resolved' && (
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   onStatusChange(complaint.complaintId, 'In Progress');
                 }}
-                className="text-[11px] bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded-lg transition border border-emerald-200"
+                className="text-[10px] bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded-lg transition border border-emerald-200 whitespace-nowrap"
               >
                 Start
               </button>
             )}
-            {complaint.status !== 'Resolved' && (
+            {complaint.status !== 'Pending Verification' && complaint.status !== 'Resolved' && complaint.status !== 'Verified & Resolved' && (
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   onStatusChange(complaint.complaintId, 'Resolved');
                 }}
-                className="text-[11px] bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-2.5 py-1 rounded-lg transition"
+                className="text-[10px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-1 rounded-lg transition flex items-center gap-1 shadow-xs whitespace-nowrap"
               >
-                Resolve
+                <Camera className="w-3 h-3" />
+                <span>Mark Solved</span>
               </button>
             )}
           </div>

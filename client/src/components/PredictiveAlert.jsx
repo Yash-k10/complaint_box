@@ -33,7 +33,7 @@ export default function PredictiveAlert() {
               <CloudRain className="w-4 h-4 text-amber-600" />
               <span>Weather & Infra Sync</span>
             </span>
-            <span className="text-[10px] bg-amber-50 px-2 py-0.5 rounded">Ward 5</span>
+            <span className="text-[10px] bg-amber-50 px-2 py-0.5 rounded">Dharampeth Zone</span>
           </div>
           <p className="text-emerald-900 text-[11px] leading-relaxed">
             3-Day heavy rain forecast + 8-yr drainage pipe age. AI has auto-scheduled pre-emptive clearance before 40+ complaints occur.
@@ -49,7 +49,7 @@ export default function PredictiveAlert() {
             <span className="text-[10px] bg-emerald-50 px-2 py-0.5 rounded">Capital Upgrade</span>
           </div>
           <p className="text-emerald-900 text-[11px] leading-relaxed">
-            Recommends allocating ₹18 Lakh for Ward 7 mainline resurfacing instead of 34 repeated pothole patches. Projected 48% complaint drop.
+            Recommends allocating ₹18 Lakh for Sadar Zone mainline resurfacing instead of 34 repeated pothole patches. Projected 48% complaint drop.
           </p>
         </div>
 

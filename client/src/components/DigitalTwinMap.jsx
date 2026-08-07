@@ -8,11 +8,11 @@ const MAP_CONTAINER_STYLE = {
   borderRadius: '0.75rem'
 };
 
-const WARD_CENTERS = {
-  12: { lat: 21.1458, lng: 79.0882, name: 'Ward 12 - Laxmi Nagar' },
-  5: { lat: 21.1530, lng: 79.0680, name: 'Ward 5 - Dharampeth' },
-  7: { lat: 21.1600, lng: 79.0900, name: 'Ward 7 - Sadar' },
-  1: { lat: 21.1400, lng: 79.0800, name: 'Ward 1 - Sitabuldi' }
+const ZONE_CENTERS = {
+  12: { lat: 21.1458, lng: 79.0882, name: 'Laxmi Nagar Zone' },
+  5: { lat: 21.1530, lng: 79.0680, name: 'Dharampeth Zone' },
+  7: { lat: 21.1600, lng: 79.0900, name: 'Sadar Zone' },
+  1: { lat: 21.1400, lng: 79.0800, name: 'Sitabuldi Zone' }
 };
 
 const LIVE_COMPLAINT_PINS = [
@@ -22,7 +22,7 @@ const LIVE_COMPLAINT_PINS = [
     category: 'Road Damage',
     urgency: 'High Priority',
     status: 'In Progress',
-    wardId: 12,
+    zoneId: 12,
     lat: 21.1465,
     lng: 79.0890,
     color: '#16a34a'
@@ -33,7 +33,7 @@ const LIVE_COMPLAINT_PINS = [
     category: 'Water Supply',
     urgency: 'Critical Priority',
     status: 'Assigned',
-    wardId: 5,
+    zoneId: 5,
     lat: 21.1538,
     lng: 79.0688,
     color: '#dc2626'
@@ -44,7 +44,7 @@ const LIVE_COMPLAINT_PINS = [
     category: 'Sanitation',
     urgency: 'Medium Priority',
     status: 'New',
-    wardId: 5,
+    zoneId: 5,
     lat: 21.1512,
     lng: 79.0650,
     color: '#d97706'
@@ -55,14 +55,14 @@ const LIVE_COMPLAINT_PINS = [
     category: 'Electrical',
     urgency: 'High Priority',
     status: 'Resolved',
-    wardId: 7,
+    zoneId: 7,
     lat: 21.1610,
     lng: 79.0915,
     color: '#2563eb'
   }
 ];
 
-export default function DigitalTwinMap({ selectedWardId = 12 }) {
+export default function DigitalTwinMap({ selectedZoneId = 12 }) {
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
 
   const { isLoaded } = useJsApiLoader({
@@ -70,12 +70,12 @@ export default function DigitalTwinMap({ selectedWardId = 12 }) {
     googleMapsApiKey: apiKey
   });
 
-  const [activeWardId, setActiveWardId] = useState(selectedWardId);
+  const [activeZoneId, setActiveZoneId] = useState(selectedZoneId);
   const [selectedPin, setSelectedPin] = useState(null);
 
-  const center = WARD_CENTERS[activeWardId] || WARD_CENTERS[12];
+  const center = ZONE_CENTERS[activeZoneId] || ZONE_CENTERS[12];
   const filteredPins = LIVE_COMPLAINT_PINS.filter(
-    (p) => activeWardId === 'All' || p.wardId === Number(activeWardId)
+    (p) => activeZoneId === 'All' || p.zoneId === Number(activeZoneId)
   );
 
   return (
@@ -88,24 +88,24 @@ export default function DigitalTwinMap({ selectedWardId = 12 }) {
           </div>
           <h3 className="text-lg font-extrabold text-emerald-950 flex items-center gap-2">
             <Building2 className="w-5 h-5 text-emerald-600" />
-            <span>Google Maps Ward Telemetry Layer</span>
+            <span>Google Maps City Telemetry Layer</span>
           </h3>
         </div>
 
-        {/* Ward Filter Buttons */}
+        {/* Zone Filter Buttons */}
         <div className="flex flex-wrap gap-1 text-xs">
-          {Object.keys(WARD_CENTERS).map((wId) => (
+          {Object.keys(ZONE_CENTERS).map((zId) => (
             <button
-              key={wId}
+              key={zId}
               type="button"
-              onClick={() => setActiveWardId(Number(wId))}
+              onClick={() => setActiveZoneId(Number(zId))}
               className={`px-3 py-1.5 rounded-xl font-bold transition border ${
-                Number(activeWardId) === Number(wId)
+                Number(activeZoneId) === Number(zId)
                   ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                   : 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
               }`}
             >
-              Ward {wId}
+              {ZONE_CENTERS[zId].name}
             </button>
           ))}
         </div>

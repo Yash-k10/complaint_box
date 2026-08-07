@@ -9,16 +9,19 @@ export default function Footer() {
         <div className="flex flex-wrap text-left lg:text-left">
           {/* Left Side: Brand & Social Links */}
           <div className="w-full lg:w-6/12 px-4 mb-8 lg:mb-0 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black shadow-xs">
-                <ShieldCheck className="w-5 h-5" />
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="awaaz.ai logo" className="h-9 w-auto object-contain" />
+              <div>
+                <h4 className="text-xl font-black text-emerald-950 tracking-tight">
+                  awaaz<span className="text-emerald-600 font-extrabold">.ai</span>
+                </h4>
+                <span className="text-[11px] font-bold text-emerald-700 block">
+                  Every Voice Heard. Every Issue Resolved.
+                </span>
               </div>
-              <h4 className="text-xl font-extrabold text-emerald-950">
-                Urban<span className="text-emerald-600">Feedback</span> AI-X
-              </h4>
             </div>
             <p className="text-xs text-emerald-800 max-w-md leading-relaxed">
-              Empowering citizens and municipal officers with Explainable AI triage, 60s agentic dispatch, Google Maps telemetry, and SHA-256 cryptographic audit logs.
+              Empowering citizens and municipal officers with voice & text AI intake, Explainable AI triage, 60s agentic dispatch, Google Maps telemetry, and SHA-256 cryptographic audit logs.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <a
@@ -38,7 +41,7 @@ export default function Footer() {
                 <Globe className="w-4 h-4" />
               </a>
               <a
-                href="mailto:support@urbanfeedback.gov.in"
+                href="mailto:support@awaaz.ai"
                 className="bg-white text-emerald-700 hover:text-emerald-900 border border-emerald-200 h-9 w-9 flex items-center justify-center rounded-xl transition shadow-xs"
                 title="Email Support"
               >
@@ -79,7 +82,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link className="text-emerald-700 hover:text-emerald-950 transition" to="/digital-twin">
-                      AI Ward Digital Twin
+                      AI City Digital Twin
                     </Link>
                   </li>
                 </ul>
@@ -114,7 +117,7 @@ export default function Footer() {
 
         <div className="flex flex-wrap items-center md:justify-between justify-center text-xs font-medium text-emerald-700">
           <div className="w-full md:w-4/12 px-4 mx-auto text-center">
-            © 2026 UrbanFeedback AI-X • Municipal Grievance Redressal Planner
+            © 2026 awaaz.ai • Every Voice Heard. Every Issue Resolved.
           </div>
         </div>
       </div>

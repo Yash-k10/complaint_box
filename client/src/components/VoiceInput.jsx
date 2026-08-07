@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mic, Volume2, CheckCircle2 } from 'lucide-react';
 
 const PRESET_TRANSCRIPTS = [
-  { lang: 'EN', text: "Severe road pothole near ABC School in Ward 12 causing traffic accidents." },
+  { lang: 'EN', text: "Severe road pothole near ABC School in Laxmi Nagar causing traffic accidents." },
   { lang: 'HI', text: "वार्ड 5 में मार्केट रोड के पास पानी की पाइपलाइन लीक हो रही है।" },
   { lang: 'MR', text: "वार्ड 7 मधील सार्वजनिक उद्यानाजवळ कचरा साचला आहे." }
 ];
