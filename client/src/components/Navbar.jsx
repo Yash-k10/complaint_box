@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Navbar() {
+  const { user, logout } = useContext(AuthContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
   const location = useLocation();
@@ -83,7 +85,7 @@ export default function Navbar() {
             📊 Analytics
           </Link>
 
-          {/* Right Action Controls Group (Separated with Left Border) */}
+          {/* Right Action Controls Group */}
           <div className="flex items-center gap-3 pl-4 border-l border-slate-700/80 ml-2">
             {/* High-Contrast Theme Toggle Switch */}
             <button
@@ -95,16 +97,33 @@ export default function Navbar() {
               <span>{isLightMode ? '☀️ Light' : '🌙 Dark'}</span>
             </button>
 
-            <Link
-              to="/login"
-              className="bg-lime-accent hover:opacity-90 text-slate-900 px-4 py-2 rounded-xl font-black text-xs transition shadow-lg shrink-0"
-            >
-              🔑 Single Sign-On
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="bg-slate-800 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                  <span>{user.role === 'officer' ? '👮' : '👤'}</span>
+                  <span>{user.name}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="bg-red-600 hover:bg-red-500 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs transition shadow"
+                  title="Sign Out"
+                >
+                  🚪 Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="bg-lime-accent hover:opacity-90 text-slate-900 px-4 py-2 rounded-xl font-black text-xs transition shadow-lg shrink-0"
+              >
+                🔑 Single Sign-On
+              </Link>
+            )}
           </div>
         </div>
 
-        {/* Mobile & Tablet Toggle Button (Only visible <= 991px via .navbar-mobile-toggle) */}
+        {/* Mobile & Tablet Toggle Button */}
         <div className="navbar-mobile-toggle items-center gap-2">
           <button
             type="button"
@@ -123,7 +142,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Drawer Menu (Toggled on Mobile/Tablet) */}
+      {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="navbar-mobile-toggle flex-col bg-slate-900 border-b border-slate-800 p-5 space-y-3 font-bold text-sm">
           <Link
@@ -161,13 +180,25 @@ export default function Navbar() {
           >
             📊 Analytics & Heatmap
           </Link>
-          <Link
-            to="/login"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-center bg-lime-accent text-slate-900 py-2.5 rounded-xl font-black shadow-lg"
-          >
-            🔑 Single Sign-On
-          </Link>
+          {user ? (
+            <button
+              onClick={() => {
+                logout();
+                setMobileMenuOpen(false);
+              }}
+              className="w-full bg-red-600 text-white py-2.5 rounded-xl font-black shadow-lg"
+            >
+              🚪 Logout ({user.name})
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-center bg-lime-accent text-slate-900 py-2.5 rounded-xl font-black shadow-lg"
+            >
+              🔑 Single Sign-On
+            </Link>
+          )}
         </div>
       )}
 
@@ -201,13 +232,23 @@ export default function Navbar() {
           <span className="text-base">🏙️</span>
           <span>Twin</span>
         </Link>
-        <Link
-          to="/login"
-          className={`flex flex-col items-center gap-0.5 ${isActive('/login') ? 'text-lime-accent font-black' : 'text-white'}`}
-        >
-          <span className="text-base">🔑</span>
-          <span>Login</span>
-        </Link>
+        {user ? (
+          <button
+            onClick={logout}
+            className="flex flex-col items-center gap-0.5 text-red-400 font-bold"
+          >
+            <span className="text-base">🚪</span>
+            <span>Logout</span>
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className={`flex flex-col items-center gap-0.5 ${isActive('/login') ? 'text-lime-accent font-black' : 'text-white'}`}
+          >
+            <span className="text-base">🔑</span>
+            <span>Login</span>
+          </Link>
+        )}
       </div>
     </>
   );
