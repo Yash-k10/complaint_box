@@ -9,6 +9,7 @@ import AnalyticsPage from './pages/AnalyticsPage';
 import DigitalTwinPage from './pages/DigitalTwinPage';
 import LoginPage from './pages/LoginPage';
 import TrackComplaint from './pages/TrackComplaint';
+import ComplaintPage from './pages/ComplaintPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/digital-twin" element={<DigitalTwinPage />} />
             <Route path="/track" element={<TrackComplaint />} />
+            <Route path="/complaint/:id" element={<ComplaintPage />} />
             <Route path="/login" element={<LoginPage />} />
           </Routes>
         </div>
