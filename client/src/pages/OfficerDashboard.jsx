@@ -1,301 +1,153 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import KanbanBoard from '../components/KanbanBoard';
+import SLATimer from '../components/SLATimer';
+import ResolutionCopilot from '../components/ResolutionCopilot';
+import XAIPanel from '../components/XAIPanel';
+
+const FALLBACK_MOCK = [
+  {
+    complaintId: 'CMP-2026-001',
+    title: 'Severe road pothole near ABC School causing traffic hazards',
+    description: 'Deep pothole on main school road. Multiple vehicles damaged over the weekend.',
+    category: 'Road Damage',
+    urgency: 'High Priority',
+    status: 'In Progress',
+    wardId: 12,
+    confidenceScore: 96,
+    xaiData: {
+      confidence: 96,
+      reasoning: ['Matched road hazard keywords in Ward 12', 'School Zone Safety Priority Rule Applied'],
+      rulesApplied: ['Emergency School Zone Priority Rule']
+    }
+  },
+  {
+    complaintId: 'CMP-2026-002',
+    title: 'Major water pipe leakage on Dharampeth Main Road',
+    description: 'Water gushing out of broken 12-inch mainline.',
+    category: 'Water Supply',
+    urgency: 'Critical Priority',
+    status: 'Assigned',
+    wardId: 5,
+    confidenceScore: 94,
+    xaiData: {
+      confidence: 94,
+      reasoning: ['Matched water leakage keywords in Ward 5'],
+      rulesApplied: ['Water Supply Mainline Escalation Rule']
+    }
+  },
+  {
+    complaintId: 'CMP-2026-003',
+    title: 'Uncollected garbage accumulation near public park',
+    description: 'Waste dump not cleared for 4 days.',
+    category: 'Sanitation',
+    urgency: 'Medium Priority',
+    status: 'New',
+    wardId: 5,
+    confidenceScore: 91,
+    xaiData: {
+      confidence: 91,
+      reasoning: ['Sanitation dump keywords matched'],
+      rulesApplied: ['Park Cleanliness Rule']
+    }
+  }
+];
 
 export default function OfficerDashboard() {
-  const [activeTab, setActiveTab] = useState('matrix'); // 'matrix' | 'analytics' | 'fleet'
-  const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('All');
-  const [priorityFilter, setPriorityFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const [complaints, setComplaints] = useState(FALLBACK_MOCK);
+  const [selected, setSelected] = useState(FALLBACK_MOCK[0]);
 
-  // Sample Reports Data (Matching Image 5)
-  const [reports, setReports] = useState([
-    {
-      id: 'CF-2026-9430',
-      citizen: 'Gunjan Ramteke',
-      category: 'Roads',
-      priority: 'High',
-      confidence: '89%',
-      status: 'Pending',
-      worker: 'Awaiting Dispatch',
-      location: 'Ward 12'
-    },
-    {
-      id: 'CF-2026-9802',
-      citizen: 'Rahul Sharma',
-      category: 'Garbage',
-      priority: 'High',
-      confidence: '94%',
-      status: 'Pending',
-      worker: 'Awaiting Dispatch',
-      location: 'Ward 12'
-    },
-    {
-      id: 'CF-2026-1044',
-      citizen: 'Amit Patel',
-      category: 'Water',
-      priority: 'Medium',
-      confidence: '96%',
-      status: 'In Progress',
-      worker: 'Ramesh Kumar (Plumber)',
-      location: 'Ward 5'
-    },
-    {
-      id: 'CF-2026-0881',
-      citizen: 'Priya Verma',
-      category: 'Electrical',
-      priority: 'Low',
-      confidence: '98%',
-      status: 'Resolved',
-      worker: 'Suresh Patil (Lineman)',
-      location: 'Ward 7'
+  const loadComplaints = async () => {
+    try {
+      const res = await axios.get('/api/complaints');
+      if (res.data && res.data.data && res.data.data.length > 0) {
+        setComplaints(res.data.data);
+      }
+    } catch (err) {
+      console.warn('API connection fallback, using local mock store:', err);
     }
-  ]);
-
-  const [workers, setWorkers] = useState([
-    { id: 'W-101', name: 'Ramesh Kumar', skill: 'Water & Sewage Specialist', phone: '9822114455', status: 'On Duty' },
-    { id: 'W-102', name: 'Suresh Patil', skill: 'Electrical Engineer', phone: '9822114466', status: 'Available' },
-    { id: 'W-103', name: 'Vijay Deshmukh', skill: 'Road Maintenance Lead', phone: '9822114477', status: 'On Duty' }
-  ]);
-
-  // Dispatch Action Handler
-  const handleAssignWorker = (reportId, workerName) => {
-    setReports(reports.map(r => r.id === reportId ? { ...r, worker: workerName, status: 'In Progress' } : r));
-    alert(`Worker ${workerName} dispatched to report ${reportId}!`);
   };
 
+  const handleStatusChange = async (complaintId, newStatus) => {
+    try {
+      await axios.patch(`/api/complaints/${complaintId}/status`, { status: newStatus });
+    } catch (err) {}
+    setComplaints((prev) =>
+      prev.map((c) => (c.complaintId === complaintId ? { ...c, status: newStatus } : c))
+    );
+  };
+
+  useEffect(() => {
+    loadComplaints();
+    const interval = setInterval(loadComplaints, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
-      {/* Header Bar (Matching Image 5) */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <div>
-          <h1 className="text-3xl font-black text-sky-900">Municipal Admin Command Center</h1>
-          <p className="text-slate-500 text-sm font-medium">
-            Dispatch field workers, view AI decision explainability, and generate municipal reports.
+    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 space-y-10">
+      {/* Page Header */}
+      <div className="bg-slate-800/80 p-8 md:p-10 rounded-3xl border border-slate-700/60 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3 text-xs font-bold text-lime-accent uppercase tracking-widest">
+            <span>OFFICER TRIAGE DASHBOARD</span>
+            <span className="text-slate-600">•</span>
+            <span>WARD 12 JURISDICTION</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-black text-white flex items-center gap-3">
+            👮 Municipal Operations Control
+          </h1>
+          <p className="text-slate-400 text-sm">
+            Er. Rajesh Sharma • Head Officer, Roads & Infrastructure Department
           </p>
         </div>
 
-        {/* Action Buttons (Matching Image 5) */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => alert('Municipal Reports CSV Exported')}
-            className="text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm"
-          >
-            <span>📄</span> Export CSV Report
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const wName = prompt('Enter new field worker name:');
-              if (wName) setWorkers([...workers, { id: `W-${100 + workers.length + 1}`, name: wName, skill: 'General Specialist', phone: '9800000000', status: 'Available' }]);
-            }}
-            className="text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-sm"
-          >
-            <span>👤+</span> Add Worker
-          </button>
-        </div>
+        <SLATimer hoursRemaining={34} totalHours={48} />
       </div>
 
-      {/* 4 Summary Stat Cards (Matching Image 5) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-xl font-bold">
-            📋
-          </div>
-          <div>
-            <span className="text-2xl font-black text-slate-800">{reports.length}</span>
-            <span className="text-xs font-semibold text-slate-500 block">Total Reports</span>
+      {/* KPI Stats Bar */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
+          <span className="text-xs text-slate-400 font-semibold">Total Complaints</span>
+          <div className="text-2xl font-black text-white">{complaints.length} Active</div>
+        </div>
+        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
+          <span className="text-xs text-slate-400 font-semibold">New Unassigned</span>
+          <div className="text-2xl font-black text-cyan-400">
+            {complaints.filter((c) => c.status === 'New').length} Tickets
           </div>
         </div>
-
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">
-            ⏳
-          </div>
-          <div>
-            <span className="text-2xl font-black text-slate-800">
-              {reports.filter(r => r.status === 'Pending').length}
-            </span>
-            <span className="text-xs font-semibold text-slate-500 block">Pending Triage</span>
+        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
+          <span className="text-xs text-slate-400 font-semibold">In Progress</span>
+          <div className="text-2xl font-black text-amber-400">
+            {complaints.filter((c) => c.status === 'In Progress').length} Active
           </div>
         </div>
-
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold">
-            ✅
-          </div>
-          <div>
-            <span className="text-2xl font-black text-slate-800">
-              {reports.filter(r => r.status === 'Resolved').length}
-            </span>
-            <span className="text-xs font-semibold text-slate-500 block">Resolved Reports</span>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl font-bold">
-            🛡️
-          </div>
-          <div>
-            <span className="text-2xl font-black text-slate-800">100%</span>
-            <span className="text-xs font-semibold text-slate-500 block">SLA Compliance Rate</span>
+        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
+          <span className="text-xs text-slate-400 font-semibold">Resolved Today</span>
+          <div className="text-2xl font-black text-emerald-400">
+            {complaints.filter((c) => c.status === 'Resolved').length} Closed
           </div>
         </div>
       </div>
 
-      {/* Tabs Row (Matching Image 5) */}
-      <div className="flex border-b border-slate-200 text-xs font-bold">
-        <button
-          onClick={() => setActiveTab('matrix')}
-          className={`px-5 py-3 border-b-2 transition flex items-center gap-1.5 ${
-            activeTab === 'matrix' ? 'border-sky-600 text-sky-700 bg-white font-extrabold' : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <span>📑</span> Complaints Matrix
-        </button>
-        <button
-          onClick={() => setActiveTab('analytics')}
-          className={`px-5 py-3 border-b-2 transition flex items-center gap-1.5 ${
-            activeTab === 'analytics' ? 'border-sky-600 text-sky-700 bg-white font-extrabold' : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <span>🗺️</span> Heatmap & Analytics
-        </button>
-        <button
-          onClick={() => setActiveTab('fleet')}
-          className={`px-5 py-3 border-b-2 transition flex items-center gap-1.5 ${
-            activeTab === 'fleet' ? 'border-sky-600 text-sky-700 bg-white font-extrabold' : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <span>👥</span> Worker Fleet
-        </button>
+      {/* Interactive Kanban Board */}
+      <div className="space-y-5">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+          <h3 className="text-xl font-black text-white">📋 Live Complaint Workflow Kanban</h3>
+          <span className="text-xs text-slate-500 font-mono bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">Click any card to view XAI Rationale & Resolution Plan</span>
+        </div>
+        <KanbanBoard
+          complaints={complaints}
+          onSelect={setSelected}
+          onStatusChange={handleStatusChange}
+        />
       </div>
 
-      {/* TAB 1: COMPLAINTS MATRIX (Matching Image 5) */}
-      {activeTab === 'matrix' && (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4 p-6">
-          {/* Filters Bar (Matching Image 5) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
-            <input
-              type="text"
-              className="civic-input text-xs col-span-1 lg:col-span-2"
-              placeholder="Search ticket #, title, citizen..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-
-            <select
-              className="civic-input text-xs"
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-            >
-              <option value="All">All Categories</option>
-              <option value="Roads">Roads</option>
-              <option value="Water">Water</option>
-              <option value="Garbage">Garbage</option>
-              <option value="Electrical">Electrical</option>
-            </select>
-
-            <select
-              className="civic-input text-xs"
-              value={priorityFilter}
-              onChange={(e) => setPriorityFilter(e.target.value)}
-            >
-              <option value="All">All Priorities</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-
-            <button
-              onClick={() => { setSearchQuery(''); setCategoryFilter('All'); setPriorityFilter('All'); }}
-              className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-xl border border-slate-300 transition flex items-center justify-center gap-1"
-            >
-              <span>🔄</span> Refresh
-            </button>
-          </div>
-
-          {/* Table (Matching Image 5) */}
-          <div className="overflow-x-auto pt-2">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-                <tr>
-                  <th className="p-3.5">Ticket ID</th>
-                  <th className="p-3.5">Citizen</th>
-                  <th className="p-3.5">Category</th>
-                  <th className="p-3.5">Priority</th>
-                  <th className="p-3.5">AI Confidence</th>
-                  <th className="p-3.5">Status</th>
-                  <th className="p-3.5">Assigned Worker</th>
-                  <th className="p-3.5 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-800 font-medium">
-                {reports.map((rep) => (
-                  <tr key={rep.id} className="hover:bg-slate-50 transition">
-                    <td className="p-3.5 font-bold text-sky-700">{rep.id}</td>
-                    <td className="p-3.5 font-semibold">{rep.citizen}</td>
-                    <td className="p-3.5 text-slate-600">{rep.category}</td>
-                    <td className="p-3.5">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${rep.priority === 'High' ? 'badge-high' : 'badge-medium'}`}>
-                        {rep.priority}
-                      </span>
-                    </td>
-                    <td className="p-3.5 text-slate-600 font-mono">{rep.confidence}</td>
-                    <td className="p-3.5">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${rep.status === 'Resolved' ? 'badge-resolved' : rep.status === 'In Progress' ? 'badge-progress' : 'badge-pending'}`}>
-                        {rep.status}
-                      </span>
-                    </td>
-                    <td className="p-3.5 font-semibold text-slate-700">{rep.worker}</td>
-                    <td className="p-3.5 text-right">
-                      <select
-                        onChange={(e) => handleAssignWorker(rep.id, e.target.value)}
-                        defaultValue=""
-                        className="bg-slate-100 border border-slate-200 rounded-lg text-[10px] font-bold px-2 py-1 outline-none cursor-pointer"
-                      >
-                        <option value="" disabled>Dispatch Worker...</option>
-                        {workers.map(w => (
-                          <option key={w.id} value={w.name}>{w.name}</option>
-                        ))}
-                      </select>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 2: ANALYTICS PREVIEW */}
-      {activeTab === 'analytics' && (
-        <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center space-y-3">
-          <span className="text-4xl block">🗺️</span>
-          <h3 className="text-xl font-bold text-slate-800">Spatial Hotspot Heatmap & Ward Telemetry</h3>
-          <p className="text-xs text-slate-500 max-w-lg mx-auto">
-            Live telemetry tracking infrastructure degradation across Ward 12, Ward 5, and Ward 7.
-          </p>
-        </div>
-      )}
-
-      {/* TAB 3: WORKER FLEET */}
-      {activeTab === 'fleet' && (
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-4">
-          <h3 className="text-lg font-bold text-slate-800">Municipal Field Worker Fleet</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {workers.map(w => (
-              <div key={w.id} className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2 text-xs font-medium">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-sky-700">{w.id}</span>
-                  <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-bold">{w.status}</span>
-                </div>
-                <h4 className="font-bold text-slate-800 text-sm">{w.name}</h4>
-                <p className="text-slate-600">{w.skill}</p>
-                <p className="text-slate-500 font-mono">{w.phone}</p>
-              </div>
-            ))}
-          </div>
+      {/* Selected Complaint Inspection Box */}
+      {selected && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+          <ResolutionCopilot />
+          <XAIPanel xaiData={selected.xaiData || { confidence: 95, reasoning: ['Matched road hazard keywords'] }} />
         </div>
       )}
     </div>
