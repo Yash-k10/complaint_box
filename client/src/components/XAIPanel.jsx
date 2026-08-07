@@ -1,0 +1,2 @@
+import React from 'react';
+export default function XAIPanel({ xaiData }) { if(!xaiData) return null; return (<div className='bg-slate-800 p-6 rounded-2xl border border-cyan-500/40 space-y-4'><div className='flex justify-between border-b border-slate-700 pb-3'><h3 className='text-lg font-bold text-cyan-400'>🧠 Explainable AI</h3><span className='bg-cyan-500/20 text-cyan-400 text-xs px-3 py-1 rounded-full'>{xaiData.confidence}% Confidence</span></div><ul className='list-disc list-inside text-xs text-slate-400'>{xaiData.reasoning?.map((r,i)=><li key={i}>{r}</li>)}</ul></div>); }
