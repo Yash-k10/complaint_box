@@ -4,6 +4,7 @@ import KanbanBoard from '../components/KanbanBoard';
 import SLATimer from '../components/SLATimer';
 import ResolutionCopilot from '../components/ResolutionCopilot';
 import XAIPanel from '../components/XAIPanel';
+import { ShieldCheck, LayoutDashboard, Clock, AlertCircle } from 'lucide-react';
 
 const FALLBACK_MOCK = [
   {
@@ -84,72 +85,81 @@ export default function OfficerDashboard() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 md:px-10 py-12 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Page Header */}
-      <div className="bg-slate-800/80 p-8 md:p-10 rounded-3xl border border-slate-700/60 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3 text-xs font-bold text-lime-accent uppercase tracking-widest">
+      <div className="bg-white p-6 md:p-8 rounded-2xl border border-emerald-100 shadow-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <span>OFFICER TRIAGE DASHBOARD</span>
-            <span className="text-slate-600">•</span>
+            <span className="text-emerald-300">•</span>
             <span>WARD 12 JURISDICTION</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-black text-white flex items-center gap-3">
-            👮 Municipal Operations Control
+          <h1 className="text-2xl md:text-3xl font-extrabold text-emerald-950 flex items-center gap-2.5">
+            <LayoutDashboard className="w-7 h-7 text-emerald-600" />
+            <span>Municipal Operations Command</span>
           </h1>
-          <p className="text-slate-400 text-sm">
+          <p className="text-emerald-800 text-xs md:text-sm">
             Er. Rajesh Sharma • Head Officer, Roads & Infrastructure Department
           </p>
         </div>
 
-        <SLATimer hoursRemaining={34} totalHours={48} />
-      </div>
-
-      {/* KPI Stats Bar */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
-          <span className="text-xs text-slate-400 font-semibold">Total Complaints</span>
-          <div className="text-2xl font-black text-white">{complaints.length} Active</div>
-        </div>
-        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
-          <span className="text-xs text-slate-400 font-semibold">New Unassigned</span>
-          <div className="text-2xl font-black text-cyan-400">
-            {complaints.filter((c) => c.status === 'New').length} Tickets
-          </div>
-        </div>
-        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
-          <span className="text-xs text-slate-400 font-semibold">In Progress</span>
-          <div className="text-2xl font-black text-amber-400">
-            {complaints.filter((c) => c.status === 'In Progress').length} Active
-          </div>
-        </div>
-        <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-2 shadow-xl">
-          <span className="text-xs text-slate-400 font-semibold">Resolved Today</span>
-          <div className="text-2xl font-black text-emerald-400">
-            {complaints.filter((c) => c.status === 'Resolved').length} Closed
-          </div>
+        <div className="w-full md:w-auto">
+          <SLATimer hoursRemaining={34} totalHours={48} />
         </div>
       </div>
 
-      {/* Interactive Kanban Board */}
-      <div className="space-y-5">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-          <h3 className="text-xl font-black text-white">📋 Live Complaint Workflow Kanban</h3>
-          <span className="text-xs text-slate-500 font-mono bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">Click any card to view XAI Rationale & Resolution Plan</span>
-        </div>
-        <KanbanBoard
-          complaints={complaints}
-          onSelect={setSelected}
-          onStatusChange={handleStatusChange}
-        />
-      </div>
+      {/* Main Grid: Kanban Triage Board + Detail Inspector Panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Left Column: Interactive Kanban Triage Board (2 Cols) */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="flex justify-between items-center px-1">
+            <h2 className="text-lg font-bold text-emerald-950 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-emerald-600" />
+              <span>Grievance Triage Kanban Board</span>
+            </h2>
+            <span className="text-xs text-emerald-800 font-medium">Click card to inspect AI Copilot specs</span>
+          </div>
 
-      {/* Selected Complaint Inspection Box */}
-      {selected && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-          <ResolutionCopilot />
-          <XAIPanel xaiData={selected.xaiData || { confidence: 95, reasoning: ['Matched road hazard keywords'] }} />
+          <KanbanBoard
+            complaints={complaints}
+            onSelect={(c) => setSelected(c)}
+            onStatusChange={handleStatusChange}
+          />
         </div>
-      )}
+
+        {/* Right Column: Selected Ticket Inspector Panel (XAI + Resolution Copilot) */}
+        <div className="space-y-6">
+          {selected ? (
+            <>
+              {/* Selected Ticket Summary Badge */}
+              <div className="bg-white p-5 rounded-2xl border border-emerald-100 space-y-2 shadow-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
+                    {selected.complaintId}
+                  </span>
+                  <span className="text-xs font-bold text-emerald-950 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-100">
+                    {selected.category}
+                  </span>
+                </div>
+                <h3 className="font-extrabold text-emerald-950 text-sm">{selected.title}</h3>
+                <p className="text-xs text-emerald-800">{selected.description}</p>
+              </div>
+
+              {/* Explainable AI Rationale Panel */}
+              <XAIPanel xaiData={selected.xaiData} />
+
+              {/* AI Resolution Copilot Engine */}
+              <ResolutionCopilot />
+            </>
+          ) : (
+            <div className="bg-white p-8 rounded-2xl border border-emerald-100 text-center space-y-2">
+              <AlertCircle className="w-8 h-8 text-emerald-400 mx-auto" />
+              <p className="text-xs text-emerald-800">Select any grievance card on the left to inspect AI Copilot recommendations.</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

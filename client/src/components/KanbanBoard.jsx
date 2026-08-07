@@ -1,13 +1,14 @@
 import React from 'react';
 import KanbanCard from './KanbanCard';
+import { Users, Award, ShieldCheck } from 'lucide-react';
 
 const COLS = ['New', 'Assigned', 'In Progress', 'Resolved'];
 
 const COL_STYLES = {
-  'New': 'border-cyan-500/30',
-  'Assigned': 'border-amber-500/30',
-  'In Progress': 'border-blue-500/30',
-  'Resolved': 'border-emerald-500/30'
+  'New': 'border-emerald-200 bg-emerald-50/30',
+  'Assigned': 'border-amber-200 bg-amber-50/20',
+  'In Progress': 'border-emerald-300 bg-emerald-50/50',
+  'Resolved': 'border-teal-200 bg-teal-50/30'
 };
 
 export default function KanbanBoard({ complaints = [], onSelect, onStatusChange }) {
@@ -16,51 +17,56 @@ export default function KanbanBoard({ complaints = [], onSelect, onStatusChange 
       {/* Top Differentiators Bar */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Innovation 6: Community Coalition */}
-        <div className="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/80 flex items-center justify-between text-xs font-mono">
+        <div className="bg-white p-4 rounded-2xl border border-emerald-100 flex items-center justify-between text-xs shadow-xs">
           <div className="flex items-center gap-3">
-            <span className="text-xl">👥</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+              <Users className="w-5 h-5" />
+            </div>
             <div>
-              <span className="text-slate-400 font-semibold block">Innovation #6: Community Coalition Mode</span>
-              <span className="text-white font-bold">247 Citizens Affected • 12 Reports Auto-Clustered</span>
+              <span className="text-emerald-700 font-semibold block text-[11px]">Community Coalition Clustering</span>
+              <span className="text-emerald-950 font-bold">247 Citizens Affected • 12 Reports Auto-Clustered</span>
             </div>
           </div>
-          <span className="bg-pink-500/20 text-pink-300 border border-pink-500/30 px-2.5 py-1 rounded-full font-bold text-[10px]">
-            Community Petition 🔥
+          <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full font-bold text-[10px]">
+            Petition Verified 🔥
           </span>
         </div>
 
         {/* Innovation 12: Citizen Trust Index */}
-        <div className="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/80 flex items-center justify-between text-xs font-mono">
+        <div className="bg-white p-4 rounded-2xl border border-emerald-100 flex items-center justify-between text-xs shadow-xs">
           <div className="flex items-center gap-3">
-            <span className="text-xl">⭐</span>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+              <Award className="w-5 h-5" />
+            </div>
             <div>
-              <span className="text-slate-400 font-semibold block">Innovation #12: Citizen Trust Index</span>
-              <span className="text-white font-bold">Ward 12 Roads Dept • 92 / 100 Score</span>
+              <span className="text-emerald-700 font-semibold block text-[11px]">Citizen Trust Index Score</span>
+              <span className="text-emerald-950 font-bold">Ward 12 Roads Dept • 92 / 100 Rating</span>
             </div>
           </div>
-          <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-bold text-[10px]">
+          <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full font-bold text-[10px]">
             Top Tier SLA Compliance ✓
           </span>
         </div>
       </div>
 
       {/* Kanban Column Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {COLS.map((col) => (
-          <div
-            key={col}
-            className={`bg-slate-900/60 p-5 rounded-3xl border ${COL_STYLES[col] || 'border-slate-800'} min-h-[320px] space-y-4`}
-          >
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 className="font-extrabold text-white text-sm">{col}</h3>
-              <span className="text-xs font-mono text-slate-500 bg-slate-800 px-2 py-0.5 rounded-lg">
-                {complaints.filter((c) => c.status === col).length}
-              </span>
-            </div>
-            <div className="space-y-4">
-              {complaints
-                .filter((c) => c.status === col)
-                .map((c) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {COLS.map((col) => {
+          const colComplaints = complaints.filter((c) => c.status === col);
+
+          return (
+            <div
+              key={col}
+              className={`p-4 rounded-2xl border ${COL_STYLES[col] || 'border-emerald-100 bg-white'} min-h-[340px] space-y-3 shadow-xs`}
+            >
+              <div className="flex items-center justify-between pb-2 border-b border-emerald-100">
+                <h3 className="font-extrabold text-emerald-950 text-xs uppercase tracking-wider">{col}</h3>
+                <span className="text-[11px] font-mono font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-lg border border-emerald-200">
+                  {colComplaints.length}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {colComplaints.map((c) => (
                   <KanbanCard
                     key={c.complaintId}
                     complaint={c}
@@ -68,9 +74,10 @@ export default function KanbanBoard({ complaints = [], onSelect, onStatusChange 
                     onStatusChange={onStatusChange}
                   />
                 ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

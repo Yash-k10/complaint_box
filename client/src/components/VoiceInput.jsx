@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Mic, Volume2, CheckCircle2 } from 'lucide-react';
 
 const PRESET_TRANSCRIPTS = [
   { lang: 'EN', text: "Severe road pothole near ABC School in Ward 12 causing traffic accidents." },
@@ -39,49 +40,54 @@ export default function VoiceInput({ onTranscript }) {
   };
 
   return (
-    <div className="bg-slate-800/80 p-6 rounded-3xl border border-slate-700/60 space-y-5 shadow-xl">
+    <div className="bg-white p-6 rounded-2xl border border-emerald-100 space-y-4 shadow-xs">
       {/* Record Button */}
       <div className="flex items-center gap-4">
         <button
           type="button"
           onClick={startListening}
-          className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm transition ${
-            listening ? 'bg-red-600 text-white animate-pulse' : 'bg-lime-accent text-slate-900 hover:opacity-90'
+          className={`btn-emerald text-xs py-2.5 px-5 ${
+            listening ? 'bg-red-600 animate-pulse' : ''
           }`}
         >
-          🎤 {listening ? 'Listening...' : 'Start Voice Input'}
+          <Mic className={`w-4 h-4 ${listening ? 'animate-bounce' : ''}`} />
+          <span>{listening ? 'Listening...' : 'Start Voice Recording'}</span>
         </button>
         {listening && (
           <span className="flex gap-2 items-center">
-            <span className="w-2.5 h-2.5 bg-red-400 rounded-full animate-ping" />
-            <span className="text-xs text-red-400 font-mono font-bold">Recording audio...</span>
+            <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-ping" />
+            <span className="text-xs text-red-600 font-bold">Recording audio...</span>
           </span>
         )}
       </div>
 
       {/* Preset Simulation Buttons */}
-      <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-slate-700/60">
-        <span className="text-xs text-slate-400 font-semibold">Demo Voice Presets:</span>
+      <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-emerald-100">
+        <span className="text-xs text-emerald-800 font-semibold">Demo Voice Presets:</span>
         {PRESET_TRANSCRIPTS.map((preset, idx) => (
           <button
             key={idx}
             type="button"
             onClick={() => handleSimulate(preset.text)}
-            className="text-xs bg-slate-700/80 hover:bg-slate-600 text-cyan-300 px-4 py-2 rounded-xl transition font-medium border border-slate-600/60"
+            className="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-xl transition font-medium border border-emerald-200 flex items-center gap-1"
           >
-            🗣️ {preset.lang}: "{preset.text.substring(0, 22)}..."
+            <Volume2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span>{preset.lang}: "{preset.text.substring(0, 24)}..."</span>
           </button>
         ))}
       </div>
 
       {/* Real-time Transcript Box */}
       {transcript && (
-        <div className="bg-slate-900/90 p-5 rounded-2xl border border-cyan-500/30 text-xs font-mono space-y-2">
-          <div className="flex justify-between text-cyan-400 font-bold">
-            <span>🎙️ Audio Transcript Output</span>
-            <span className="text-[10px] text-slate-500">Auto-filled ✓</span>
+        <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-200 text-xs font-mono space-y-1">
+          <div className="flex justify-between items-center text-emerald-900 font-bold font-sans">
+            <span className="flex items-center gap-1">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Audio Transcript Output</span>
+            </span>
+            <span className="text-[10px] bg-emerald-100 px-2 py-0.5 rounded text-emerald-800">Auto-filled ✓</span>
           </div>
-          <p className="text-slate-200 leading-relaxed">{transcript}</p>
+          <p className="text-emerald-950 font-sans leading-relaxed pt-1">{transcript}</p>
         </div>
       )}
     </div>

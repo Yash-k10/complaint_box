@@ -1,46 +1,59 @@
 import React from 'react';
+import { ShieldCheck, Lock, Camera, CheckCircle2 } from 'lucide-react';
 
 export default function PrivacyShield() {
   return (
-    <div className="bg-slate-800/80 p-6 rounded-3xl border border-emerald-500/40 shadow-xl space-y-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-2xl shrink-0 shadow-inner">
-            🛡️
+    <div className="bg-white p-6 rounded-2xl border border-emerald-100 space-y-4 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-emerald-100">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
+            <ShieldCheck className="w-5 h-5 text-emerald-600" />
           </div>
-          <div>
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
-              <span>INNOVATION PILLAR #10</span>
-              <span>•</span>
-              <span>PRIVACY-BY-DESIGN</span>
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 uppercase tracking-wider">
+              <span>PRIVACY-BY-DESIGN SHIELD</span>
             </div>
-            <h4 className="font-extrabold text-white text-lg">Constitutional AI Safety Shield Active</h4>
-            <p className="text-xs text-slate-300">Auto PII Redaction, Face Blurring, Aadhaar Masking & Doxxing Quarantine Filter</p>
+            <h4 className="font-extrabold text-emerald-950 text-base">Constitutional AI Safety Shield Active</h4>
           </div>
         </div>
 
-        <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3.5 py-1.5 rounded-full font-mono font-bold shrink-0">
+        <span className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 rounded-full font-bold shrink-0">
           100% Compliant ✓
         </span>
       </div>
 
       {/* Safety Specs Badges */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 text-[11px] font-mono">
-        <div className="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700 text-slate-300">
-          <span className="text-emerald-400 font-bold block">🔒 PII Masking</span>
-          <span>Aadhaar & Phone Auto Redacted</span>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+        <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1">
+          <span className="text-emerald-800 font-bold block flex items-center gap-1">
+            <Lock className="w-3.5 h-3.5 text-emerald-600" />
+            <span>PII Masking</span>
+          </span>
+          <span className="text-emerald-900 text-[11px]">Aadhaar & Phone Auto Redacted</span>
         </div>
-        <div className="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700 text-slate-300">
-          <span className="text-emerald-400 font-bold block">📷 Face Blur AI</span>
-          <span>YOLO Face & License Plate Blur</span>
+
+        <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1">
+          <span className="text-emerald-800 font-bold block flex items-center gap-1">
+            <Camera className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Face Blur AI</span>
+          </span>
+          <span className="text-emerald-900 text-[11px]">YOLO Face & License Plate Blur</span>
         </div>
-        <div className="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700 text-slate-300">
-          <span className="text-emerald-400 font-bold block">⚡ Doxxing Shield</span>
-          <span>Targeting & Personal Info Blocked</span>
+
+        <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1">
+          <span className="text-emerald-800 font-bold block flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Doxxing Shield</span>
+          </span>
+          <span className="text-emerald-900 text-[11px]">Targeting Info Blocked</span>
         </div>
-        <div className="bg-slate-900/90 p-2.5 rounded-xl border border-slate-700 text-slate-300">
-          <span className="text-emerald-400 font-bold block">📄 Safety Audit Log</span>
-          <span>Quarantine Log Hash Recorded</span>
+
+        <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1">
+          <span className="text-emerald-800 font-bold block flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Safety Audit Log</span>
+          </span>
+          <span className="text-emerald-900 text-[11px]">Quarantine Hash Recorded</span>
         </div>
       </div>
     </div>

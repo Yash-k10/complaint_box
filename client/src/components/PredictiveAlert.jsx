@@ -1,60 +1,67 @@
 import React from 'react';
+import { AlertTriangle, CloudRain, Sparkles, ShieldCheck } from 'lucide-react';
 
 export default function PredictiveAlert() {
   return (
-    <div className="bg-amber-950/30 border border-amber-500/40 p-6 md:p-8 rounded-3xl space-y-6 shadow-2xl">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-2xl shrink-0 shadow-inner">
-            ⚠️
+    <div className="bg-amber-50/80 border border-amber-200 p-6 md:p-8 rounded-2xl space-y-5 shadow-xs">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-amber-200">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold shrink-0">
+            <AlertTriangle className="w-5 h-5 text-amber-600" />
           </div>
-          <div>
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
-              <span>INNOVATION PILLAR #2 & #8</span>
-              <span>•</span>
-              <span>PREDICTIVE CIVIC INTELLIGENCE</span>
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2 text-xs font-bold text-amber-900 uppercase tracking-wider">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
+              <span>PREDICTIVE INFRASTRUCTURE INTELLIGENCE</span>
             </div>
-            <h4 className="font-extrabold text-white text-xl">Predictive Infrastructure & Policy Intelligence Alert</h4>
-            <p className="text-xs text-slate-300">AI predicts failure hotspots before citizens complain & suggests capital budget allocation</p>
+            <h4 className="font-extrabold text-emerald-950 text-lg">
+              Monsoon Failure Hotspot & Policy Alert
+            </h4>
           </div>
         </div>
 
-        <span className="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3.5 py-1.5 rounded-full font-mono font-bold shrink-0">
+        <span className="text-xs bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1 rounded-full font-bold shrink-0">
           Monsoon Risk Score: High (88%)
         </span>
       </div>
 
       {/* Grid of Predictive Insights */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
-        {/* Insight 1 */}
-        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-700 space-y-2">
-          <div className="flex justify-between text-amber-400 font-bold">
-            <span>🌧️ Weather & Infra Age Sync</span>
-            <span>Ward 5</span>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div className="bg-white p-4 rounded-xl border border-amber-200 space-y-1.5 shadow-xs">
+          <div className="flex justify-between items-center text-amber-900 font-bold">
+            <span className="flex items-center gap-1">
+              <CloudRain className="w-4 h-4 text-amber-600" />
+              <span>Weather & Infra Sync</span>
+            </span>
+            <span className="text-[10px] bg-amber-50 px-2 py-0.5 rounded">Ward 5</span>
           </div>
-          <p className="text-slate-300 text-[11px] leading-relaxed">
+          <p className="text-emerald-900 text-[11px] leading-relaxed">
             3-Day heavy rain forecast + 8-yr drainage pipe age. AI has auto-scheduled pre-emptive clearance before 40+ complaints occur.
           </p>
         </div>
 
-        {/* Insight 2 */}
-        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-700 space-y-2">
-          <div className="flex justify-between text-cyan-400 font-bold">
-            <span>💡 AI Policy Advisor</span>
-            <span>Capital Upgrade</span>
+        <div className="bg-white p-4 rounded-xl border border-amber-200 space-y-1.5 shadow-xs">
+          <div className="flex justify-between items-center text-emerald-900 font-bold">
+            <span className="flex items-center gap-1">
+              <Sparkles className="w-4 h-4 text-emerald-600" />
+              <span>AI Capital Policy Advisor</span>
+            </span>
+            <span className="text-[10px] bg-emerald-50 px-2 py-0.5 rounded">Capital Upgrade</span>
           </div>
-          <p className="text-slate-300 text-[11px] leading-relaxed">
+          <p className="text-emerald-900 text-[11px] leading-relaxed">
             Recommends allocating ₹18 Lakh for Ward 7 mainline resurfacing instead of 34 repeated pothole patches. Projected 48% complaint drop.
           </p>
         </div>
 
-        {/* Insight 3 */}
-        <div className="bg-slate-900/90 p-4 rounded-2xl border border-slate-700 space-y-2">
-          <div className="flex justify-between text-emerald-400 font-bold">
-            <span>🌐 Federated City Network</span>
-            <span>Multi-City Brain</span>
+        <div className="bg-white p-4 rounded-xl border border-amber-200 space-y-1.5 shadow-xs">
+          <div className="flex justify-between items-center text-emerald-900 font-bold">
+            <span className="flex items-center gap-1">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <span>Multi-City Brain Sync</span>
+            </span>
+            <span className="text-[10px] bg-emerald-50 px-2 py-0.5 rounded">Nagpur + Pune</span>
           </div>
-          <p className="text-slate-300 text-[11px] leading-relaxed">
+          <p className="text-emerald-900 text-[11px] leading-relaxed">
             Privacy-preserving AI trained across Nagpur, Pune & Bengaluru. Instant pattern transfer for waterlogging mitigation.
           </p>
         </div>

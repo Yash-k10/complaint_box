@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import TrackingTimeline from '../components/TrackingTimeline';
 import XAIPanel from '../components/XAIPanel';
 import BlockchainAudit from '../components/BlockchainAudit';
+import { ArrowLeft, ShieldCheck, ThumbsUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 const SAMPLE_DETAIL = {
   complaintId: 'CMP-2026-001',
@@ -12,7 +13,7 @@ const SAMPLE_DETAIL = {
   urgency: 'High Priority',
   status: 'In Progress',
   wardId: 12,
-  wardName: 'Ward 12 - Laxmi Nagar',
+  wardName: 'Laxmi Nagar, Ward 12, Nagpur',
   department: 'Roads & Infrastructure Department',
   assignedOfficer: 'Er. Rajesh Sharma',
   upvotes: 24,
@@ -34,10 +35,9 @@ const SAMPLE_DETAIL = {
 
 export default function ComplaintPage() {
   const { id } = useParams();
-  const [complaint] = useState(SAMPLE_DETAIL);
+  const [complaint] = useState({ ...SAMPLE_DETAIL, complaintId: id || SAMPLE_DETAIL.complaintId });
   const [upvotes, setUpvotes] = useState(complaint.upvotes);
   const [hasUpvoted, setHasUpvoted] = useState(false);
-  const [appealSent, setAppealSent] = useState(false);
 
   const handleEndorse = () => {
     if (!hasUpvoted) {
@@ -47,119 +47,92 @@ export default function ComplaintPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Back Navigation */}
       <div className="flex justify-between items-center">
-        <Link to="/track" className="text-xs text-lime-accent font-bold hover:underline flex items-center gap-1">
-          ← Back to Complaint Search
+        <Link to="/track" className="text-xs font-bold text-emerald-700 hover:underline flex items-center gap-1.5">
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Grievance Search</span>
         </Link>
-        <span className="text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full border border-slate-700 font-mono">
-          Figma Node 52-2 Standard View
+        <span className="text-xs bg-emerald-50 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200 font-bold flex items-center gap-1">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span>SHA-256 Audit Active</span>
         </span>
       </div>
 
-      {/* Main Complaint Header Card (Figma Style) */}
-      <div className="bg-slate-800 p-8 rounded-3xl border border-slate-700 shadow-2xl space-y-6">
-        <div className="flex flex-wrap justify-between items-start gap-4 pb-4 border-b border-slate-700">
-          <div className="space-y-1">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold bg-lime-accent text-slate-900 px-3 py-1 rounded-lg">
+      {/* Main Complaint Detail Header Card */}
+      <div className="bg-white p-6 md:p-8 rounded-2xl border border-emerald-100 shadow-xs space-y-6">
+        <div className="flex flex-wrap justify-between items-start gap-4 pb-4 border-b border-emerald-100">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-mono font-bold bg-emerald-600 text-white px-3 py-1 rounded-lg shadow-xs">
                 {complaint.complaintId}
               </span>
-              <span className="bg-red-500/20 text-red-400 border border-red-500/40 text-xs font-bold px-3 py-1 rounded-full">
-                🚨 {complaint.urgency}
+              <span className="bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+                <span>{complaint.urgency}</span>
               </span>
-              <span className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-xs font-bold px-3 py-1 rounded-full">
-                ⚙️ {complaint.status}
+              <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{complaint.status}</span>
               </span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-white pt-2">{complaint.title}</h1>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-emerald-950 pt-1">{complaint.title}</h1>
           </div>
 
           <button
             onClick={handleEndorse}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg ${
-              hasUpvoted ? 'bg-lime-accent text-slate-900' : 'bg-slate-700 hover:bg-slate-600 text-white'
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-xs ${
+              hasUpvoted
+                ? 'bg-emerald-600 text-white'
+                : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
             }`}
           >
-            👍 {upvotes} {hasUpvoted ? 'Community Endorsed' : 'Endorse Issue'}
+            <ThumbsUp className="w-4 h-4" />
+            <span>{upvotes} {hasUpvoted ? 'Community Endorsed' : 'Endorse Issue'}</span>
           </button>
         </div>
 
         {/* Metadata Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-700 space-y-1">
-            <span className="text-slate-400 font-medium block">Category</span>
-            <span className="font-bold text-white text-sm">🛣️ {complaint.category}</span>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 space-y-1">
+            <span className="text-emerald-700 font-medium block">Category</span>
+            <span className="font-bold text-emerald-950">{complaint.category}</span>
           </div>
 
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-700 space-y-1">
-            <span className="text-slate-400 font-medium block">Location Jurisdiction</span>
-            <span className="font-bold text-white text-sm">📍 {complaint.wardName}</span>
+          <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 space-y-1">
+            <span className="text-emerald-700 font-medium block">Reported Location</span>
+            <span className="font-bold text-emerald-950 truncate block">{complaint.wardName}</span>
           </div>
 
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-700 space-y-1">
-            <span className="text-slate-400 font-medium block">Assigned Department</span>
-            <span className="font-bold text-cyan-400 text-sm">{complaint.department}</span>
+          <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 space-y-1">
+            <span className="text-emerald-700 font-medium block">Assigned Officer</span>
+            <span className="font-bold text-emerald-800">{complaint.assignedOfficer}</span>
           </div>
 
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-700 space-y-1">
-            <span className="text-slate-400 font-medium block">Assigned Officer</span>
-            <span className="font-bold text-amber-400 text-sm">👤 {complaint.assignedOfficer}</span>
+          <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 space-y-1">
+            <span className="text-emerald-700 font-medium block">Resolution ETA</span>
+            <span className="font-bold text-emerald-950">{complaint.estimatedCompletion}</span>
           </div>
         </div>
 
-        {/* Issue Description */}
-        <div className="bg-slate-900/60 p-5 rounded-2xl border border-slate-700/80 space-y-2">
-          <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Resident Complaint Statement</h4>
-          <p className="text-sm text-slate-200 leading-relaxed">{complaint.description}</p>
+        {/* Description Box */}
+        <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 space-y-1 text-xs">
+          <span className="text-emerald-800 font-semibold block uppercase text-[11px]">Detailed Description:</span>
+          <p className="text-emerald-950 leading-relaxed">{complaint.description}</p>
         </div>
 
         {/* 5-Step Visual Tracking Timeline */}
-        <div className="pt-4 border-t border-slate-700 space-y-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-base font-bold text-white">📡 Live Workflow Tracking Progress</h3>
-            <span className="text-xs text-cyan-400 font-mono">Estimated Completion: {complaint.estimatedCompletion}</span>
-          </div>
+        <div className="pt-2">
+          <span className="text-xs font-bold text-emerald-950 block mb-2">5-Step Live Tracking Status:</span>
           <TrackingTimeline currentStep={3} />
         </div>
       </div>
 
-      {/* Explainable AI Rationale */}
-      <XAIPanel xaiData={complaint.xaiData} />
-
-      {/* SHA-256 Blockchain Audit Trail */}
-      <BlockchainAudit hash={complaint.blockchainHash} />
-
-      {/* Resident Action Toolbar (Figma Node 52-2 Buttons) */}
-      <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex flex-wrap justify-between items-center gap-4 shadow-xl">
-        <div className="space-y-1">
-          <h4 className="text-sm font-bold text-white">Resident Governance Options</h4>
-          <p className="text-xs text-slate-400">Need to update information or request supervisor appeal?</p>
-        </div>
-
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => alert('Evidence update form opened!')}
-            className="bg-slate-700 hover:bg-slate-600 text-xs font-bold text-white px-4 py-2.5 rounded-xl transition"
-          >
-            📷 Add Evidence / Photo
-          </button>
-
-          <button
-            onClick={() => {
-              setAppealSent(true);
-              alert('Appeal submitted! Escalated to Ward Supervisor review queue.');
-            }}
-            className={`text-xs font-bold px-4 py-2.5 rounded-xl transition ${
-              appealSent
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                : 'bg-amber-600 hover:bg-amber-500 text-white'
-            }`}
-          >
-            ⚖️ {appealSent ? 'Appeal Under Supervisor Review' : 'Request Human Appeal'}
-          </button>
-        </div>
+      {/* Grid: XAI Panel + Blockchain Audit */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <XAIPanel xaiData={complaint.xaiData} />
+        <BlockchainAudit hash={complaint.blockchainHash} />
       </div>
     </div>
   );

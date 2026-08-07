@@ -1,255 +1,191 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import {
+  ShieldCheck,
+  Home,
+  FileEdit,
+  LayoutDashboard,
+  Building2,
+  BarChart3,
+  LogIn,
+  LogOut,
+  User,
+  Menu,
+  X
+} from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isLightMode, setIsLightMode] = useState(false);
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
 
-  useEffect(() => {
-    if (isLightMode) {
-      document.body.classList.add('light-theme');
-    } else {
-      document.body.classList.remove('light-theme');
-    }
-  }, [isLightMode]);
-
   return (
     <>
       {/* Top Header Navbar */}
-      <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 px-6 lg:px-10 py-3.5 flex justify-between items-center shadow-xl">
+      <nav className="bg-white/95 backdrop-blur-md border-b border-emerald-100 sticky top-0 z-50 px-4 lg:px-8 py-3 flex justify-between items-center shadow-xs transition-colors">
         {/* Brand Logo */}
-        <Link to="/" className="text-lg lg:text-xl font-black tracking-tight text-white flex items-center gap-2.5 shrink-0">
-          <span className="w-9 h-9 rounded-xl bg-lime-accent text-slate-900 flex items-center justify-center font-black text-sm shadow-md">
-            UF
-          </span>
-          <span className="whitespace-nowrap text-white">
-            UrbanFeedback <span className="text-lime-accent font-extrabold">AI-X</span>
-          </span>
+        <Link to="/" className="text-lg lg:text-xl font-extrabold tracking-tight text-emerald-950 flex items-center gap-2.5 shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black shadow-md shadow-emerald-600/20">
+            <ShieldCheck className="w-6 h-6" />
+          </div>
+          <div className="flex flex-col leading-none">
+            <span className="font-extrabold text-emerald-950 text-base">
+              Urban<span className="text-emerald-600">Feedback</span>
+            </span>
+            <span className="text-[10px] font-bold tracking-wider uppercase text-emerald-700">
+              Community Redressal AI
+            </span>
+          </div>
         </Link>
 
-        {/* Desktop Navigation Links (Spacious, Breathable Layout) */}
-        <div className="navbar-desktop items-center gap-4 lg:gap-6 text-xs font-bold shrink-0">
+        {/* Desktop Navigation Links */}
+        <div className="navbar-desktop items-center gap-1.5 lg:gap-2 text-xs font-semibold shrink-0">
           <Link
             to="/"
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
               isActive('/')
-                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
-                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+                ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200'
+                : 'text-emerald-900 hover:text-emerald-700 hover:bg-emerald-50/50'
             }`}
           >
-            🏠 Overview
+            <Home className="w-4 h-4 text-emerald-600" />
+            <span>Overview</span>
           </Link>
           <Link
             to="/citizen"
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
               isActive('/citizen')
-                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
-                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+                ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200'
+                : 'text-emerald-900 hover:text-emerald-700 hover:bg-emerald-50/50'
             }`}
           >
-            🏡 Resident Intake
+            <FileEdit className="w-4 h-4 text-emerald-600" />
+            <span>Resident Intake</span>
           </Link>
           <Link
             to="/officer"
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
               isActive('/officer')
-                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
-                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+                ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200'
+                : 'text-emerald-900 hover:text-emerald-700 hover:bg-emerald-50/50'
             }`}
           >
-            👮 Officer Dashboard
+            <LayoutDashboard className="w-4 h-4 text-emerald-600" />
+            <span>Officer Dashboard</span>
           </Link>
           <Link
             to="/digital-twin"
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
               isActive('/digital-twin')
-                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
-                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+                ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200'
+                : 'text-emerald-900 hover:text-emerald-700 hover:bg-emerald-50/50'
             }`}
           >
-            🏙️ Digital Twin
+            <Building2 className="w-4 h-4 text-emerald-600" />
+            <span>Digital Twin</span>
           </Link>
           <Link
             to="/analytics"
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
               isActive('/analytics')
-                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
-                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+                ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200'
+                : 'text-emerald-900 hover:text-emerald-700 hover:bg-emerald-50/50'
             }`}
           >
-            📊 Analytics
+            <BarChart3 className="w-4 h-4 text-emerald-600" />
+            <span>Analytics</span>
           </Link>
 
           {/* Right Action Controls Group */}
-          <div className="flex items-center gap-3 pl-4 border-l border-slate-700/80 ml-2">
-            {/* High-Contrast Theme Toggle Switch */}
-            <button
-              type="button"
-              onClick={() => setIsLightMode(!isLightMode)}
-              className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-2 transition shadow-md"
-              title="Toggle Light / Dark Mode"
-            >
-              <span>{isLightMode ? '☀️ Light' : '🌙 Dark'}</span>
-            </button>
-
+          <div className="flex items-center gap-3 pl-3 border-l border-emerald-100 ml-2">
             {user ? (
               <div className="flex items-center gap-2">
-                <span className="bg-slate-800 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5">
-                  <span>{user.role === 'officer' ? '👮' : '👤'}</span>
+                <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{user.name}</span>
                 </span>
                 <button
                   type="button"
                   onClick={logout}
-                  className="bg-red-600 hover:bg-red-500 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs transition shadow"
+                  className="bg-white hover:bg-red-50 text-emerald-800 hover:text-red-600 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-emerald-200 flex items-center gap-1"
                   title="Sign Out"
                 >
-                  🚪 Logout
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Logout</span>
                 </button>
               </div>
             ) : (
               <Link
                 to="/login"
-                className="bg-lime-accent hover:opacity-90 text-slate-900 px-4 py-2 rounded-xl font-black text-xs transition shadow-lg shrink-0"
+                className="btn-emerald text-xs py-2 px-4 shrink-0"
               >
-                🔑 Single Sign-On
+                <LogIn className="w-4 h-4" />
+                <span>Single Sign-On</span>
               </Link>
             )}
           </div>
         </div>
 
-        {/* Mobile & Tablet Toggle Button */}
+        {/* Mobile Toggle Button */}
         <div className="navbar-mobile-toggle items-center gap-2">
           <button
             type="button"
-            onClick={() => setIsLightMode(!isLightMode)}
-            className="bg-slate-800 border border-slate-700 text-white px-2.5 py-1.5 rounded-lg font-bold text-xs flex items-center gap-1"
-          >
-            {isLightMode ? '☀️' : '🌙'}
-          </button>
-          <button
-            type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-white bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 font-bold text-xs flex items-center gap-1"
+            className="p-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200"
           >
-            {mobileMenuOpen ? '✕ Close' : '☰ Menu'}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </nav>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="navbar-mobile-toggle flex-col bg-slate-900 border-b border-slate-800 p-5 space-y-3 font-bold text-sm">
+        <div className="navbar-mobile-toggle flex-col bg-white border-b border-emerald-100 p-4 space-y-2 font-semibold text-sm shadow-lg">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-white hover:text-lime-accent py-2 border-b border-slate-800/80"
+            className="flex items-center gap-2 text-emerald-900 hover:text-emerald-600 py-2 border-b border-emerald-50"
           >
-            🏠 Overview & Hero
+            <Home className="w-4 h-4 text-emerald-600" />
+            <span>Overview</span>
           </Link>
           <Link
             to="/citizen"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-white hover:text-lime-accent py-2 border-b border-slate-800/80"
+            className="flex items-center gap-2 text-emerald-900 hover:text-emerald-600 py-2 border-b border-emerald-50"
           >
-            🏡 Resident Intake & Voice
+            <FileEdit className="w-4 h-4 text-emerald-600" />
+            <span>Resident Intake</span>
           </Link>
           <Link
             to="/officer"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-white hover:text-lime-accent py-2 border-b border-slate-800/80"
+            className="flex items-center gap-2 text-emerald-900 hover:text-emerald-600 py-2 border-b border-emerald-50"
           >
-            👮 Officer Operations Board
+            <LayoutDashboard className="w-4 h-4 text-emerald-600" />
+            <span>Officer Dashboard</span>
           </Link>
           <Link
             to="/digital-twin"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-white hover:text-lime-accent py-2 border-b border-slate-800/80"
+            className="flex items-center gap-2 text-emerald-900 hover:text-emerald-600 py-2 border-b border-emerald-50"
           >
-            🏙️ AI Ward Digital Twin
+            <Building2 className="w-4 h-4 text-emerald-600" />
+            <span>Digital Twin</span>
           </Link>
           <Link
             to="/analytics"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-white hover:text-lime-accent py-2 border-b border-slate-800/80"
+            className="flex items-center gap-2 text-emerald-900 hover:text-emerald-600 py-2"
           >
-            📊 Analytics & Heatmap
+            <BarChart3 className="w-4 h-4 text-emerald-600" />
+            <span>Analytics</span>
           </Link>
-          {user ? (
-            <button
-              onClick={() => {
-                logout();
-                setMobileMenuOpen(false);
-              }}
-              className="w-full bg-red-600 text-white py-2.5 rounded-xl font-black shadow-lg"
-            >
-              🚪 Logout ({user.name})
-            </button>
-          ) : (
-            <Link
-              to="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-center bg-lime-accent text-slate-900 py-2.5 rounded-xl font-black shadow-lg"
-            >
-              🔑 Single Sign-On
-            </Link>
-          )}
         </div>
       )}
-
-      {/* Mobile Bottom Thumb Navigation Bar */}
-      <div className="mobile-bottom-nav fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 z-50 justify-around items-center py-2 px-1 text-[10px] font-bold">
-        <Link
-          to="/"
-          className={`flex flex-col items-center gap-0.5 ${isActive('/') ? 'text-lime-accent font-black' : 'text-white'}`}
-        >
-          <span className="text-base">🏠</span>
-          <span>Home</span>
-        </Link>
-        <Link
-          to="/citizen"
-          className={`flex flex-col items-center gap-0.5 ${isActive('/citizen') ? 'text-lime-accent font-black' : 'text-white'}`}
-        >
-          <span className="text-base">📝</span>
-          <span>Report</span>
-        </Link>
-        <Link
-          to="/officer"
-          className={`flex flex-col items-center gap-0.5 ${isActive('/officer') ? 'text-lime-accent font-black' : 'text-white'}`}
-        >
-          <span className="text-base">📋</span>
-          <span>Board</span>
-        </Link>
-        <Link
-          to="/digital-twin"
-          className={`flex flex-col items-center gap-0.5 ${isActive('/digital-twin') ? 'text-lime-accent font-black' : 'text-white'}`}
-        >
-          <span className="text-base">🏙️</span>
-          <span>Twin</span>
-        </Link>
-        {user ? (
-          <button
-            onClick={logout}
-            className="flex flex-col items-center gap-0.5 text-red-400 font-bold"
-          >
-            <span className="text-base">🚪</span>
-            <span>Logout</span>
-          </button>
-        ) : (
-          <Link
-            to="/login"
-            className={`flex flex-col items-center gap-0.5 ${isActive('/login') ? 'text-lime-accent font-black' : 'text-white'}`}
-          >
-            <span className="text-base">🔑</span>
-            <span>Login</span>
-          </Link>
-        )}
-      </div>
     </>
   );
 }
