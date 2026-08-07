@@ -89,26 +89,39 @@ export default function CitizenVerificationPanel({ complaint, onVerificationUpda
           </h3>
         </div>
 
-        {/* Verification Counter Badge */}
-        <span
-          className={`px-3.5 py-1.5 rounded-full font-bold text-xs flex items-center gap-1.5 border shadow-xs ${
-            isFullyResolved
-              ? 'bg-emerald-600 text-white border-emerald-600'
-              : 'bg-amber-50 text-amber-900 border-amber-300'
-          }`}
-        >
-          {isFullyResolved ? (
-            <>
-              <CheckCircle2 className="w-4 h-4 text-white" />
-              <span>Certified & Resolved (3/3 Verified) ✓</span>
-            </>
-          ) : (
-            <>
-              <AlertCircle className="w-4 h-4 text-amber-600" />
-              <span>Citizen Verifications: {verificationsCount}/{requiredCount} Needed</span>
-            </>
+        {/* Verification Counter & AI Score Badges */}
+        <div className="flex flex-wrap items-center gap-2">
+          {localComp.aiSimilarityScore && (
+            <span className={`px-3 py-1 rounded-full font-bold text-xs flex items-center gap-1 border shadow-xs ${
+              localComp.aiSimilarityScore >= 90
+                ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                : 'bg-amber-100 text-amber-900 border-amber-300'
+            }`}>
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              <span>AI Match: {localComp.aiSimilarityScore}% {localComp.aiSimilarityScore >= 90 ? '(≥90% Auto Passed)' : '(<90% 3 Audit Required)'}</span>
+            </span>
           )}
-        </span>
+
+          <span
+            className={`px-3.5 py-1.5 rounded-full font-bold text-xs flex items-center gap-1.5 border shadow-xs ${
+              isFullyResolved
+                ? 'bg-emerald-600 text-white border-emerald-600'
+                : 'bg-amber-50 text-amber-900 border-amber-300'
+            }`}
+          >
+            {isFullyResolved ? (
+              <>
+                <CheckCircle2 className="w-4 h-4 text-white" />
+                <span>Certified & Resolved (3/3 Verified) ✓</span>
+              </>
+            ) : (
+              <>
+                <AlertCircle className="w-4 h-4 text-amber-600" />
+                <span>Citizen Verifications: {verificationsCount}/{requiredCount} Needed</span>
+              </>
+            )}
+          </span>
+        </div>
       </div>
 
       {/* Admin Photo Proof Box */}

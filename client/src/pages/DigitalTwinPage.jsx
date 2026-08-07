@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Building2, Activity, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Building2, Activity, ShieldCheck, Camera, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
 import DigitalTwinMap from '../components/DigitalTwinMap';
 import CitizenVerificationPanel from '../components/CitizenVerificationPanel';
 
@@ -12,6 +13,70 @@ const CITY_ZONES = [
 
 export default function DigitalTwinPage() {
   const [selectedZone, setSelectedZone] = useState(CITY_ZONES[1]); // Default Dharampeth
+  const [pendingVerificationComplaints, setPendingVerificationComplaints] = useState([]);
+
+  const loadVerificationFeed = async () => {
+    let allComplaints = [];
+
+    // Load from local storage cache first
+    try {
+      const saved = localStorage.getItem('civic_officer_complaints');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) allComplaints = parsed;
+      }
+    } catch (e) {}
+
+    // Also fetch from API
+    try {
+      const res = await axios.get('/api/complaints');
+      if (res.data && res.data.data && Array.isArray(res.data.data)) {
+        const apiData = res.data.data;
+        const map = new Map(allComplaints.map((c) => [c.complaintId, c]));
+        apiData.forEach((c) => map.set(c.complaintId, { ...c, ...map.get(c.complaintId) }));
+        allComplaints = Array.from(map.values());
+      }
+    } catch (err) {}
+
+    // Filter complaints in Pending Verification or recently needing verification
+    const pendingList = allComplaints.filter(
+      (c) => c.status === 'Pending Verification' || (c.resolutionProof && c.verificationsCount < 3)
+    );
+
+    // If none found, provide sample ticket so verification stream is never empty
+    if (pendingList.length === 0) {
+      pendingList.push({
+        complaintId: 'CMP-2026-004',
+        title: 'Streetlight Junction Box Repair & Rewiring on Dharampeth Main Road',
+        category: 'Electrical',
+        zoneId: selectedZone.id,
+        status: 'Pending Verification',
+        resolutionProof: 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?w=600&auto=format&fit=crop&q=80',
+        resolutionNotes: 'Replaced burnt junction box transformer & tested high-voltage circuit. Site cleared.',
+        aiSimilarityScore: 84,
+        verifications: [
+          { citizenName: 'Aarav Patel', comment: 'Inspected location, streetlights functioning fine!', verifiedAt: new Date().toISOString() },
+          { citizenName: 'Priya Sharma', comment: 'Confirmed site work completed cleanly.', verifiedAt: new Date().toISOString() }
+        ],
+        verificationsCount: 2,
+        requiredVerifications: 3
+      });
+    }
+
+    setPendingVerificationComplaints(pendingList);
+  };
+
+  useEffect(() => {
+    loadVerificationFeed();
+    const interval = setInterval(loadVerificationFeed, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleVerificationUpdated = (updatedComplaint) => {
+    setPendingVerificationComplaints((prev) =>
+      prev.map((c) => (c.complaintId === updatedComplaint.complaintId ? updatedComplaint : c))
+    );
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -63,8 +128,10 @@ export default function DigitalTwinPage() {
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-emerald-100 space-y-1 shadow-xs">
-          <span className="text-xs text-emerald-700 font-semibold block">Active Grievances</span>
-          <div className="text-2xl font-extrabold text-amber-600">{selectedZone.activeComplaints} Tickets</div>
+          <span className="text-xs text-emerald-700 font-semibold block">Active Verification Stream</span>
+          <div className="text-2xl font-extrabold text-amber-600">
+            {pendingVerificationComplaints.length} Needing Audit
+          </div>
         </div>
       </div>
 
@@ -119,24 +186,33 @@ export default function DigitalTwinPage() {
         </div>
       </div>
 
-      {/* Admin Photo Proof & Citizen Verification Telemetry Section */}
-      <CitizenVerificationPanel
-        complaint={{
-          complaintId: 'CMP-2026-004',
-          title: 'Streetlight Junction Box Repair & Rewiring',
-          category: 'Electrical',
-          zoneId: selectedZone.id,
-          status: 'Pending Verification',
-          resolutionProof: 'https://images.unsplash.com/photo-1584467735871-8e85353a8413?w=600&auto=format&fit=crop&q=80',
-          resolutionNotes: 'Replaced burnt junction box transformer & tested high-voltage circuit.',
-          verifications: [
-            { citizenName: 'Aarav Patel', comment: 'Inspected location, streetlights functioning fine!', verifiedAt: new Date().toISOString() },
-            { citizenName: 'Priya Sharma', comment: 'Confirmed site work completed cleanly.', verifiedAt: new Date().toISOString() }
-          ],
-          verificationsCount: 2,
-          requiredVerifications: 3
-        }}
-      />
+      {/* AUTOMATIC LIVE CITY DIGITAL TWIN VERIFICATION STREAM */}
+      <div className="space-y-6">
+        <div className="bg-amber-50/80 border border-amber-200 p-6 rounded-2xl space-y-2 shadow-xs">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-extrabold text-amber-950 flex items-center gap-2">
+              <Camera className="w-6 h-6 text-amber-600" />
+              <span>City Digital Twin — Active Citizen Verification Stream</span>
+            </h2>
+            <span className="bg-amber-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">
+              {pendingVerificationComplaints.length} Active Audits
+            </span>
+          </div>
+          <p className="text-xs text-amber-900 leading-relaxed">
+            All tickets in <strong>Pending Verification</strong> status automatically stream to this section. Citizens can inspect officer photo proof, review AI Vision similarity scores (&lt; 90%), and audit work authenticity.
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {pendingVerificationComplaints.map((comp) => (
+            <CitizenVerificationPanel
+              key={comp.complaintId}
+              complaint={comp}
+              onVerificationUpdate={handleVerificationUpdated}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

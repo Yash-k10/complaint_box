@@ -24,6 +24,9 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
   const [notes, setNotes] = useState(SAMPLE_PROOF_PRESETS[0].desc);
   const [loading, setLoading] = useState(false);
   const [customFile, setCustomFile] = useState(null);
+  
+  // AI Vision Similarity Score state (Default 94% for presets, custom uploaded gets 84% or selectable)
+  const [aiSimilarityScore, setAiSimilarityScore] = useState(94);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -32,6 +35,8 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoUrl(reader.result);
+        // Custom upload defaults to 84% AI similarity to test citizen verification threshold (<90%)
+        setAiSimilarityScore(84);
       };
       reader.readAsDataURL(file);
     }
@@ -44,12 +49,18 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
       return;
     }
     setLoading(true);
+
+    const isAutoVerified = aiSimilarityScore >= 90;
+    const finalStatus = isAutoVerified ? 'Verified & Resolved' : 'Pending Verification';
+
     await onSubmitResolution({
       complaintId: complaint.complaintId,
       resolutionProof: photoUrl,
       resolutionNotes: notes,
-      status: 'Pending Verification'
+      aiSimilarityScore,
+      status: finalStatus
     });
+
     setLoading(false);
   };
 
@@ -159,16 +170,61 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
             />
           </div>
 
-          {/* Explanation Banner */}
-          <div className="bg-amber-50 border border-amber-200 p-3 rounded-2xl text-[11px] text-amber-900 space-y-1">
-            <div className="flex items-center gap-1.5 font-bold text-amber-950">
-              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>3-Citizen Verification Protocol Triggered</span>
+          {/* AI Image Similarity Match Analysis Bar */}
+          <div className="bg-emerald-50/70 border border-emerald-200 p-3.5 rounded-2xl space-y-2 text-xs">
+            <div className="flex justify-between items-center">
+              <span className="font-extrabold text-emerald-950 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>AI Photo Similarity Match Score:</span>
+              </span>
+              <span className={`font-mono font-extrabold px-2.5 py-0.5 rounded-lg text-xs ${
+                aiSimilarityScore >= 90
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-amber-500 text-white shadow-xs'
+              }`}>
+                {aiSimilarityScore}% Match
+              </span>
             </div>
-            <p className="leading-relaxed">
-              Submitting photo proof will update status to <strong>"Pending Verification"</strong> and sync live telemetry with the <strong>AI City Digital Twin</strong>. Final resolution is certified once 3 citizens verify.
-            </p>
+
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min="70"
+                max="98"
+                value={aiSimilarityScore}
+                onChange={(e) => setAiSimilarityScore(Number(e.target.value))}
+                className="w-full accent-emerald-600 cursor-pointer h-2 bg-emerald-200 rounded-lg"
+              />
+            </div>
+
+            <div className="text-[10.5px] font-medium text-emerald-900 flex justify-between">
+              <span>Threshold Rule:</span>
+              <span>≥ 90% = Auto Verified & Completed | &lt; 90% = 3-Citizen Verification</span>
+            </div>
           </div>
+
+          {/* Dynamic Explanation Banner */}
+          {aiSimilarityScore >= 90 ? (
+            <div className="bg-emerald-50 border border-emerald-300 p-3 rounded-2xl text-[11px] text-emerald-950 space-y-1">
+              <div className="flex items-center gap-1.5 font-extrabold text-emerald-900">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>AI Similarity Score High ({aiSimilarityScore}% ≥ 90%) — Direct Verification</span>
+              </div>
+              <p className="leading-relaxed text-emerald-800">
+                Photo match threshold passed! Submitting will <strong>directly mark ticket as Verified & Completed</strong> without requiring citizen audits.
+              </p>
+            </div>
+          ) : (
+            <div className="bg-amber-50 border border-amber-200 p-3 rounded-2xl text-[11px] text-amber-900 space-y-1">
+              <div className="flex items-center gap-1.5 font-extrabold text-amber-950">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>AI Similarity Score ({aiSimilarityScore}% &lt; 90%) — Sent to City Digital Twin</span>
+              </div>
+              <p className="leading-relaxed text-amber-900">
+                Similarity below 90%. Ticket will be routed to <strong>"Pending Verification"</strong> and automatically displayed on the <strong>AI City Digital Twin</strong> section for 3 citizens to audit.
+              </p>
+            </div>
+          )}
         </form>
 
         {/* Action Buttons (Sticky Footer Bottom) */}
