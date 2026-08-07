@@ -19,9 +19,10 @@ export default function Navbar() {
   return (
     <>
       {/* Top Header Navbar */}
-      <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 px-4 lg:px-8 py-3.5 flex justify-between items-center shadow-xl">
-        <Link to="/" className="text-base lg:text-xl font-black tracking-tight text-white flex items-center gap-2 shrink-0">
-          <span className="w-8 h-8 rounded-lg bg-lime-accent text-slate-900 flex items-center justify-center font-black text-sm shadow-md">
+      <nav className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 px-6 lg:px-10 py-3.5 flex justify-between items-center shadow-xl">
+        {/* Brand Logo */}
+        <Link to="/" className="text-lg lg:text-xl font-black tracking-tight text-white flex items-center gap-2.5 shrink-0">
+          <span className="w-9 h-9 rounded-xl bg-lime-accent text-slate-900 flex items-center justify-center font-black text-sm shadow-md">
             UF
           </span>
           <span className="whitespace-nowrap text-white">
@@ -29,58 +30,78 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation Links (Only visible > 991px via .navbar-desktop) */}
-        <div className="navbar-desktop items-center gap-5 text-xs font-extrabold shrink-0">
+        {/* Desktop Navigation Links (Spacious, Breathable Layout) */}
+        <div className="navbar-desktop items-center gap-4 lg:gap-6 text-xs font-bold shrink-0">
           <Link
             to="/"
-            className={`transition px-2.5 py-1.5 rounded-lg ${isActive('/') ? 'text-lime-accent bg-slate-800' : 'text-white hover:text-lime-accent'}`}
+            className={`px-3 py-1.5 rounded-xl transition ${
+              isActive('/')
+                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
+                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+            }`}
           >
             🏠 Overview
           </Link>
           <Link
             to="/citizen"
-            className={`transition px-2.5 py-1.5 rounded-lg ${isActive('/citizen') ? 'text-lime-accent bg-slate-800' : 'text-white hover:text-lime-accent'}`}
+            className={`px-3 py-1.5 rounded-xl transition ${
+              isActive('/citizen')
+                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
+                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+            }`}
           >
             🏡 Resident Intake
           </Link>
           <Link
             to="/officer"
-            className={`transition px-2.5 py-1.5 rounded-lg ${isActive('/officer') ? 'text-lime-accent bg-slate-800' : 'text-white hover:text-lime-accent'}`}
+            className={`px-3 py-1.5 rounded-xl transition ${
+              isActive('/officer')
+                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
+                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+            }`}
           >
             👮 Officer Dashboard
           </Link>
           <Link
             to="/digital-twin"
-            className={`transition px-2.5 py-1.5 rounded-lg ${isActive('/digital-twin') ? 'text-lime-accent bg-slate-800' : 'text-white hover:text-lime-accent'}`}
+            className={`px-3 py-1.5 rounded-xl transition ${
+              isActive('/digital-twin')
+                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
+                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+            }`}
           >
             🏙️ Digital Twin
           </Link>
           <Link
             to="/analytics"
-            className={`transition px-2.5 py-1.5 rounded-lg ${isActive('/analytics') ? 'text-lime-accent bg-slate-800' : 'text-white hover:text-lime-accent'}`}
+            className={`px-3 py-1.5 rounded-xl transition ${
+              isActive('/analytics')
+                ? 'bg-lime-accent/15 text-lime-accent border border-lime-accent/30 font-extrabold'
+                : 'text-slate-200 hover:text-white hover:bg-slate-800/80'
+            }`}
           >
             📊 Analytics
           </Link>
 
-          {/* High-Contrast Theme Toggle Switch */}
-          <button
-            type="button"
-            onClick={() => setIsLightMode(!isLightMode)}
-            className="bg-slate-800 border border-slate-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs flex items-center gap-1.5 hover:border-lime-accent transition shadow"
-            title="Toggle Light / Dark Mode"
-          >
-            <span>{isLightMode ? '☀️ Light' : '🌙 Dark'}</span>
-            <span className={`w-7 h-4 rounded-full p-0.5 flex items-center transition ${isLightMode ? 'bg-amber-400 justify-end' : 'bg-slate-600 justify-start'}`}>
-              <span className="w-3 h-3 rounded-full bg-slate-900 block" />
-            </span>
-          </button>
+          {/* Right Action Controls Group (Separated with Left Border) */}
+          <div className="flex items-center gap-3 pl-4 border-l border-slate-700/80 ml-2">
+            {/* High-Contrast Theme Toggle Switch */}
+            <button
+              type="button"
+              onClick={() => setIsLightMode(!isLightMode)}
+              className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-2 transition shadow-md"
+              title="Toggle Light / Dark Mode"
+            >
+              <span>{isLightMode ? '☀️ Light' : '🌙 Dark'}</span>
+            </button>
 
-          <Link
-            to="/login"
-            className="bg-lime-accent hover:opacity-90 text-slate-900 px-4 py-2 rounded-lg font-black transition shadow-lg shrink-0"
-          >
-            🔑 Single Sign-On
-          </Link>
+            <Link
+              to="/login"
+              className="bg-lime-accent hover:opacity-90 text-slate-900 px-4 py-2 rounded-xl font-black text-xs transition shadow-lg shrink-0"
+            >
+              🔑 Single Sign-On
+            </Link>
+          </div>
         </div>
 
         {/* Mobile & Tablet Toggle Button (Only visible <= 991px via .navbar-mobile-toggle) */}
