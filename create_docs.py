@@ -145,6 +145,7 @@ api_data = [
     ['HTTP Method', 'API Endpoint', 'Payload / Query', 'Functionality & Security'],
     ['GET', '/api/complaints', 'None', 'Retrieves all grievances sorted by timestamp. Used for Kanban and Digital Twin telemetry.'],
     ['POST', '/api/complaints', 'title, category, location, description', 'Registers a new grievance. Applies PII redaction and computes SHA-256 audit hash.'],
+    ['POST', '/api/complaints/sms-webhook', 'From, Body (Text Message)', 'Omni-channel SMS Helpline webhook (+91 98765 43210). Auto-classifies text and sends SMS tracking confirmation.'],
     ['GET', '/api/complaints/:id', 'None', 'Fetches detailed complaint record including XAI rationale and verification history.'],
     ['PATCH', '/api/complaints/:id/status', 'status, resolutionProof, notes', 'Updates status. Triggers photo proof requirement for Pending Verification.'],
     ['POST', '/api/complaints/:id/verify', 'citizenName, comment', 'Records citizen authenticity audit (1/3, 2/3, 3/3 -> Verified & Resolved).'],

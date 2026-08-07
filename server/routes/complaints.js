@@ -4,6 +4,7 @@ const ctrl = require('../controllers/complaintController');
 router.get('/', ctrl.getComplaints);
 router.get('/:id', ctrl.getComplaintById);
 router.post('/', ctrl.createComplaint);
+router.post('/sms-webhook', ctrl.handleSMSWebhook);
 router.patch('/:id/status', ctrl.updateStatus);
 router.post('/:id/verify', ctrl.verifyComplaint);
 module.exports = router;

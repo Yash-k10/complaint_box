@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import SMSHelplineModal from './SMSHelplineModal';
 import {
   ShieldCheck,
   Home,
@@ -12,12 +13,14 @@ import {
   LogOut,
   User,
   Menu,
-  X
+  X,
+  PhoneCall
 } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [smsModalOpen, setSmsModalOpen] = useState(false);
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
@@ -100,6 +103,17 @@ export default function Navbar() {
             <BarChart3 className="w-4 h-4 text-emerald-600" />
             <span>Analytics</span>
           </Link>
+
+          {/* SMS Helpline Intake Trigger */}
+          <button
+            type="button"
+            onClick={() => setSmsModalOpen(true)}
+            className="px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold border border-amber-200"
+            title="Text Message (SMS) Complaint Intake"
+          >
+            <PhoneCall className="w-4 h-4 text-amber-600" />
+            <span>SMS Helpline</span>
+          </button>
 
           {/* Right Action Controls Group */}
           <div className="flex items-center gap-3 pl-3 border-l border-emerald-100 ml-2">
@@ -191,6 +205,9 @@ export default function Navbar() {
             <span>Analytics</span>
           </Link>
         </div>
+      )}
+      {smsModalOpen && (
+        <SMSHelplineModal onClose={() => setSmsModalOpen(false)} />
       )}
     </>
   );
