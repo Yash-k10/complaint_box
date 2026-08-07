@@ -1,0 +1,2 @@
+import React from 'react';
+export default function PredictiveAlert() { return (<div className='bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl flex items-start gap-3'><span className='text-2xl'>⚠️</span><div><h4 className='font-bold text-amber-400 text-sm'>Predictive Infrastructure Alert</h4><p className='text-xs text-slate-300 mt-0.5'>Heavy rainfall forecast in Ward 5. High probability of sewer overflow.</p></div></div>); }
