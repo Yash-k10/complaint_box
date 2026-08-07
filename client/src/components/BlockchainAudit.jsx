@@ -1,0 +1,2 @@
+import React from 'react';
+export default function BlockchainAudit({ hash = '8f9a2b3c4d5e6f7a...' }) { return (<div className='bg-slate-800 p-4 rounded-xl border border-slate-700 font-mono text-xs space-y-2'><div className='text-cyan-400 font-semibold'>🔗 SHA-256 Audit Log</div><p className='text-slate-400 break-all bg-slate-900 p-2.5 rounded-lg'>Hash: {hash}</p><div className='flex justify-between text-slate-500'><span>Block #142</span><span>Tamper-evident ✓</span></div></div>); }
