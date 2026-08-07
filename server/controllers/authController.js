@@ -38,13 +38,36 @@ const memoryUsers = [
   }
 ];
 
-// Register New Citizen Endpoint
+// Elevated roles that require ADMIN_SECRET_KEY verification
+const ELEVATED_ROLES = ['admin', 'department_worker', 'officer'];
+
+// Register New Citizen Endpoint with Secure Role-Based Access
 const register = async (req, res) => {
   try {
-    const { name, mobile, email, password, address, city, state, pinCode } = req.body;
+    const { name, mobile, email, password, address, city, state, pinCode, role, adminSecretKey } = req.body;
 
     if (!name || !mobile || !email || !password) {
       return res.status(400).json({ success: false, error: 'Name, Mobile, Email, and Password are required fields.' });
+    }
+
+    // --- SECURE ROLE ASSIGNMENT ---
+    // Default: all public signups get 'resident' role.
+    // Never trust the 'role' field from the client blindly.
+    let assignedRole = 'resident';
+
+    if (role && ELEVATED_ROLES.includes(role)) {
+      const serverAdminKey = process.env.ADMIN_SECRET_KEY;
+      if (!serverAdminKey) {
+        console.error('[AUTH] ADMIN_SECRET_KEY is not configured on the server. Elevated role signup rejected.');
+        return res.status(403).json({ success: false, error: 'Unauthorized: Server is not configured for elevated role registration.' });
+      }
+      if (!adminSecretKey || adminSecretKey !== serverAdminKey) {
+        console.warn(`[AUTH] Elevated role signup attempt blocked for role '${role}'. Invalid secret key provided.`);
+        return res.status(403).json({ success: false, error: 'Unauthorized: Invalid or missing Admin Secret Key.' });
+      }
+      // Secret key matches — permit the elevated role
+      assignedRole = role;
+      console.info(`[AUTH] Elevated role '${role}' signup authorized via valid Admin Secret Key.`);
     }
 
     // Check duplicate in MongoDB
@@ -74,7 +97,7 @@ const register = async (req, res) => {
         city: city || 'Nagpur',
         state: state || 'Maharashtra',
         pinCode: pinCode || '440010',
-        role: 'citizen'
+        role: assignedRole
       });
 
       return res.status(201).json({
@@ -116,7 +139,7 @@ const register = async (req, res) => {
         mobile,
         email: email.toLowerCase(),
         passwordHash,
-        role: 'citizen',
+        role: assignedRole,
         address: address || 'Laxmi Nagar',
         city: city || 'Nagpur',
         state: state || 'Maharashtra',
@@ -136,7 +159,7 @@ const register = async (req, res) => {
           name,
           mobile,
           email: memUser.email,
-          role: 'citizen',
+          role: assignedRole,
           address: memUser.address,
           city: memUser.city,
           state: memUser.state,
