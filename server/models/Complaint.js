@@ -3,3 +3,4 @@ const s = new mongoose.Schema({ complaintId: { type: String, required: true, uni
 module.exports = mongoose.model('Complaint', s);
 
 
+
