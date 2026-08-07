@@ -4,12 +4,72 @@ import { Link } from 'react-router-dom';
 export default function LandingPage() {
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
+  const [activeTab, setActiveTab] = useState('all');
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
     if (!contactForm.name || !contactForm.email) return alert('Please enter your name and email');
     setContactSubmitted(true);
   };
+
+  const INNOVATION_PILLARS = [
+    {
+      id: 1,
+      title: "1. Explainable AI Governance",
+      desc: "Every AI recommendation is transparent, explainable with confidence scores, matched rules, historical cases, and reviewable by authorized human officers.",
+      icon: "🧠",
+      tag: "Governance"
+    },
+    {
+      id: 2,
+      title: "2. Predictive Civic Intelligence",
+      desc: "AI predicts SLA breaches, recurring infrastructure failures, and emerging hotspots before citizens complain, enabling proactive maintenance.",
+      icon: "⚠️",
+      tag: "Proactive"
+    },
+    {
+      id: 3,
+      title: "3. Blockchain Trust Layer",
+      desc: "Every critical workflow event is cryptographically verifiable via SHA-256 hashes, providing immutable accountability without exposing PII.",
+      icon: "🛡️",
+      tag: "Cryptographic"
+    },
+    {
+      id: 4,
+      title: "4. AI Digital Twin & Knowledge Graph",
+      desc: "A live operational view of city infrastructure combined with relationship-aware routing enables smarter planning and cross-department coordination.",
+      icon: "🏙️",
+      tag: "City Brain"
+    },
+    {
+      id: 5,
+      title: "5. AI Resolution Copilot",
+      desc: "The platform not only routes complaints but recommends repair strategies, equipment, materials, crew size, cost estimates (₹18,500), and ETAs.",
+      icon: "🔧",
+      tag: "Field Ops"
+    }
+  ];
+
+  const EIGHTEEN_INNOVATIONS = [
+    { num: "01", title: "Agentic Resolution Loop", desc: "AI autonomously searches contractors, issues work orders, books inspections, polls progress, and collects photo proof without human intervention.", icon: "🤖" },
+    { num: "02", title: "Computer Vision Resolution Verifier", desc: "CLIP/YOLO structural image comparison verifies pothole/water leak removal before/after repair to prevent fake closures.", icon: "📷" },
+    { num: "03", title: "Causal Root Cause Intelligence", desc: "Connects 23 separate complaints in a street to 1 underground drainage failure, issuing 1 root repair order instead of 23 tickets.", icon: "🔍" },
+    { num: "04", title: "Predictive Grievance Prevention", desc: "Combines weather forecasts + road age + history to auto-generate preventive maintenance requests before citizens complain.", icon: "🌧️" },
+    { num: "05", title: "WhatsApp Civic Assistant Bot", desc: "Full complaint lifecycle via WhatsApp: text/photo submission, reference ID, live tracking, and appeal without app download.", icon: "💬" },
+    { num: "06", title: "Community Coalition / Petition Mode", desc: "Auto-upgrades issue to 'Community Petition' when 10+ citizens report, triggering council escalation and 24h response SLA.", icon: "👥" },
+    { num: "07", title: "Constitutional AI Safety Guardrails", desc: "Secondary LLM pass automatically redacts Aadhaar, phone numbers, faces, license plates, doxxing, and hate speech.", icon: "🔐" },
+    { num: "08", title: "Explainable AI (XAI) Engine", desc: "Provides confidence scores (96%), matched keywords, applied rules, alternative department routes, and human override logs.", icon: "🧠" },
+    { num: "09", title: "Resolution Knowledge Graph", desc: "Dynamic graph linking complaints, government assets, departments, officers, contractors, and historical repair data.", icon: "🕸️" },
+    { num: "10", title: "Learning City Brain", desc: "Every resolved complaint feeds back repair duration, cost, contractor rating, and citizen satisfaction to optimize future routing.", icon: "💡" },
+    { num: "11", title: "AI Civic Digital Twin", desc: "Virtual ward infrastructure health tracking: Ward 5 Road 62%, Water 91%, Sanitation 48% with predictive risk map.", icon: "🏙️" },
+    { num: "12", title: "Citizen Trust Index", desc: "Rates municipal departments on SLA compliance, transparency, resolution quality, citizen feedback, and appeal rates.", icon: "⭐" },
+    { num: "13", title: "Community Impact Score", desc: "Prioritizes complaints based on affected citizens, nearby schools/hospitals, traffic disruption, and duplicate reports.", icon: "📊" },
+    { num: "14", title: "AI Resolution Copilot", desc: "Recommends repair methods (Hot-mix asphalt), equipment, crew size (4 crew), estimated cost (₹18,500), and SLA ETA (6 Hours).", icon: "🔧" },
+    { num: "15", title: "Blockchain Trust Layer", desc: "Stores immutable SHA-256 hashes of complaint creation, AI recommendations, officer overrides, SLA events, and resolution proof.", icon: "⛓️" },
+    { num: "16", title: "Predictive Maintenance", desc: "Recommends complete road resurfacing after 34 repeated pothole complaints, saving long-term municipal budgets.", icon: "🛣️" },
+    { num: "17", title: "AI Policy Advisor", desc: "Generates executive recommendations: 'Allocate ₹18 Lakh for Ward 7 drainage upgrade for projected 48% complaint drop'.", icon: "🏛️" },
+    { num: "18", title: "Federated Learning City Network", desc: "Privacy-preserving shared AI model knowledge across Nagpur, Pune, Delhi, and Bengaluru without exposing citizen PII.", icon: "🌐" }
+  ];
 
   return (
     <div className="relative text-slate-800 bg-slate-100 min-h-screen">
@@ -23,16 +83,16 @@ export default function LandingPage() {
 
         <div className="container relative mx-auto px-6 z-10">
           <div className="items-center flex flex-wrap text-center justify-center">
-            <div className="w-full lg:w-8/12 px-4 space-y-6">
+            <div className="w-full lg:w-9/12 px-4 space-y-6">
               <span className="bg-lime-accent/20 text-lime-accent border border-lime-accent/40 text-xs px-4 py-1.5 rounded-full font-bold uppercase tracking-widest inline-block shadow">
-                PRAGATI 2.O • TRACK 3 SDG-01
+                PRAGATI 2.O • TRACK 3 SDG-01 • 18 AI INNOVATION DEMOS
               </span>
 
               <h1 className="text-white font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-tight">
                 We spark life back into your city infrastructure.
               </h1>
 
-              <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
                 Your trusted AI partner for intelligent civic redressal. Where Explainable AI meets municipal precision, and resident complaints find immediate accountability.
               </p>
 
@@ -71,61 +131,87 @@ export default function LandingPage() {
       </div>
 
       {/* ------------------------------------------------------------- */}
-      {/* 2. THREE FLOATING FEATURE CARDS (Notus JS Template Pattern)   */}
+      {/* 2. PITCH-READY USP STATEMENT & 5 INNOVATION PILLARS            */}
       {/* ------------------------------------------------------------- */}
       <section className="pb-20 bg-slate-100 -mt-24">
         <div className="container mx-auto px-6">
-          <div className="flex flex-wrap">
-            {/* Card 1: Red Icon */}
-            <div className="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
-              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-2xl p-8 hover:-translate-y-2 transition duration-300 border border-slate-200">
-                <div className="px-4 py-5 flex-auto space-y-4">
-                  <div className="text-white p-3 text-center inline-flex items-center justify-center w-14 h-14 shadow-lg rounded-full bg-red-500 mx-auto text-2xl">
-                    🚩
-                  </div>
-                  <h6 className="text-xl font-extrabold text-slate-800">Awarded Triage Agency</h6>
-                  <p className="mt-2 mb-4 text-slate-500 text-sm leading-relaxed">
-                    Divide details about your product or civic complaints into actionable steps. Multilingual voice speech-to-text with auto urgency scoring.
-                  </p>
-                </div>
-              </div>
+          {/* Pitch Statement Card */}
+          <div className="bg-slate-900 text-white p-8 md:p-12 rounded-3xl shadow-2xl border border-slate-800 space-y-4 mb-16 max-w-5xl mx-auto">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-lime-accent uppercase tracking-widest">
+              <span>PITCH-READY FINAL USP STATEMENT</span>
+              <span>•</span>
+              <span>BEYOND BASELINE SDG-01</span>
             </div>
-
-            {/* Card 2: Cyan Icon (Elevated Middle Card) */}
-            <div className="w-full md:w-4/12 px-4 text-center">
-              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-xl rounded-2xl p-8 hover:-translate-y-2 transition duration-300 border border-cyan-100">
-                <div className="px-4 py-5 flex-auto space-y-4">
-                  <div className="text-white p-3 text-center inline-flex items-center justify-center w-14 h-14 shadow-lg rounded-full bg-cyan-500 mx-auto text-2xl">
-                    🧠
-                  </div>
-                  <h6 className="text-xl font-extrabold text-slate-800">Explainable AI (XAI)</h6>
-                  <p className="mt-2 mb-4 text-slate-500 text-sm leading-relaxed">
-                    Keep citizens engaged by providing meaningful audit reasoning. 96% AI confidence score with 1-click human officer override capabilities.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3: Emerald Icon */}
-            <div className="pt-6 w-full md:w-4/12 px-4 text-center">
-              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-2xl p-8 hover:-translate-y-2 transition duration-300 border border-slate-200">
-                <div className="px-4 py-5 flex-auto space-y-4">
-                  <div className="text-white p-3 text-center inline-flex items-center justify-center w-14 h-14 shadow-lg rounded-full bg-emerald-500 mx-auto text-2xl">
-                    🛡️
-                  </div>
-                  <h6 className="text-xl font-extrabold text-slate-800">Verified Blockchain Audit</h6>
-                  <p className="mt-2 mb-4 text-slate-500 text-sm leading-relaxed">
-                    Write a few lines about each resolution step. SHA-256 cryptographically verifiable block hash for total government transparency.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <p className="text-base md:text-lg text-slate-200 leading-relaxed font-medium">
+              "Unlike conventional grievance portals that simply register and route complaints, <span className="text-lime-accent font-extrabold">CivicFlow AI-X</span> combines <span className="text-cyan-400 font-bold">Explainable AI</span>, a <span className="text-cyan-400 font-bold">Civic Knowledge Graph</span>, a <span className="text-cyan-400 font-bold">Digital Twin</span>, <span className="text-cyan-400 font-bold">Predictive Civic Intelligence</span>, <span className="text-cyan-400 font-bold">AI Resolution Copilot</span>, and a <span className="text-cyan-400 font-bold">Blockchain Trust Layer</span> to transform complaint management into transparent, proactive, and data-driven civic operations. Every recommendation is explainable, every workflow is accountable, every critical event is verifiable, and every final decision remains under authorized human control."
+            </p>
           </div>
 
-          {/* ------------------------------------------------------------- */}
-          {/* 3. "WORKING WITH US IS A PLEASURE" (2-Column Feature Section)  */}
-          {/* ------------------------------------------------------------- */}
-          <div className="flex flex-wrap items-center mt-16">
+          {/* 5 Innovation Pillars Grid */}
+          <div className="text-center space-y-3 mb-10">
+            <span className="text-xs font-mono text-cyan-600 font-bold uppercase tracking-widest">THE 5 CORE PILLARS</span>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900">Innovation Strategy</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {INNOVATION_PILLARS.map((p) => (
+              <div
+                key={p.id}
+                className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 space-y-3 flex flex-col justify-between hover:-translate-y-2 transition duration-300"
+              >
+                <div className="space-y-3">
+                  <div className="text-3xl">{p.icon}</div>
+                  <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full uppercase inline-block">
+                    {p.tag}
+                  </span>
+                  <h4 className="text-base font-extrabold text-slate-900 leading-snug">{p.title}</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 3. 18 AI INNOVATION DIFFERENTIATORS SHOWCASE MATRIX          */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 space-y-12">
+          <div className="text-center space-y-3 max-w-3xl mx-auto">
+            <span className="text-xs font-mono text-pink-600 font-bold uppercase tracking-widest">COMPLETE DEMO MATRIX</span>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900">18 AI Innovation Differentiators</h2>
+            <p className="text-sm text-slate-600">
+              Features built beyond standard problem statement expectations — empowering proactive, verifiable, and intelligent civic governance.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {EIGHTEEN_INNOVATIONS.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 space-y-3 hover:border-cyan-400 hover:bg-white hover:shadow-xl transition duration-300"
+              >
+                <div className="flex justify-between items-center">
+                  <span className="w-10 h-10 rounded-2xl bg-slate-900 text-lime-accent flex items-center justify-center font-mono font-black text-sm">
+                    {item.num}
+                  </span>
+                  <span className="text-2xl">{item.icon}</span>
+                </div>
+                <h4 className="text-base font-extrabold text-slate-900">{item.title}</h4>
+                <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 4. "WORKING WITH US IS A PLEASURE" (2-Column Feature Section)  */}
+      {/* ------------------------------------------------------------- */}
+      <section className="py-20 bg-slate-100">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-wrap items-center">
             {/* Left Details */}
             <div className="w-full md:w-5/12 px-4 mr-auto ml-auto space-y-5">
               <div className="text-slate-700 p-3 text-center inline-flex items-center justify-center w-14 h-14 shadow-md rounded-full bg-white text-2xl">
@@ -188,7 +274,7 @@ export default function LandingPage() {
                   </svg>
                   <h4 className="text-xl font-extrabold text-white">Top Notch Services</h4>
                   <p className="text-xs leading-relaxed text-white/90">
-                    The Arctic Ocean freezes every winter and much of the sea ice thaws every summer. Our automated AI triage handles road, water, and sanitation complaints 24/7 without delay.
+                    Our automated AI triage handles road, water, and sanitation complaints 24/7 without delay, with computer vision verification and blockchain audit logs.
                   </p>
                 </blockquote>
               </div>
@@ -198,72 +284,9 @@ export default function LandingPage() {
       </section>
 
       {/* ------------------------------------------------------------- */}
-      {/* 4. "A GROWING CIVIC ECOSYSTEM" (Reversed 2-Column Section)     */}
-      {/* ------------------------------------------------------------- */}
-      <section className="relative py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="items-center flex flex-wrap">
-            {/* Left Image */}
-            <div className="w-full md:w-4/12 ml-auto mr-auto px-4 mb-10 md:mb-0">
-              <img
-                alt="Civic Ecosystem"
-                className="max-w-full rounded-3xl shadow-2xl border border-slate-200"
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
-              />
-            </div>
-
-            {/* Right Details */}
-            <div className="w-full md:w-5/12 ml-auto mr-auto px-4 space-y-6">
-              <div className="text-white p-3 text-center inline-flex items-center justify-center w-14 h-14 shadow-lg rounded-full bg-pink-500 text-2xl">
-                🚀
-              </div>
-              <h3 className="text-3xl font-extrabold text-slate-900 leading-tight">
-                A growing civic ecosystem
-              </h3>
-              <p className="text-slate-600 text-base leading-relaxed">
-                The platform comes with 18 interactive modules to help you get started faster. You can customize the rules, categories, and SLA thresholds and you're good to go.
-              </p>
-
-              <div className="space-y-4 pt-2">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-sm shrink-0">
-                    01
-                  </div>
-                  <div>
-                    <h5 className="font-extrabold text-slate-800 text-sm">Carefully crafted AI models</h5>
-                    <p className="text-xs text-slate-500 mt-1">NLP intent detection, severity classifier & spatial duplicate check.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center font-bold text-sm shrink-0">
-                    02
-                  </div>
-                  <div>
-                    <h5 className="font-extrabold text-slate-800 text-sm">18+ Live interactive demo flows</h5>
-                    <p className="text-xs text-slate-500 mt-1">Citizen portal, officer Kanban triage, SLA alert timers & analytics.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-sm shrink-0">
-                    03
-                  </div>
-                  <div>
-                    <h5 className="font-extrabold text-slate-800 text-sm">Dynamic ward heatmaps</h5>
-                    <p className="text-xs text-slate-500 mt-1">Real-time infrastructure failure density map for municipal planning.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- */}
       {/* 5. "HERE ARE OUR HEROES" (Team Section - Notus JS Template)   */}
       {/* ------------------------------------------------------------- */}
-      <section className="pt-20 pb-48 bg-slate-100">
+      <section className="pt-20 pb-48 bg-white">
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center text-center mb-16">
             <div className="w-full lg:w-6/12 px-4 space-y-3">
@@ -277,7 +300,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Hero 1 */}
             <div className="w-full px-4 text-center">
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
+              <div className="bg-slate-50 p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
                 <div className="w-24 h-24 rounded-full bg-slate-900 text-lime-accent mx-auto flex items-center justify-center font-black text-2xl shadow-md border-4 border-lime-accent">
                   PM
                 </div>
@@ -295,7 +318,7 @@ export default function LandingPage() {
 
             {/* Hero 2 */}
             <div className="w-full px-4 text-center">
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
+              <div className="bg-slate-50 p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
                 <div className="w-24 h-24 rounded-full bg-slate-900 text-cyan-400 mx-auto flex items-center justify-center font-black text-2xl shadow-md border-4 border-cyan-400">
                   DB
                 </div>
@@ -312,7 +335,7 @@ export default function LandingPage() {
 
             {/* Hero 3 */}
             <div className="w-full px-4 text-center">
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
+              <div className="bg-slate-50 p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
                 <div className="w-24 h-24 rounded-full bg-slate-900 text-emerald-400 mx-auto flex items-center justify-center font-black text-2xl shadow-md border-4 border-emerald-400">
                   NM
                 </div>
@@ -330,7 +353,7 @@ export default function LandingPage() {
 
             {/* Hero 4 */}
             <div className="w-full px-4 text-center">
-              <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
+              <div className="bg-slate-50 p-6 rounded-2xl shadow-lg border border-slate-200 space-y-4 hover:-translate-y-2 transition duration-300">
                 <div className="w-24 h-24 rounded-full bg-slate-900 text-amber-400 mx-auto flex items-center justify-center font-black text-2xl shadow-md border-4 border-amber-400">
                   YK
                 </div>

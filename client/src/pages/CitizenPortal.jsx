@@ -5,6 +5,7 @@ import VoiceInput from '../components/VoiceInput';
 import ImageUpload from '../components/ImageUpload';
 import LocationPicker from '../components/LocationPicker';
 import PrivacyShield from '../components/PrivacyShield';
+import WhatsAppBotModal from '../components/WhatsAppBotModal';
 
 export default function CitizenPortal() {
   const [submitted, setSubmitted] = useState(null);
@@ -52,6 +53,7 @@ export default function CitizenPortal() {
       </div>
 
       <PrivacyShield />
+      <WhatsAppBotModal />
 
       {submitted ? (
         <div className="bg-slate-800/80 p-10 md:p-14 rounded-3xl border border-emerald-500/40 text-center space-y-8 shadow-2xl">
