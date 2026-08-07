@@ -1,0 +1,2 @@
+import React from 'react';
+export default function HeatMap() { return (<div className='bg-slate-800 p-6 rounded-2xl border border-slate-700 h-64 flex flex-col items-center justify-center'><span className='text-4xl mb-2'>🗺️</span><h4 className='font-semibold text-slate-200'>Ward Complaint Heatmap</h4><p className='text-xs text-slate-400 mt-1'>Hotspots in Ward 12 (Roads) and Ward 5 (Water)</p></div>); }
