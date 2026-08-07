@@ -1,0 +1,2 @@
+import React, { useState } from 'react';
+export default function LocationPicker({ onSelect }) { const [coords, setCoords] = useState(null); return (<div className='bg-slate-700 rounded-lg p-3 flex items-center gap-3'><button onClick={() => navigator.geolocation.getCurrentPosition(p => { const l={lat:p.coords.latitude,lng:p.coords.longitude}; setCoords(l); onSelect?.(l); })} className='bg-blue-600 px-4 py-2 rounded-lg text-sm'>📍 Auto-detect</button>{coords && <span className='text-xs text-slate-400'>{coords.lat.toFixed(4)}, {coords.lng.toFixed(4)}</span>}</div>); }
