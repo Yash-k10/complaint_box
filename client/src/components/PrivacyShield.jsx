@@ -35,9 +35,9 @@ export default function PrivacyShield() {
         <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1">
           <span className="text-emerald-800 font-bold block flex items-center gap-1">
             <Camera className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Face Blur AI</span>
+            <span>YOLO Blur AI</span>
           </span>
-          <span className="text-emerald-900 text-[11px]">YOLO Face & License Plate Blur</span>
+          <span className="text-emerald-900 text-[11px]">Faces & License Plates Blurred</span>
         </div>
 
         <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1">
@@ -51,10 +51,21 @@ export default function PrivacyShield() {
         <div className="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1">
           <span className="text-emerald-800 font-bold block flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Safety Audit Log</span>
+            <span>DPDP Compliance</span>
           </span>
-          <span className="text-emerald-900 text-[11px]">Quarantine Hash Recorded</span>
+          <span className="text-emerald-900 text-[11px]">Digital Personal Data Act 2023</span>
         </div>
+      </div>
+
+      {/* YOLO Object Blur Explanation Banner */}
+      <div className="bg-emerald-50 border border-emerald-200 p-3.5 rounded-xl text-xs space-y-1.5">
+        <div className="flex items-center gap-2 font-bold text-emerald-950">
+          <Camera className="w-4 h-4 text-emerald-600" />
+          <span>🤖 YOLOv8 Automatic Computer Vision Anonymization</span>
+        </div>
+        <p className="text-[11px] text-emerald-900 leading-relaxed">
+          Every evidence image uploaded by citizens or officers is scanned in real-time by a YOLO object detection model. All detected <strong>human faces</strong> and <strong>vehicle license plates</strong> are automatically covered with a pixelated privacy blur mask prior to public display.
+        </p>
       </div>
     </div>
   );
