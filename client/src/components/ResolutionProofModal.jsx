@@ -54,16 +54,17 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-emerald-950/40 backdrop-blur-xs">
-      <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-lg w-full p-6 space-y-6 animate-in fade-in zoom-in duration-200">
-        {/* Header */}
-        <div className="flex justify-between items-start pb-4 border-b border-emerald-100">
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-emerald-950/50 backdrop-blur-xs overflow-y-auto">
+      <div className="bg-white rounded-3xl border border-emerald-200 shadow-2xl max-w-lg w-full max-h-[92vh] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in duration-200">
+        {/* Header (Fixed Top) */}
+        <div className="flex justify-between items-start p-5 sm:p-6 pb-3 border-b border-emerald-100 shrink-0 bg-white">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 uppercase tracking-wider">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>OFFICER RESOLUTION PROOF PROTOCOL</span>
             </div>
-            <h3 className="text-xl font-extrabold text-emerald-950 flex items-center gap-2">
+            <h3 className="text-lg sm:text-xl font-extrabold text-emerald-950 flex items-center gap-2">
               <Camera className="w-5 h-5 text-emerald-600" />
               <span>Verify Work Authenticity</span>
             </h3>
@@ -77,16 +78,17 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
           </button>
         </div>
 
-        {/* Ticket Summary */}
-        <div className="bg-emerald-50/60 p-3.5 rounded-2xl border border-emerald-100 space-y-1 text-xs">
-          <div className="flex justify-between font-bold text-emerald-900">
-            <span>Ticket: {complaint?.complaintId}</span>
-            <span className="bg-white px-2 py-0.5 rounded border border-emerald-200">{complaint?.category}</span>
+        {/* Scrollable Form Body */}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
+          {/* Ticket Summary */}
+          <div className="bg-emerald-50/60 p-3 rounded-2xl border border-emerald-100 space-y-1 text-xs">
+            <div className="flex justify-between font-bold text-emerald-900">
+              <span>Ticket: {complaint?.complaintId}</span>
+              <span className="bg-white px-2 py-0.5 rounded border border-emerald-200 text-[10px]">{complaint?.category}</span>
+            </div>
+            <p className="font-extrabold text-emerald-950 line-clamp-2">{complaint?.title}</p>
           </div>
-          <p className="font-extrabold text-emerald-950">{complaint?.title}</p>
-        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Photo Proof Upload or Preset Select */}
           <div className="space-y-2">
             <label className="block text-xs font-bold text-emerald-950 flex items-center justify-between">
@@ -95,7 +97,7 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
             </label>
 
             {/* Photo Preview Box */}
-            <div className="relative rounded-2xl overflow-hidden border-2 border-dashed border-emerald-200 bg-emerald-50/40 h-44 flex items-center justify-center group">
+            <div className="relative rounded-2xl overflow-hidden border-2 border-dashed border-emerald-200 bg-emerald-50/40 h-36 flex items-center justify-center group">
               {photoUrl ? (
                 <>
                   <img src={photoUrl} alt="Resolution Proof" className="w-full h-full object-cover" />
@@ -106,7 +108,7 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
                 </>
               ) : (
                 <div className="text-center p-4 space-y-2">
-                  <Upload className="w-8 h-8 text-emerald-500 mx-auto" />
+                  <Upload className="w-7 h-7 text-emerald-500 mx-auto" />
                   <span className="text-xs font-semibold text-emerald-800 block">Click or Drop Photo Proof</span>
                 </div>
               )}
@@ -116,7 +118,7 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
             <div className="flex items-center gap-2 pt-1">
               <label className="flex-1 cursor-pointer bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs py-2 px-3 rounded-xl transition text-center flex items-center justify-center gap-1.5">
                 <Upload className="w-3.5 h-3.5 text-emerald-600" />
-                <span>{customFile ? `Uploaded: ${customFile}` : 'Upload Photo from Device'}</span>
+                <span className="truncate">{customFile ? `Uploaded: ${customFile}` : 'Upload Photo from Device'}</span>
                 <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
               </label>
             </div>
@@ -159,35 +161,36 @@ export default function ResolutionProofModal({ complaint, onClose, onSubmitResol
           </div>
 
           {/* Explanation Banner */}
-          <div className="bg-amber-50 border border-amber-200 p-3.5 rounded-2xl text-[11px] text-amber-900 space-y-1">
+          <div className="bg-amber-50 border border-amber-200 p-3 rounded-2xl text-[11px] text-amber-900 space-y-1">
             <div className="flex items-center gap-1.5 font-bold text-amber-950">
               <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
               <span>3-Citizen Verification Protocol Triggered</span>
             </div>
             <p className="leading-relaxed">
-              Submitting photo proof will update the status to <strong>"Pending Verification"</strong> and sync live telemetry with the <strong>AI City Digital Twin</strong>. Final resolution will be certified once 3 citizens verify authenticity.
+              Submitting photo proof will update status to <strong>"Pending Verification"</strong> and sync live telemetry with the <strong>AI City Digital Twin</strong>. Final resolution is certified once 3 citizens verify.
             </p>
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs py-3 rounded-xl transition border border-emerald-200"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 btn-emerald text-xs py-3 justify-center shadow-md"
-            >
-              <Building2 className="w-4 h-4" />
-              <span>{loading ? 'Publishing Telemetry...' : 'Submit & Sync Digital Twin'}</span>
-            </button>
-          </div>
         </form>
+
+        {/* Action Buttons (Sticky Footer Bottom) */}
+        <div className="p-4 px-6 border-t border-emerald-100 bg-white shrink-0 flex gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs py-3 rounded-xl transition border border-emerald-200"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={loading}
+            className="flex-1 btn-emerald text-xs py-3 justify-center shadow-md font-bold"
+          >
+            <Building2 className="w-4 h-4" />
+            <span>{loading ? 'Publishing Telemetry...' : 'Submit & Sync Digital Twin'}</span>
+          </button>
+        </div>
       </div>
     </div>
   );
