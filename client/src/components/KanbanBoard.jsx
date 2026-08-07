@@ -53,7 +53,16 @@ export default function KanbanBoard({ complaints = [], onSelect, onStatusChange 
       {/* Kanban Column Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         {COLS.map((col) => {
-          const colComplaints = complaints.filter((c) => c.status === col);
+          const colComplaints = complaints.filter((c) => {
+            const count = c.verificationsCount || (c.verifications ? c.verifications.length : 0);
+            if (col === 'Resolved') {
+              return c.status === 'Resolved' || c.status === 'Verified & Resolved' || c.status === 'Completed' || count >= 3;
+            }
+            if (col === 'Pending Verification') {
+              return c.status === 'Pending Verification' && count < 3;
+            }
+            return c.status === col;
+          });
 
           return (
             <div

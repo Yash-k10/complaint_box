@@ -164,8 +164,24 @@ export default function OfficerDashboard() {
 
   useEffect(() => {
     loadComplaints();
-    const interval = setInterval(loadComplaints, 5000);
-    return () => clearInterval(interval);
+    const interval = setInterval(loadComplaints, 2000);
+
+    const handleStorageChange = (e) => {
+      if (e.key === 'civic_officer_complaints' && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) {
+            setComplaints(parsed);
+          }
+        } catch (err) {}
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   return (
