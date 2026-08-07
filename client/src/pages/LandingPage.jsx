@@ -20,8 +20,9 @@ export default function LandingPage() {
 
       {/* Main Hero Container Section */}
       <section className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="bg-slate-800 p-6 md:p-12 rounded-3xl border border-slate-700 shadow-2xl relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          <div className="space-y-6 z-10">
+        <div className="bg-slate-800 p-6 md:p-10 rounded-3xl border border-slate-700 shadow-2xl relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* Left Hero Column */}
+          <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-xs font-bold text-lime-accent uppercase tracking-widest block">
                 TRUSTED CIVIC OPERATIONS PLATFORM
@@ -55,20 +56,20 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Hero Right Visual Box */}
-          <div className="bg-slate-900/80 p-6 md:p-8 rounded-2xl border border-slate-700 flex flex-col justify-center items-center text-center space-y-4">
-            <div className="w-20 h-20 rounded-full bg-lime-accent/10 border-2 border-lime-accent flex items-center justify-center text-3xl">
+          {/* Right Hero Visual Box */}
+          <div className="bg-slate-900/90 p-8 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center space-y-4 shadow-xl">
+            <div className="w-16 h-16 rounded-2xl bg-lime-accent/10 border border-lime-accent/40 flex items-center justify-center text-3xl shadow-inner">
               🏙️
             </div>
-            <div className="space-y-1">
-              <h3 className="text-lg font-bold text-white">AI Civic Digital Twin</h3>
-              <p className="text-xs text-slate-400 max-w-xs">
+            <div className="space-y-1.5 max-w-xs">
+              <h3 className="text-lg font-extrabold text-white">AI Civic Digital Twin</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
                 Real-time infrastructure failure prediction & dynamic ward heatmaps.
               </p>
             </div>
             <Link
               to="/digital-twin"
-              className="text-xs text-lime-accent font-bold hover:underline"
+              className="inline-block bg-slate-800 hover:bg-slate-700 text-lime-accent text-xs font-extrabold px-5 py-2.5 rounded-xl border border-slate-700 transition shadow"
             >
               Explore Ward 5 Digital Twin →
             </Link>
@@ -76,11 +77,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Numbered Category Grid Section (01, 02, 03, 04) */}
+      {/* Numbered Category Grid Section (01, 02, 03, 04) - Crisp 4-Column Layout */}
       <section className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {/* Card 01 */}
-          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between">
+          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between h-full">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-500 font-bold block text-right">01</span>
               <div className="text-3xl">🛣️</div>
@@ -92,7 +93,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 02 */}
-          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between">
+          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between h-full">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-500 font-bold block text-right">02</span>
               <div className="text-3xl">🚰</div>
@@ -104,7 +105,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 03 */}
-          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between">
+          <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4 shadow-xl flex flex-col justify-between h-full">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-500 font-bold block text-right">03</span>
               <div className="text-3xl">⚡</div>
@@ -116,7 +117,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card 04 (Highlight Lime Card) */}
-          <div className="bg-lime-accent text-slate-900 p-6 rounded-2xl space-y-4 shadow-2xl flex flex-col justify-between">
+          <div className="bg-lime-accent text-slate-900 p-6 rounded-2xl space-y-4 shadow-2xl flex flex-col justify-between h-full">
             <div className="space-y-3">
               <span className="text-xs font-mono text-slate-800 font-bold block text-right">04</span>
               <div className="text-3xl">🎧</div>
@@ -127,7 +128,7 @@ export default function LandingPage() {
             </div>
             <Link
               to="/citizen"
-              className="inline-block text-center bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-slate-800 transition shadow"
+              className="inline-block text-center bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition shadow"
             >
               Start Voice Complaint →
             </Link>
