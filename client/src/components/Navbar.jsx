@@ -9,19 +9,19 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top Header Navbar (Desktop + Mobile) */}
-      <nav className="bg-slate-900/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 px-4 md:px-6 py-3 flex justify-between items-center shadow-lg">
-        <Link to="/" className="text-lg md:text-xl font-black tracking-tight text-white flex items-center gap-2">
+      {/* Top Header Navbar */}
+      <nav className="bg-slate-900/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 px-4 lg:px-8 py-3 flex justify-between items-center shadow-lg">
+        <Link to="/" className="text-base lg:text-xl font-black tracking-tight text-white flex items-center gap-2 shrink-0">
           <span className="w-8 h-8 rounded-lg bg-lime-accent text-slate-900 flex items-center justify-center font-black text-sm shadow-md">
             UF
           </span>
-          <span>
+          <span className="whitespace-nowrap">
             UrbanFeedback <span className="text-lime-accent font-extrabold">AI-X</span>
           </span>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center gap-6 text-xs font-bold">
+        {/* Desktop Navigation Links (Large Viewports >= 1024px) */}
+        <div className="hidden lg:flex items-center gap-5 text-xs font-bold shrink-0">
           <Link
             to="/"
             className={`transition ${isActive('/') ? 'text-lime-accent font-extrabold' : 'text-slate-300 hover:text-white'}`}
@@ -44,7 +44,7 @@ export default function Navbar() {
             to="/digital-twin"
             className={`transition ${isActive('/digital-twin') ? 'text-lime-accent font-extrabold' : 'text-slate-300 hover:text-white'}`}
           >
-            🏙️ Ward Digital Twin
+            🏙️ Digital Twin
           </Link>
           <Link
             to="/analytics"
@@ -54,25 +54,25 @@ export default function Navbar() {
           </Link>
           <Link
             to="/login"
-            className="bg-lime-accent hover:opacity-90 text-slate-900 px-4 py-2 rounded-lg font-extrabold transition shadow-lg"
+            className="bg-lime-accent hover:opacity-90 text-slate-900 px-3.5 py-1.5 rounded-lg font-extrabold transition shadow-md"
           >
             🔑 Single Sign-On
           </Link>
         </div>
 
-        {/* Mobile Hamburger Toggle Button */}
+        {/* Mobile & Tablet Toggle Button (< 1024px) */}
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden text-white bg-slate-800 p-2 rounded-lg border border-slate-700 font-bold text-sm"
+          className="lg:hidden text-white bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 font-bold text-xs flex items-center gap-1"
         >
           {mobileMenuOpen ? '✕ Close' : '☰ Menu'}
         </button>
       </nav>
 
-      {/* Mobile Drawer Menu (Toggled on Mobile) */}
+      {/* Mobile Drawer Menu (Toggled on Mobile/Tablet) */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-slate-900 border-b border-slate-800 p-5 space-y-3 font-bold text-sm">
+        <div className="lg:hidden bg-slate-900 border-b border-slate-800 p-5 space-y-3 font-bold text-sm">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
@@ -111,15 +111,15 @@ export default function Navbar() {
           <Link
             to="/login"
             onClick={() => setMobileMenuOpen(false)}
-            className="block text-center bg-lime-accent text-slate-900 py-3 rounded-xl font-extrabold shadow-lg"
+            className="block text-center bg-lime-accent text-slate-900 py-2.5 rounded-xl font-extrabold shadow-lg"
           >
             🔑 Single Sign-On
           </Link>
         </div>
       )}
 
-      {/* Mobile Bottom Thumb Navigation Bar (Applike UX for Mobile Viewports) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 z-50 flex justify-around items-center py-2 px-1 text-[10px] font-bold">
+      {/* Mobile Bottom Thumb Navigation Bar (< 1024px) */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 z-50 flex justify-around items-center py-2 px-1 text-[10px] font-bold">
         <Link
           to="/"
           className={`flex flex-col items-center gap-0.5 ${isActive('/') ? 'text-lime-accent' : 'text-slate-400'}`}
