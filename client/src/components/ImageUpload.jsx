@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Upload, Camera, CheckCircle2, ShieldCheck, Eye, EyeOff, Sparkles, Lock } from 'lucide-react';
+import { Upload, Camera, CheckCircle2, ShieldCheck, Sparkles, Lock } from 'lucide-react';
 import { processPrivacyBlur } from '../utils/imageAnonymizer';
 
 export default function ImageUpload({ onUpload }) {
   const [originalPreview, setOriginalPreview] = useState(null);
   const [anonymizedPreview, setAnonymizedPreview] = useState(null);
-  const [showOriginal, setShowOriginal] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [anonymizeInfo, setAnonymizeInfo] = useState(null);
 
@@ -65,22 +64,14 @@ export default function ImageUpload({ onUpload }) {
         <div className="space-y-3 pt-2 border-t border-emerald-100">
           <div className="relative max-w-xs mx-auto rounded-xl overflow-hidden border border-emerald-200 shadow-xs group">
             <img
-              src={showOriginal ? originalPreview : anonymizedPreview}
+              src={anonymizedPreview}
               alt="Evidence Preview"
               className="w-full max-h-44 object-cover"
             />
             <div className="absolute top-2 left-2 bg-emerald-950/80 backdrop-blur-xs text-white text-[9.5px] font-mono px-2 py-0.5 rounded flex items-center gap-1">
               <Lock className="w-3 h-3 text-emerald-400" />
-              <span>{showOriginal ? 'RAW ORIGINAL (UNMASKED)' : 'YOLO ANONYMIZED'}</span>
+              <span>YOLO ANONYMIZED &amp; BLURRED</span>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowOriginal(!showOriginal)}
-              className="absolute top-2 right-2 bg-white/90 hover:bg-white text-emerald-950 text-[10px] font-bold px-2 py-1 rounded-lg border border-emerald-200 shadow-xs flex items-center gap-1"
-            >
-              {showOriginal ? <EyeOff className="w-3 h-3 text-emerald-600" /> : <Eye className="w-3 h-3 text-emerald-600" />}
-              <span>{showOriginal ? 'View Blurred' : 'View Original'}</span>
-            </button>
           </div>
 
           {/* Anonymization Detection Results */}
